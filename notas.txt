@@ -1,2 +1,9 @@
+# tarefas
+- tirar styles da base, se vira - talvez adicionar bloco
+- criar modelos a partir do andyjud
+- fazer view de login de acordo
+ - implementar esqueci a senha e lembrar-me
+
+# referencias
 - https://www.youtube.com/watch?v=u7siCTdGhuw&list=PL5E1F5cTSTtRSP3Qb8-gZ-Hm5AXp3VKvu
 - https://www.geeksforgeeks.org/python/realtime-chat-app-using-django/
