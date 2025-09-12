@@ -19,6 +19,7 @@ dependencies = [
     { name = "django" },
     { name = "django-allauth" },
     { name = "django-htmx" },
+    { name = "shortuuid" },
 ]
 
 [package.metadata]
@@ -26,6 +27,7 @@ requires-dist = [
     { name = "django", specifier = ">=5.2.6" },
     { name = "django-allauth", specifier = ">=65.11.2" },
     { name = "django-htmx", specifier = ">=1.24.0" },
+    { name = "shortuuid", specifier = ">=1.0.13" },
 ]
 
 [[package]]
@@ -63,6 +65,15 @@ dependencies = [
 sdist = { url = "https://files.pythonhosted.org/packages/3e/45/9e93167eac5b8506e17aef8522c085302f1968a3d9fe469ced5d16300467/django_htmx-1.24.0.tar.gz", hash = "sha256:5a40d4b2a3a4d5a444b516ca7f9c9836dc512dc40634770687989e96999466e5", size = 64436, upload-time = "2025-09-09T23:08:32.18Z" }
 wheels = [
     { url = "https://files.pythonhosted.org/packages/9c/f1/0fa3b0eee85149e14e311f346005d7518d54e7e1ce7cbd1f98bf0d8e8cf0/django_htmx-1.24.0-py3-none-any.whl", hash = "sha256:9418ac5a2c89c593b71d32dbef361dc4fdf0033dda0fbb63584fd3e67b165207", size = 61538, upload-time = "2025-09-09T23:08:30.745Z" },
+]
+
+[[package]]
+name = "shortuuid"
+version = "1.0.13"
+source = { registry = "https://pypi.org/simple" }
+sdist = { url = "https://files.pythonhosted.org/packages/8c/e2/bcf761f3bff95856203f9559baf3741c416071dd200c0fc19fad7f078f86/shortuuid-1.0.13.tar.gz", hash = "sha256:3bb9cf07f606260584b1df46399c0b87dd84773e7b25912b7e391e30797c5e72", size = 9662, upload-time = "2024-03-11T20:11:06.879Z" }
+wheels = [
+    { url = "https://files.pythonhosted.org/packages/c0/44/21d6bf170bf40b41396480d8d49ad640bca3f2b02139cd52aa1e272830a5/shortuuid-1.0.13-py3-none-any.whl", hash = "sha256:a482a497300b49b4953e15108a7913244e1bb0d41f9d332f5e9925dba33a3c5a", size = 10529, upload-time = "2024-03-11T20:11:04.807Z" },
 ]
 
 [[package]]

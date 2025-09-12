@@ -1,0 +1,157 @@
+{% extends "base.html" %}
+
+{% block styles %}
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+<style>
+    body {
+        background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .profile-card {
+        transition: all 0.3s ease;
+        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
+    }
+
+    .profile-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.4);
+    }
+
+    .avatar {
+        transition: all 0.3s ease;
+    }
+
+    .avatar:hover {
+        transform: scale(1.05);
+    }
+
+    .stats-card {
+        transition: all 0.3s ease;
+    }
+
+    .stats-card:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.2);
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<main class="flex-grow py-12 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-3xl mx-auto">
+        <!-- Card de Perfil -->
+        <div class="profile-card bg-white rounded-xl shadow-lg overflow-hidden">
+            <!-- Cabeçalho do perfil -->
+            <div class="bg-gradient-to-r from-blue-600 to-indigo-700 h-32 relative">
+                <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2">
+                    <div class="avatar relative">
+                        <img class="w-32 h-32 rounded-full border-4 border-white object-cover shadow-lg"
+                            src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80"
+                            alt="Foto de perfil">
+                        <div class="absolute bottom-2 right-2 bg-green-500 w-6 h-6 rounded-full border-2 border-white">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Informações do usuário -->
+            <div class="pt-16 pb-8 px-6 text-center">
+                <h2 class="text-3xl font-bold text-gray-800">Maria Silva</h2>
+                <p class="text-gray-600 mt-1">@mariasilva</p>
+
+                <div class="mt-4 flex justify-center space-x-4">
+                    <div class="flex items-center text-gray-600">
+                        <i class="fas fa-map-marker-alt mr-2"></i>
+                        <span>São Paulo, Brasil</span>
+                    </div>
+                    <div class="flex items-center text-gray-600">
+                        <i class="far fa-calendar-alt mr-2"></i>
+                        <span>Membro desde Jan 2022</span>
+                    </div>
+                </div>
+
+                <p class="mt-4 text-gray-700 max-w-md mx-auto">
+                    Desenvolvedora front-end apaixonada por criar experiências incríveis para os usuários.
+                    Amante de café, viagens e tecnologia.
+                </p>
+
+                <!-- Botão de enviar mensagem -->
+                <div class="mt-6">
+                    <button
+                        class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-8 rounded-full shadow-md hover:shadow-lg transition-all duration-300 flex items-center mx-auto">
+                        <i class="fas fa-paper-plane mr-2"></i> Enviar Mensagem
+                    </button>
+                </div>
+            </div>
+
+            <!-- Estatísticas -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 px-6 pb-8">
+                <div class="stats-card bg-gray-50 rounded-lg p-4 text-center">
+                    <div class="text-2xl font-bold text-blue-600">248</div>
+                    <div class="text-gray-600">Amigos</div>
+                </div>
+                <div class="stats-card bg-gray-50 rounded-lg p-4 text-center">
+                    <div class="text-2xl font-bold text-blue-600">1.4K</div>
+                    <div class="text-gray-600">Seguidores</div>
+                </div>
+                <div class="stats-card bg-gray-50 rounded-lg p-4 text-center">
+                    <div class="text-2xl font-bold text-blue-600">327</div>
+                    <div class="text-gray-600">Publicações</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Conteúdo adicional -->
+        <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <h3 class="text-xl font-bold text-gray-800 mb-4">Sobre</h3>
+                <ul class="space-y-3">
+                    <li class="flex items-center">
+                        <i class="fas fa-briefcase text-blue-600 w-6"></i>
+                        <span class="text-gray-700">Desenvolvedora Front-end na TechSolutions</span>
+                    </li>
+                    <li class="flex items-center">
+                        <i class="fas fa-graduation-cap text-blue-600 w-6"></i>
+                        <span class="text-gray-700">Bacharel em Ciência da Computação - USP</span>
+                    </li>
+                    <li class="flex items-center">
+                        <i class="fas fa-heart text-blue-600 w-6"></i>
+                        <span class="text-gray-700">Relacionamento sério</span>
+                    </li>
+                </ul>
+            </div>
+
+            <div class="bg-white rounded-xl shadow-lg p-6">
+                <h3 class="text-xl font-bold text-gray-800 mb-4">Interesses</h3>
+                <div class="flex flex-wrap gap-2">
+                    <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">Desenvolvimento Web</span>
+                    <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">UI/UX Design</span>
+                    <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">Viagens</span>
+                    <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">Fotografia</span>
+                    <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">Café</span>
+                    <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">Tecnologia</span>
+                </div>
+            </div>
+        </div>
+    </div>
+</main>
+<script>
+    // Interatividade para o botão de enviar mensagem
+    document.querySelector('button').addEventListener('click', function () {
+        alert('Mensagem enviada para Maria Silva!');
+
+        // Efeito visual no botão
+        this.classList.add('bg-green-600');
+        this.innerHTML = '<i class="fas fa-check mr-2"></i> Mensagem Enviada';
+
+        // Restaurar após 2 segundos
+        setTimeout(() => {
+            this.classList.remove('bg-green-600');
+            this.innerHTML = '<i class="fas fa-paper-plane mr-2"></i> Enviar Mensagem';
+        }, 2000);
+    });
+</script>
+{% endblock %}

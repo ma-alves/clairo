@@ -7,3 +7,6 @@ def home(request):
 
 def login(request):
     return render(request, "chat/login.html")
+
+def profile(request):
+    return render(request, "chat/profile.html")

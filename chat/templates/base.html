@@ -5,30 +5,8 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   <title>clairo</title>
-  <style>
-    body {
-      background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-    }
-
-    .login-card {
-      transition: all 0.3s ease;
-      box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
-    }
-
-    .login-card:hover {
-      transform: translateY(-5px);
-      box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.4);
-    }
-
-    .input-field:focus {
-      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
-    }
-  </style>
+  {% block styles %}{% endblock %}
 </head>
 
 <body>
@@ -103,7 +81,6 @@
         <h3 class="text-3xl font-bold text-gray-800 mb-4">Conteúdo Principal</h3>
         <p class="text-gray-600">Este é o conteúdo da sua página.</p>
     </div>
-    
   </main> -->
   {% block content %}{% endblock %}
   <footer class="bg-gray-800 text-white py-6 mt-12">
