@@ -1,12 +1,21 @@
+from django.contrib.auth.models import User
 from django.shortcuts import render
+from django.views.generic.detail import DetailView
 
 
 def home(request):
     context = {}
     return render(request, "base.html", context)
 
-def login(request):
-    return render(request, "chat/login.html")
 
-def profile(request):
-    return render(request, "chat/profile.html")
+class UserDetailView(DetailView):
+    model = User
+    template_name = "chat/profile.html"
+
+
+def signup(request):
+    ...
+
+
+def logout(request):
+    ...

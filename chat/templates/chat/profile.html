@@ -59,23 +59,18 @@
 
             <!-- Informações do usuário -->
             <div class="pt-16 pb-8 px-6 text-center">
-                <h2 class="text-3xl font-bold text-gray-800">Maria Silva</h2>
-                <p class="text-gray-600 mt-1">@mariasilva</p>
+                <h2 class="text-3xl font-bold text-gray-800">{{ user.first_name }} {{ user.last_name }}</h2>
+                <p class="text-gray-600 mt-1">@{{ user.username }}</p>
 
                 <div class="mt-4 flex justify-center space-x-4">
                     <div class="flex items-center text-gray-600">
-                        <i class="fas fa-map-marker-alt mr-2"></i>
-                        <span>São Paulo, Brasil</span>
-                    </div>
-                    <div class="flex items-center text-gray-600">
                         <i class="far fa-calendar-alt mr-2"></i>
-                        <span>Membro desde Jan 2022</span>
+                        <span>Membro desde {{ user.date_joined|date:"SHORT_DATE_FORMAT"}}</span>
                     </div>
                 </div>
 
                 <p class="mt-4 text-gray-700 max-w-md mx-auto">
-                    Desenvolvedora front-end apaixonada por criar experiências incríveis para os usuários.
-                    Amante de café, viagens e tecnologia.
+                    ** Possível bio **
                 </p>
 
                 <!-- Botão de enviar mensagem -->

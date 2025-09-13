@@ -35,10 +35,10 @@
                 <p class="text-gray-600 mt-2">Faça login em sua conta</p>
             </div>
 
-            <form class="space-y-6">
+            <form class="space-y-6" method="POST" action="{% url 'login'%}">
                 {% csrf_token %}
                 <div>
-                    <label for="username" class="block text-sm font-medium text-gray-700 mb-1">Nome de usuário</label>
+                    <label for="username" class="block text-sm font-medium text-gray-700 mb-1">Usuário</label>
                     <div class="relative">
                         <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
                             <i class="fas fa-user text-gray-400"></i>
@@ -82,11 +82,12 @@
                 </div>
 
                 <div>
-                    <button type="submit"
+                    <button type="submit" value="login"
                         class="w-full flex justify-center py-3 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors">
                         Entrar
                     </button>
                 </div>
+                <input type="hidden" name="next" value="{{ next }}">
             </form>
 
             <div class="mt-6 text-center">
@@ -113,18 +114,18 @@
     });
 
     // Validação simples do formulário
-    document.querySelector('form').addEventListener('submit', function (e) {
-        e.preventDefault();
-        const username = document.getElementById('username').value;
-        const password = document.getElementById('password').value;
+    // document.querySelector('form').addEventListener('submit', function (e) {
+    //     e.preventDefault();
+    //     const username = document.getElementById('username').value;
+    //     const password = document.getElementById('password').value;
 
-        if (username && password) {
-            // Simulação de login bem-sucedido
-            alert('Login realizado com sucesso!');
-            // Aqui você normalmente redirecionaria o usuário ou faria uma requisição AJAX
-        } else {
-            alert('Por favor, preencha todos os campos.');
-        }
-    });
+    //     if (username && password) {
+    //         // Simulação de login bem-sucedido
+    //         alert('Login realizado com sucesso!');
+    //         // Aqui você normalmente redirecionaria o usuário ou faria uma requisição AJAX
+    //     } else {
+    //         alert('Por favor, preencha todos os campos.');
+    //     }
+    // });
 </script>
 {% endblock %}

@@ -28,7 +28,7 @@
         <nav class="flex items-center space-x-4">
           <!-- Links de Login e Cadastro -->
           <div class="hidden md:flex items-center space-x-2">
-            <a href="#" class="px-3 py-2 text-sm font-medium hover:bg-gray-700 rounded-md transition-colors">
+            <a href="{% url 'login' %}" class="px-3 py-2 text-sm font-medium hover:bg-gray-700 rounded-md transition-colors">
               Login
             </a>
             <a href="#"
@@ -51,11 +51,11 @@
             <div
               class="absolute right-0 mt-2 w-48 bg-white text-gray-800 rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
               <div class="py-1">
-                <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100">Perfil</a>
+                <a href="{% url 'profile' user.pk %}" class="block px-4 py-2 text-sm hover:bg-gray-100">Perfil</a>
                 <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100">Configurações</a>
                 <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100">Ajuda</a>
                 <div class="border-t my-1"></div>
-                <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100 text-red-600">Sair</a>
+                <a href="{% url 'logout' %}" class="block px-4 py-2 text-sm hover:bg-gray-100 text-red-600">Sair</a>
               </div>
             </div>
           </div>
@@ -71,7 +71,7 @@
 
       <!-- Título Centralizado para mobile -->
       <div class="md:hidden mt-3 text-center">
-        <h2 class="text-lg font-semibold">Bem-vindo ao Nosso Site</h2>
+        <h2 class="text-lg font-semibold">Bem-vindo à clairo</h2>
       </div>
     </div>
   </header>
