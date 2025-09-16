@@ -16,7 +16,7 @@
       <div class="flex items-center justify-between">
         <!-- Logo/Título -->
         <div class="flex-shrink-0">
-          <h1 class="text-2xl font-bold">clairo</h1>
+          <h1 class="text-2xl font-bold"><a href="{% url 'home'%}">clairo</a></h1>
         </div>
 
         <!-- Título Centralizado (visível apenas em desktop) -->
@@ -28,6 +28,9 @@
         <nav class="flex items-center space-x-4">
           <!-- Links de Login e Cadastro -->
           <div class="hidden md:flex items-center space-x-2">
+            {% if user.is_authenticated %}
+            <p class="text-sm font-medium">Olá, {{ user.first_name }}!</p>
+            {% else %}
             <a href="{% url 'login' %}" class="px-3 py-2 text-sm font-medium hover:bg-gray-700 rounded-md transition-colors">
               Login
             </a>
@@ -35,6 +38,7 @@
               class="px-3 py-2 text-sm font-medium bg-blue-600 hover:bg-blue-700 rounded-md transition-colors">
               Cadastrar
             </a>
+            {% endif %}
           </div>
 
           <!-- Dropdown Menu -->
@@ -51,11 +55,15 @@
             <div
               class="absolute right-0 mt-2 w-48 bg-white text-gray-800 rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
               <div class="py-1">
+                {% if user.is_authenticated %}
                 <a href="{% url 'profile' user.pk %}" class="block px-4 py-2 text-sm hover:bg-gray-100">Perfil</a>
+                {% endif %}
                 <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100">Configurações</a>
                 <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100">Ajuda</a>
                 <div class="border-t my-1"></div>
+                {% if user.is_authenticated %}
                 <a href="{% url 'logout' %}" class="block px-4 py-2 text-sm hover:bg-gray-100 text-red-600">Sair</a>
+                {% endif %}
               </div>
             </div>
           </div>

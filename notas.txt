@@ -1,8 +1,12 @@
 # tarefas
+- fazer crash course de javascript e tailwind
 - arrumar profile
-- fazer login funcionar, fazer signup
-- fazer view de login de acordo
- - implementar esqueci a senha e lembrar-me
+- fazer signup https://learndjango.com/tutorials/django-login-and-logout-tutorial#sign-up-page
+ - criar app accounts :(
+- implementar esqueci a senha e lembrar-me
+
+# comentários pessoais
+- dropdown no header é meio desnecessário
 
 # referencias
 - https://www.youtube.com/watch?v=u7siCTdGhuw&list=PL5E1F5cTSTtRSP3Qb8-gZ-Hm5AXp3VKvu
