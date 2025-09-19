@@ -34,7 +34,7 @@
             <a href="{% url 'login' %}" class="px-3 py-2 text-sm font-medium hover:bg-gray-700 rounded-md transition-colors">
               Login
             </a>
-            <a href="#"
+            <a href="{% url 'signup' %}"
               class="px-3 py-2 text-sm font-medium bg-blue-600 hover:bg-blue-700 rounded-md transition-colors">
               Cadastrar
             </a>
@@ -62,7 +62,11 @@
                 <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100">Ajuda</a>
                 <div class="border-t my-1"></div>
                 {% if user.is_authenticated %}
-                <a href="{% url 'logout' %}" class="block px-4 py-2 text-sm hover:bg-gray-100 text-red-600">Sair</a>
+                <form action="{% url 'logout' %}" method="post">
+                  {% csrf_token %}
+                  <button type="submit" class="block px-4 py-2 text-sm hover:bg-gray-100 text-red-600">Sair</button>
+                </form>
+                <!-- <a href="{% url 'logout' %}" class="block px-4 py-2 text-sm hover:bg-gray-100 text-red-600">Sair</a> -->
                 {% endif %}
               </div>
             </div>
