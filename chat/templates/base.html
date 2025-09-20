@@ -4,8 +4,9 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script src="https://cdn.tailwindcss.com"></script>
   <title>clairo</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
   {% block styles %}{% endblock %}
 </head>
 
@@ -16,7 +17,7 @@
       <div class="flex items-center justify-between">
         <!-- Logo/Título -->
         <div class="flex-shrink-0">
-          <h1 class="text-2xl font-bold"><a href="{% url 'home'%}">clairo</a></h1>
+          <h1 class="text-2xl font-medium"><a href="{% url 'home'%}">clairo</a></h1>
         </div>
 
         <!-- Título Centralizado (visível apenas em desktop) -->
@@ -29,7 +30,7 @@
           <!-- Links de Login e Cadastro -->
           <div class="hidden md:flex items-center space-x-2">
             {% if user.is_authenticated %}
-            <p class="text-sm font-medium">Olá, {{ user.first_name }}!</p>
+            <p class="text-sm font-medium">Olá, {{ user.username }}!</p>
             {% else %}
             <a href="{% url 'login' %}" class="px-3 py-2 text-sm font-medium hover:bg-gray-700 rounded-md transition-colors">
               Login

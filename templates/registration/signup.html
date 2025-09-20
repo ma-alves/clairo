@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 
 {% block styles %}
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
     body {
         background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
@@ -40,19 +39,6 @@
                 <h2 class="text-3xl font-bold text-gray-800">Criar conta</h2>
                 <p class="text-gray-600 mt-2">Preencha os dados abaixo para se cadastrar</p>
             </div>
-
-            <!-- Exibir mensagens -->
-            {% if messages %}
-            <div class="mb-6">
-                {% for message in messages %}
-                <div
-                    class="p-3 rounded-md {% if message.tags == 'error' %}bg-red-100 text-red-700{% else %}bg-green-100 text-green-700{% endif %}">
-                    {{ message }}
-                </div>
-                {% endfor %}
-            </div>
-            {% endif %}
-
             <form method="post" class="space-y-6">
                 {% csrf_token %}
 
@@ -159,12 +145,6 @@
     </div>
 </main>
 <script>
-    // Adicionar placeholders aos campos
-    document.getElementById('id_username').placeholder = 'Digite seu nome de usuário';
-    document.getElementById('id_email').placeholder = 'Digite seu email';
-    document.getElementById('id_password1').placeholder = 'Digite sua senha';
-    document.getElementById('id_password2').placeholder = 'Confirme sua senha';
-
     // Funcionalidade para mostrar/ocultar senha
     function setupPasswordToggle(inputId, buttonId) {
         const toggleButton = document.getElementById(buttonId);

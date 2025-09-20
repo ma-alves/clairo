@@ -1,7 +1,6 @@
 {% extends "base.html" %}
 
 {% block styles %}
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 <style>
     body {
         background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
@@ -59,7 +58,7 @@
 
             <!-- Informações do usuário -->
             <div class="pt-16 pb-8 px-6 text-center">
-                <h2 class="text-3xl font-bold text-gray-800">{{ user.first_name }} {{ user.last_name }}</h2>
+                <!-- <h2 class="text-3xl font-bold text-gray-800">{{ user.first_name }} {{ user.last_name }}</h2> -->
                 <p class="text-gray-600 mt-1">@{{ user.username }}</p>
 
                 <div class="mt-4 flex justify-center space-x-4">
@@ -69,9 +68,9 @@
                     </div>
                 </div>
 
-                <p class="mt-4 text-gray-700 max-w-md mx-auto">
+                <!-- <p class="mt-4 text-gray-700 max-w-md mx-auto">
                     ** Possível bio **
-                </p>
+                </p> -->
 
                 <!-- Botão de enviar mensagem -->
                 <div class="mt-6">
@@ -106,15 +105,15 @@
                 <ul class="space-y-3">
                     <li class="flex items-center">
                         <i class="fas fa-briefcase text-blue-600 w-6"></i>
-                        <span class="text-gray-700">Desenvolvedora Front-end na TechSolutions</span>
+                        <span class="text-gray-700">Desenvolvedor Back-end no Quiosque do Edmundo</span>
                     </li>
                     <li class="flex items-center">
                         <i class="fas fa-graduation-cap text-blue-600 w-6"></i>
-                        <span class="text-gray-700">Bacharel em Ciência da Computação - USP</span>
+                        <span class="text-gray-700">Bacharel em Cursos do freeCodeCamp</span>
                     </li>
                     <li class="flex items-center">
                         <i class="fas fa-heart text-blue-600 w-6"></i>
-                        <span class="text-gray-700">Relacionamento sério</span>
+                        <span class="text-gray-700">Amizade Saudável com a Ex</span>
                     </li>
                 </ul>
             </div>
@@ -123,10 +122,10 @@
                 <h3 class="text-xl font-bold text-gray-800 mb-4">Interesses</h3>
                 <div class="flex flex-wrap gap-2">
                     <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">Desenvolvimento Web</span>
-                    <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">UI/UX Design</span>
-                    <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">Viagens</span>
+                    <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">APIs</span>
+                    <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">Filmes</span>
                     <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">Fotografia</span>
-                    <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">Café</span>
+                    <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">Mitski</span>
                     <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">Tecnologia</span>
                 </div>
             </div>

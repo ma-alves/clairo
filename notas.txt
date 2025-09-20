@@ -1,12 +1,11 @@
 # tarefas
-- fazer crash course de javascript e tailwind
-- arrumar profile
-- revisar signup
+- fazer crash course de javascript
 - implementar esqueci a senha e lembrar-me
 
 # comentários pessoais
 - dropdown no header é meio desnecessário
 - botão sair tá deficiente
+- arrumar profile > teria que reestruturar User mas prefiro m*****
 
 # referencias
 - https://www.youtube.com/watch?v=u7siCTdGhuw&list=PL5E1F5cTSTtRSP3Qb8-gZ-Hm5AXp3VKvu
