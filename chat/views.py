@@ -44,7 +44,7 @@ def chat_view(request, chat_uuid):
                 'message' : message,
                 'user' : request.user
             }
-            return render(request, 'chat/partials/chat_message_partial.html', context)
+            return render(request, 'chat/partials/chat_message_p.html', context)
     
     context = {
         'chat_messages' : chat_messages, 
@@ -66,9 +66,9 @@ def get_or_create_chat(request, username):
     my_chatrooms = request.user.chats.filter(is_private = True)
     
     if my_chatrooms.exists():
-        for chatroom in my_chatrooms:
-            if other_user in chatroom.members.all():
-                chatroom = chatroom
+        for chat in my_chatrooms:
+            if other_user in chat.users.all():
+                chatroom = chat
                 break
             else:
                 chatroom = Chat.objects.create(is_private = True)

@@ -5,7 +5,7 @@ from .models import ChatMessage
 
 class MessageForm(ModelForm):
     class Meta:
-        model: ChatMessage
+        model = ChatMessage
         fields = ['body']
         widgets = {
             'body': forms.TextInput(attrs={

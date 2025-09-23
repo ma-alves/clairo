@@ -1,21 +1,21 @@
-import shortuuid
+import uuid
 
 from django.db import models
 from django.contrib.auth.models import User
 
 
 class Chat(models.Model):
-    chat_uuid = models.CharField(max_length=128, unique=True, default=shortuuid.uuid)
+    chat_uuid = models.CharField(max_length=128, unique=True, default=str(uuid.uuid4()))
     users = models.ManyToManyField(User, related_name='chats', blank=True)
     online_users = models.ManyToManyField(User, related_name='online_chats', blank=True)
-    is_private = models.BooleanField(default=False)
+    is_private = models.BooleanField(default=True)
 
     def __str__(self):
         return self.chat_uuid
     
     def save(self, *args, **kwargs):
         if not self.chat_uuid:
-            self.chat_uuid = shortuuid.uuid()
+            self.chat_uuid = str(uuid.uuid4())
         super().save(*args, **kwargs)
 
 
