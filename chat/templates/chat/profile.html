@@ -74,10 +74,10 @@
 
                 <!-- Botão de enviar mensagem -->
                 <div class="mt-6">
-                    <button
+                    <a href="{% url 'start-chat' user.username %}" role="button"
                         class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-8 rounded-full shadow-md hover:shadow-lg transition-all duration-300 flex items-center mx-auto">
                         <i class="fas fa-paper-plane mr-2"></i> Enviar Mensagem
-                    </button>
+                    </a>
                 </div>
             </div>
 
