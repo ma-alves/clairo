@@ -1,6 +1,6 @@
 # tarefas
 - fazer crash course de javascript
-- tirar htmx, tentar ajax
+- TIRAR htmx, tentar ajax
 - reescrever views, urls, routing, consumers e templates de acordo com
   o tutorial: https://channels.readthedocs.io/en/latest/tutorial/part_1.html
 - implementar esqueci a senha e lembrar-me

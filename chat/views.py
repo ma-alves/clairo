@@ -1,11 +1,15 @@
+import json
+
+from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
+from django.http import Http404, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.generic.detail import DetailView
+from django.views.decorators.csrf import csrf_exempt
+from django.views.decorators.http import require_http_methods
 
 from chat.models import Chat
 from chat.forms import MessageForm
-from django.contrib.auth.decorators import login_required
-from django.http import Http404
 
 
 def home(request):
@@ -18,11 +22,29 @@ class UserDetailView(DetailView):
     template_name = "chat/profile.html"
 
 
+@csrf_exempt
+@require_http_methods(["POST"])
+def send_message(request):
+    try:
+        data = json.loads(request.body)
+        message = data.get('message')
+        chat_uuid = data.get('chat_uuid')
+
+        chat = get_object_or_404(Chat, chat_uuid=chat_uuid)
+        
+        # Sua lógica para salvar a mensagem
+        # ...
+        
+        return JsonResponse({'status': 'success'})
+    except Exception as e:
+        return JsonResponse({'status': 'error', 'message': str(e)})
+
+
 @login_required
 def chat_view(request, chat_uuid):
     chat = get_object_or_404(Chat, chat_uuid=chat_uuid)
     chat_messages = chat.messages.all()[:30] #type: ignore
-    form = MessageForm()
+    # form = MessageForm()
 
     other_user = None
     if chat.is_private:
@@ -33,26 +55,27 @@ def chat_view(request, chat_uuid):
                 other_user = user
                 break
     
-    if request.htmx:
-        form = MessageForm(request.POST)
-        if form.is_valid:
-            message = form.save(commit=False)
-            message.author = request.user
-            message.group = chat
-            message.save()
-            context = {
-                'message' : message,
-                'user' : request.user
-            }
-            return render(request, 'chat/partials/chat_message_p.html', context)
-    
+    # if request.method == "POST":
+    #     data = json.loads(request.body)
+    #     message = data.get('message')
+    #     message.author = request.user
+    #     message.group = chat
+    #     message.save()
+    #     context = {
+    #         'message' : message,
+    #         'user' : request.user
+    #     }
+    #     return render(request, 'chat/partials/chat_message_p.html', context)
+
     context = {
+        'chat' : chat,
         'chat_messages' : chat_messages, 
-        'form' : form,
-        'other_user' : other_user,
         'chat_uuid' : chat.chat_uuid,
+        # 'form' : form,
+        'other_user' : other_user,
     }
     
+    print(f"Accessing chat with UUID: {chat_uuid}")
     return render(request, 'chat/chat.html', context)
 
 

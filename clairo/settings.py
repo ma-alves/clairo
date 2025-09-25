@@ -72,10 +72,9 @@ TEMPLATES = [
     },
 ]
 
-# WSGI_APPLICATION = 'clairo.wsgi.application
+# WSGI_APPLICATION = 'clairo.wsgi.application'
 
 ASGI_APPLICATION = 'clairo.asgi.application'
-
 
 CHANNEL_LAYERS = {
     'default': {
