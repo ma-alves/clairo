@@ -2,27 +2,53 @@
 
 {% block content %}
 <wrapper class="block max-w-2xl mx-auto my-10 px-6">
-    <div class="flex justify-between">
-        <h2>{{ other_user }}</h2>
-        <div id="chat-window" class="h-[45rem] flex flex-col bg-gray-800 rounded-2xl shadow-2xl relative p-1">
-            <div class="flex justify-center text-emerald-400 bg-gray-800 p-2 sticky top-0 z-10">
-                <div id="online-icon" class="gray-dot absolute top-2 left-2"></div>
-                <a href="#">
-                    <div class="flex items-center gap-2 p-4 sticky top-0 z-10">
-                        <img class="w-10 h-10 rounded-full object-cover" src="#" />
-                        <div>
-                            <span class="font-bold text-white">{{ other_user.username }}</span>
-                            <span class="text-sm font-light text-gray-400">@{{ other_user.username }}</span>
-                        </div>
+    <!-- Cabeçalho fora do chat -->
+    <div class="flex justify-between items-center mb-4">
+        <h2 class="text-2xl font-bold text-white">{{ other_user.username }}</h2>
+    </div>
+
+    <!-- Container principal do chat -->
+    <div id="chat-window" class="h-[45rem] flex flex-col bg-gray-800 rounded-2xl shadow-2xl relative p-1 mb-4">
+        <!-- Cabeçalho do chat -->
+        <div class="flex justify-center text-emerald-400 bg-gray-800 p-2 sticky top-0 z-10 rounded-t-2xl">
+            <div id="online-icon" class="gray-dot absolute top-2 left-2"></div>
+            <a href="#">
+                <div class="flex items-center gap-2 p-4">
+                    <img class="w-10 h-10 rounded-full object-cover bg-gray-600" src="#"
+                        alt="{{ other_user.username }}" />
+                    <div>
+                        <span class="font-bold text-white">{{ other_user.username }}</span>
+                        <span class="text-sm font-light text-gray-400 block">@{{ other_user.username }}</span>
                     </div>
-                </a>
+                </div>
+            </a>
+        </div>
+
+        <!-- Área de mensagens -->
+        <div id='chat_container' class="overflow-y-auto grow">
+            <ul id='chat_messages' class="flex flex-col justify-end gap-2 p-4">
+                {% for message in chat_messages reversed %}
+                {% include 'chat/chat_message.html' %}
+                {% endfor %}
+            </ul>
+        </div>
+
+        <!-- Área de input (DENTRO do chat window) -->
+        <div class="sticky bottom-0 bg-gray-800 p-4 rounded-b-2xl">
+            <div class="flex gap-2">
+                <textarea id="chat-message-input"
+                    class="flex-1 px-4 py-2 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-400 resize-none"
+                    placeholder="Digite sua mensagem..." rows="3"></textarea>
+                <button id="chat-message-submit"
+                    class="px-6 py-2 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 transition-colors self-end">
+                    Enviar
+                </button>
             </div>
         </div>
-        <textarea id="chat-log" cols="100" rows="20"></textarea><br>
-        <input id="chat-message-input" type="text" size="100"><br>
-        <input id="chat-message-submit" type="button" value="Send">
     </div>
+
     {{ chat_uuid|json_script:"chat_uuid" }}
+
     <script>
         const roomName = JSON.parse(document.getElementById('chat_uuid').textContent);
 
@@ -38,9 +64,16 @@
             try {
                 const data = JSON.parse(e.data);
                 if (data.message) {
-                    const chatLog = document.querySelector('#chat-log');
-                    chatLog.value += data.message + '\n';
-                    chatLog.scrollTop = chatLog.scrollHeight;
+                    // Adicionar mensagem à área de visualização
+                    const chatMessages = document.querySelector('#chat_messages');
+                    const messageElement = document.createElement('li');
+                    messageElement.className = 'bg-gray-700 text-white p-3 rounded-lg max-w-xs';
+                    messageElement.textContent = data.message;
+                    chatMessages.appendChild(messageElement);
+
+                    // Scroll automático
+                    const chatContainer = document.querySelector('#chat_container');
+                    chatContainer.scrollTop = chatContainer.scrollHeight;
                 }
             } catch (error) {
                 console.error('Erro ao processar mensagem:', error);
@@ -52,19 +85,24 @@
         };
 
         document.querySelector('#chat-message-input').focus();
+
         document.querySelector('#chat-message-input').onkeyup = function (e) {
-            if (e.key === 'Enter') {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
                 document.querySelector('#chat-message-submit').click();
             }
         };
 
         document.querySelector('#chat-message-submit').onclick = function (e) {
-            const messageInputDom = document.querySelector('#chat-message-input');
-            const message = messageInputDom.value;
-            chatSocket.send(JSON.stringify({
-                'message': message
-            }));
-            messageInputDom.value = '';
+            const messageInput = document.querySelector('#chat-message-input');
+            const message = messageInput.value.trim();
+
+            if (message) {
+                chatSocket.send(JSON.stringify({
+                    'message': message
+                }));
+                messageInput.value = '';
+            }
         };
     </script>
 </wrapper>

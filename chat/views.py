@@ -75,7 +75,6 @@ def chat_view(request, chat_uuid):
         'other_user' : other_user,
     }
     
-    print(f"Accessing chat with UUID: {chat_uuid}")
     return render(request, 'chat/chat.html', context)
 
 
