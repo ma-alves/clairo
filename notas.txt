@@ -3,6 +3,7 @@
 - migrar para postgres
 - reescrever views, urls, routing, consumers e templates de acordo com
   o tutorial: https://channels.readthedocs.io/en/latest/tutorial/part_1.html
+- tu é doido: https://stackoverflow.com/questions/64188904/django-channels-save-messages-to-database
 - implementar esqueci a senha e lembrar-me
 
 # comentários pessoais
@@ -11,6 +12,7 @@
 - arrumar profile > teria que reestruturar User mas prefiro m*****
 
 # referencias
+- https://www.digitalocean.com/community/questions/django-websockets-with-daphne-a-complete-guide
 - https://www.youtube.com/watch?v=u7siCTdGhuw&list=PL5E1F5cTSTtRSP3Qb8-gZ-Hm5AXp3VKvu
 - https://www.geeksforgeeks.org/python/realtime-chat-app-using-django/
 - https://django-tutorial.dev/course/django-specifics/custom-user-model/adding-fields/

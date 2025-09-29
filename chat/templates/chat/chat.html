@@ -49,61 +49,64 @@
 
     {{ chat_uuid|json_script:"chat_uuid" }}
 
-    <script>
-        const roomName = JSON.parse(document.getElementById('chat_uuid').textContent);
-
-        const chatSocket = new WebSocket(
-            'ws://'
-            + window.location.host
-            + '/ws/chat/'
-            + roomName
-            + '/'
-        );
-
-        chatSocket.onmessage = function (e) {
-            try {
-                const data = JSON.parse(e.data);
-                if (data.message) {
-                    // Adicionar mensagem à área de visualização
-                    const chatMessages = document.querySelector('#chat_messages');
-                    const messageElement = document.createElement('li');
-                    messageElement.className = 'bg-gray-700 text-white p-3 rounded-lg max-w-xs';
-                    messageElement.textContent = data.message;
-                    chatMessages.appendChild(messageElement);
-
-                    // Scroll automático
-                    const chatContainer = document.querySelector('#chat_container');
-                    chatContainer.scrollTop = chatContainer.scrollHeight;
-                }
-            } catch (error) {
-                console.error('Erro ao processar mensagem:', error);
-            }
-        };
-
-        chatSocket.onclose = function (e) {
-            console.error('Chat socket fechou inesperadamente.');
-        };
-
-        document.querySelector('#chat-message-input').focus();
-
-        document.querySelector('#chat-message-input').onkeyup = function (e) {
-            if (e.key === 'Enter' && !e.shiftKey) {
-                e.preventDefault();
-                document.querySelector('#chat-message-submit').click();
-            }
-        };
-
-        document.querySelector('#chat-message-submit').onclick = function (e) {
-            const messageInput = document.querySelector('#chat-message-input');
-            const message = messageInput.value.trim();
-
-            if (message) {
-                chatSocket.send(JSON.stringify({
-                    'message': message
-                }));
-                messageInput.value = '';
-            }
-        };
-    </script>
 </wrapper>
 {% endblock %}
+
+{% block scripts %}
+<script>
+    const roomName = JSON.parse(document.getElementById('chat_uuid').textContent);
+
+    const chatSocket = new WebSocket(
+        'ws://'
+        + window.location.host
+        + '/ws/chat/'
+        + roomName
+        + '/'
+    );
+
+    chatSocket.onmessage = function (e) {
+        try {
+            const data = JSON.parse(e.data);
+            if (data.message) {
+                // Adicionar mensagem à área de visualização
+                const chatMessages = document.querySelector('#chat_messages');
+                const messageElement = document.createElement('li');
+                messageElement.className = 'bg-gray-700 text-white p-3 rounded-lg max-w-xs';
+                messageElement.textContent = data.message;
+                chatMessages.appendChild(messageElement);
+
+                // Scroll automático
+                const chatContainer = document.querySelector('#chat_container');
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }
+        } catch (error) {
+            console.error('Erro ao processar mensagem:', error);
+        }
+    };
+
+    chatSocket.onclose = function (e) {
+        console.error('Chat socket fechou inesperadamente.');
+    };
+
+    document.querySelector('#chat-message-input').focus();
+
+    document.querySelector('#chat-message-input').onkeyup = function (e) {
+        if (e.key === 'Enter' && !e.shiftKey) {
+            e.preventDefault();
+            document.querySelector('#chat-message-submit').click();
+        }
+    };
+
+    document.querySelector('#chat-message-submit').onclick = function (e) {
+        const messageInput = document.querySelector('#chat-message-input');
+        const message = messageInput.value.trim();
+
+        if (message) {
+            chatSocket.send(JSON.stringify({
+                'message': message
+            }));
+            messageInput.value = '';
+        }
+    };
+</script>
+{% endblock%}
