@@ -1,8 +1,6 @@
 # tarefas
 - editar consumers e views para que mensagens sejam salvas no banco
 - migrar para postgres
-- reescrever views, urls, routing, consumers e templates de acordo com
-  o tutorial: https://channels.readthedocs.io/en/latest/tutorial/part_1.html
 - tu é doido: https://stackoverflow.com/questions/64188904/django-channels-save-messages-to-database
 - implementar esqueci a senha e lembrar-me
 

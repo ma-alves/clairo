@@ -28,12 +28,45 @@
         <div id='chat_container' class="overflow-y-auto grow">
             <ul id='chat_messages' class="flex flex-col justify-end gap-2 p-4">
                 {% for message in chat_messages reversed %}
-                {% include 'chat/chat_message.html' %}
+                <!-- {% include 'chat/chat_message.html' %} -->
+                {% if message.author == user %}
+                <li class="flex justify-end mb-4">
+                    <div class="bg-green-200 rounded-l-lg rounded-tr-lg p-4 max-w-[75%]">
+                        <span>{{ message.body }}</span>
+                    </div>
+                    <div class="flex items-end">
+                        <svg height="13" width="8">
+                            <path fill="#bbf7d0"
+                                d="M6.3,10.4C1.5,8.7,0.9,5.5,0,0.2L0,13l5.2,0C7,13,9.6,11.5,6.3,10.4z" />
+                        </svg>
+                    </div>
+                </li>
+                {% else %}
+                <li>
+                    <div class="flex justify-start">
+                        <div class="flex items-end mr-2">
+                            <a href="{% url 'profile' message.author.id %}">
+                                <div class="relative">
+                                    <div id="user-{{ message.author.id }}"></div>
+                                </div>
+                            </a>
+                        </div>
+                        <div class="flex items-end">
+                            <svg height="13" width="8">
+                                <path fill="white"
+                                    d="M2.8,13L8,13L8,0.2C7.1,5.5,6.5,8.7,1.7,10.4C-1.6,11.5,1,13,2.8,13z"></path>
+                            </svg>
+                        </div>
+                        <div class="bg-white p-4 max-w-[75%] rounded-r-lg rounded-tl-lg">
+                            <span>{{ message.body }}</span>
+                        </div>
+                    </div>
+                </li>
+                {% endif %}
                 {% endfor %}
             </ul>
         </div>
 
-        <!-- Área de input (DENTRO do chat window) -->
         <div class="sticky bottom-0 bg-gray-800 p-4 rounded-b-2xl">
             <div class="flex gap-2">
                 <textarea id="chat-message-input"
@@ -53,8 +86,10 @@
 {% endblock %}
 
 {% block scripts %}
+<script id="current-id" type="application/json">{{ user.id|escapejs }}</script>
 <script>
     const roomName = JSON.parse(document.getElementById('chat_uuid').textContent);
+    const currentUser = JSON.parse(document.getElementById('current-id').textContent);
 
     const chatSocket = new WebSocket(
         'ws://'
@@ -71,8 +106,30 @@
                 // Adicionar mensagem à área de visualização
                 const chatMessages = document.querySelector('#chat_messages');
                 const messageElement = document.createElement('li');
-                messageElement.className = 'bg-gray-700 text-white p-3 rounded-lg max-w-xs';
-                messageElement.textContent = data.message;
+
+                if (data.user === currentUser) {
+                    messageElement.className = 'flex justify-end mb-4';
+                    const messageDiv = document.createElement('div');
+                    messageDiv.className = 'bg-green-200 rounded-l-lg rounded-tr-lg p-4 max-w-[75%]';
+                    messageDiv.textContent = data.message;
+                    messageElement.appendChild(messageDiv);
+                } else {
+                    messageElement.innerHTML = `
+                  <div class="flex justify-start">
+                    <div class="flex items-end mr-2">
+                      <!-- Avatar pode ser adicionado aqui -->
+                    </div>
+                    <div class="flex items-end">
+                      <svg height="13" width="8">
+                        <path fill="white"
+                          d="M2.8,13L8,13L8,0.2C7.1,5.5,6.5,8.7,1.7,10.4C-1.6,11.5,1,13,2.8,13z"></path>
+                      </svg>
+                    </div>
+                    <div class="bg-white p-4 max-w-[75%] rounded-r-lg rounded-tl-lg">
+                      <span>${data.message}</span>
+                    </div>
+                  </div>`;
+                }
                 chatMessages.appendChild(messageElement);
 
                 // Scroll automático
@@ -99,14 +156,22 @@
 
     document.querySelector('#chat-message-submit').onclick = function (e) {
         const messageInput = document.querySelector('#chat-message-input');
-        const message = messageInput.value.trim();
+        const chat_message = messageInput.value.trim();
 
-        if (message) {
+        if (chat_message) {
             chatSocket.send(JSON.stringify({
-                'message': message
+                'message': chat_message,
             }));
             messageInput.value = '';
         }
     };
+
+    function scrollToBottom(time = 0) {
+        setTimeout(function () {
+            const container = document.getElementById('chat_container');
+            container.scrollTop = container.scrollHeight;
+        }, time);
+    }
+    scrollToBottom()
 </script>
 {% endblock%}
