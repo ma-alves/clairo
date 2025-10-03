@@ -22,24 +22,6 @@ class UserDetailView(DetailView):
     template_name = "chat/profile.html"
 
 
-@csrf_exempt
-@require_http_methods(["POST"])
-def send_message(request):
-    try:
-        data = json.loads(request.body)
-        message = data.get('message')
-        chat_uuid = data.get('chat_uuid')
-
-        chat = get_object_or_404(Chat, chat_uuid=chat_uuid)
-        
-        # Sua lógica para salvar a mensagem
-        # ...
-        
-        return JsonResponse({'status': 'success'})
-    except Exception as e:
-        return JsonResponse({'status': 'error', 'message': str(e)})
-
-
 @login_required
 def chat_view(request, chat_uuid):
     chat = get_object_or_404(Chat, chat_uuid=chat_uuid)
@@ -71,8 +53,8 @@ def chat_view(request, chat_uuid):
         'chat' : chat,
         'chat_messages' : chat_messages, 
         'chat_uuid' : chat.chat_uuid,
-        # 'form' : form,
         'other_user' : other_user,
+        # 'form' : form,
     }
     
     return render(request, 'chat/chat.html', context)

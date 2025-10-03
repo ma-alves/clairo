@@ -2,17 +2,12 @@
 
 {% block content %}
 <wrapper class="block max-w-2xl mx-auto my-10 px-6">
-    <!-- Cabeçalho fora do chat -->
-    <div class="flex justify-between items-center mb-4">
-        <h2 class="text-2xl font-bold text-white">{{ other_user.username }}</h2>
-    </div>
-
     <!-- Container principal do chat -->
     <div id="chat-window" class="h-[45rem] flex flex-col bg-gray-800 rounded-2xl shadow-2xl relative p-1 mb-4">
         <!-- Cabeçalho do chat -->
         <div class="flex justify-center text-emerald-400 bg-gray-800 p-2 sticky top-0 z-10 rounded-t-2xl">
             <div id="online-icon" class="gray-dot absolute top-2 left-2"></div>
-            <a href="#">
+            <a href="{% url 'profile' other_user.pk %}">
                 <div class="flex items-center gap-2 p-4">
                     <img class="w-10 h-10 rounded-full object-cover bg-gray-600" src="#"
                         alt="{{ other_user.username }}" />
@@ -28,41 +23,25 @@
         <div id='chat_container' class="overflow-y-auto grow">
             <ul id='chat_messages' class="flex flex-col justify-end gap-2 p-4">
                 {% for message in chat_messages reversed %}
-                <!-- {% include 'chat/chat_message.html' %} -->
-                {% if message.author == user %}
-                <li class="flex justify-end mb-4">
-                    <div class="bg-green-200 rounded-l-lg rounded-tr-lg p-4 max-w-[75%]">
-                        <span>{{ message.body }}</span>
-                    </div>
-                    <div class="flex items-end">
-                        <svg height="13" width="8">
-                            <path fill="#bbf7d0"
-                                d="M6.3,10.4C1.5,8.7,0.9,5.5,0,0.2L0,13l5.2,0C7,13,9.6,11.5,6.3,10.4z" />
-                        </svg>
-                    </div>
-                </li>
-                {% else %}
-                <li>
-                    <div class="flex justify-start">
-                        <div class="flex items-end mr-2">
-                            <a href="{% url 'profile' message.author.id %}">
-                                <div class="relative">
-                                    <div id="user-{{ message.author.id }}"></div>
-                                </div>
-                            </a>
+                    {% if message.author == user %}
+                    <li>
+                        <div class="flex justify-end">
+                            <div class="bg-green-200 rounded-l-lg rounded-lg p-2 max-w-[75%]">
+                                <span>{{ message.body }}</span>
+                            </div>
                         </div>
-                        <div class="flex items-end">
-                            <svg height="13" width="8">
-                                <path fill="white"
-                                    d="M2.8,13L8,13L8,0.2C7.1,5.5,6.5,8.7,1.7,10.4C-1.6,11.5,1,13,2.8,13z"></path>
-                            </svg>
+                        <!-- <span class="text-xs text-gray-400 mt-1">{{ message.created_at|time:"H:i" }}</span> -->
+                    </li>
+                    {% else %}
+                    <li>
+                        <div class="flex justify-start">
+                            <div class="bg-white p-2 max-w-[75%] rounded-r-lg rounded-lg">
+                                <span>{{ message.body }}</span>
+                            </div>
                         </div>
-                        <div class="bg-white p-4 max-w-[75%] rounded-r-lg rounded-tl-lg">
-                            <span>{{ message.body }}</span>
-                        </div>
-                    </div>
-                </li>
-                {% endif %}
+                        <!-- <span class="text-xs text-gray-400 mt-1">{{ message.created_at|time:"H:i" }}</span> -->
+                    </li>
+                    {% endif %}
                 {% endfor %}
             </ul>
         </div>
@@ -71,13 +50,25 @@
             <div class="flex gap-2">
                 <textarea id="chat-message-input"
                     class="flex-1 px-4 py-2 bg-gray-700 text-white rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-400 resize-none"
-                    placeholder="Digite sua mensagem..." rows="3"></textarea>
+                    placeholder="Mensagem..." rows="1"></textarea>
                 <button id="chat-message-submit"
                     class="px-6 py-2 bg-emerald-500 text-white rounded-lg hover:bg-emerald-600 transition-colors self-end">
                     Enviar
                 </button>
             </div>
         </div>
+    </div>
+
+    <div>
+        {% for chat in request.user.chats.all %}
+            {% for user in chat.users.all %}
+                {% if user != request.user %}
+                <div>
+                    <a href="{% url 'chat' chat.chat_uuid %}">{{ user.username }}</a>
+                </div>
+                {% endif %}
+            {% endfor %}
+        {% endfor %}
     </div>
 
     {{ chat_uuid|json_script:"chat_uuid" }}
@@ -108,27 +99,18 @@
                 const messageElement = document.createElement('li');
 
                 if (data.user === currentUser) {
-                    messageElement.className = 'flex justify-end mb-4';
+                    messageElement.className = 'flex justify-end';
                     const messageDiv = document.createElement('div');
-                    messageDiv.className = 'bg-green-200 rounded-l-lg rounded-tr-lg p-4 max-w-[75%]';
+                    messageDiv.className = 'bg-green-200 rounded-l-lg rounded-lg p-2 max-w-[75%]';
                     messageDiv.textContent = data.message;
                     messageElement.appendChild(messageDiv);
                 } else {
                     messageElement.innerHTML = `
-                  <div class="flex justify-start">
-                    <div class="flex items-end mr-2">
-                      <!-- Avatar pode ser adicionado aqui -->
-                    </div>
-                    <div class="flex items-end">
-                      <svg height="13" width="8">
-                        <path fill="white"
-                          d="M2.8,13L8,13L8,0.2C7.1,5.5,6.5,8.7,1.7,10.4C-1.6,11.5,1,13,2.8,13z"></path>
-                      </svg>
-                    </div>
-                    <div class="bg-white p-4 max-w-[75%] rounded-r-lg rounded-tl-lg">
-                      <span>${data.message}</span>
-                    </div>
-                  </div>`;
+                        <div class="flex justify-start">
+                            <div class="bg-white p-2 max-w-[75%] rounded-r-lg rounded-lg">
+                                <span>${data.message}</span>
+                            </div>
+                        </div>`;
                 }
                 chatMessages.appendChild(messageElement);
 

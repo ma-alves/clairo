@@ -1,28 +1,20 @@
 # tarefas
-- editar consumers e views para que mensagens sejam salvas no banco
+- aba de conversas né pelo amor de deus
 - migrar para postgres
-- tu é doido: https://stackoverflow.com/questions/64188904/django-channels-save-messages-to-database
 - implementar esqueci a senha e lembrar-me
 
 # comentários pessoais
+- uuid em Chat como primary key
 - dropdown no header é meio desnecessário
 - botão sair tá deficiente
 - arrumar profile > teria que reestruturar User mas prefiro m*****
 
 # referencias
+- https://stackoverflow.com/questions/28513528/passing-arguments-to-model-methods-in-django-templates
+- https://stackoverflow.com/questions/64188904/django-channels-save-messages-to-database
 - https://www.digitalocean.com/community/questions/django-websockets-with-daphne-a-complete-guide
 - https://www.youtube.com/watch?v=u7siCTdGhuw&list=PL5E1F5cTSTtRSP3Qb8-gZ-Hm5AXp3VKvu
 - https://www.geeksforgeeks.org/python/realtime-chat-app-using-django/
 - https://django-tutorial.dev/course/django-specifics/custom-user-model/adding-fields/
 - https://docs.djangoproject.com/en/5.2/topics/auth/customizing/#using-a-custom-user-model-when-starting-a-project
 - https://cheatography.com/ogr/cheat-sheets/django/
-
-
-
-<!-- <form id="chat_file_form" enctype="multipart/form-data" class="flex items-center w-full"
-    hx-post="{% url 'chat-file-upload' chat_group.group_name %}" hx-target="#chat_messages"
-    hx-swap="beforeend" _="on htmx:beforeSend reset() me">
-    {% csrf_token %}
-    <input type="file" name="file" id="id_file" class="!bg-transparent text-gray-400">
-    <button type="submit" class="whitespace-nowrap !text-sm !py-3 !px-4 h-fit">Submit File</button>
-</form> -->
