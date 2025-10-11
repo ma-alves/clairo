@@ -1,4 +1,5 @@
 # tarefas
+- o que fazer com links do footer
 - aba de conversas né pelo amor de deus
 - migrar para postgres
 - implementar esqueci a senha e lembrar-me
@@ -18,3 +19,64 @@
 - https://django-tutorial.dev/course/django-specifics/custom-user-model/adding-fields/
 - https://docs.djangoproject.com/en/5.2/topics/auth/customizing/#using-a-custom-user-model-when-starting-a-project
 - https://cheatography.com/ogr/cheat-sheets/django/
+
+# trash
+<!-- Dropdown Menu -->
+          <div class="relative group">
+            <button
+              class="flex items-center space-x-1 px-3 py-2 text-sm font-medium hover:bg-gray-700 rounded-md transition-colors">
+              <span>Menu</span>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+              </svg>
+            </button>
+
+            <!-- Dropdown Content -->
+            <div
+              class="absolute right-0 mt-2 w-48 bg-white text-gray-800 rounded-md shadow-lg opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+              <div class="py-1">
+                {% if user.is_authenticated %}
+                <a href="{% url 'profile' user.pk %}" class="block px-4 py-2 text-sm hover:bg-gray-100">Perfil</a>
+                {% endif %}
+                <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100">Configurações</a>
+                <a href="#" class="block px-4 py-2 text-sm hover:bg-gray-100">Ajuda</a>
+                <div class="border-t my-1"></div>
+                {% if user.is_authenticated %}
+                <form action="{% url 'logout' %}" method="post">
+                  {% csrf_token %}
+                  <button type="submit" class="block px-4 py-2 text-sm hover:bg-gray-100 text-red-600">Sair</button>
+                </form>
+                <!-- <a href="{% url 'logout' %}" class="block px-4 py-2 text-sm hover:bg-gray-100 text-red-600">Sair</a> -->
+                {% endif %}
+              </div>
+            </div>
+          </div>
+
+<script>
+    // JavaScript simples para o dropdown (opcional)
+    document.addEventListener('DOMContentLoaded', function () {
+      const dropdownButton = document.querySelector('.group button');
+      const dropdownMenu = document.querySelector('.group .absolute');
+
+      dropdownButton.addEventListener('click', function (e) {
+        e.stopPropagation();
+        const isVisible = dropdownMenu.classList.contains('opacity-100');
+
+        if (isVisible) {
+          dropdownMenu.classList.remove('opacity-100', 'visible');
+        } else {
+          dropdownMenu.classList.add('opacity-100', 'visible');
+        }
+      });
+
+      // Fechar dropdown ao clicar fora
+      document.addEventListener('click', function () {
+        dropdownMenu.classList.remove('opacity-100', 'visible');
+      });
+
+      // Prevenir que clicks dentro do dropdown fechem ele
+      dropdownMenu.addEventListener('click', function (e) {
+        e.stopPropagation();
+      });
+    });
+  </script>

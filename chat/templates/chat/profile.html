@@ -3,7 +3,7 @@
 {% block styles %}
 <style>
     body {
-        background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%);
+        background: white;
         min-height: 100vh;
         display: flex;
         flex-direction: column;
@@ -11,29 +11,21 @@
 
     .profile-card {
         transition: all 0.3s ease;
-        box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.3);
     }
 
-    .profile-card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 20px 35px -10px rgba(0, 0, 0, 0.4);
-    }
-
-    .avatar {
-        transition: all 0.3s ease;
+    .card {
+        border: black 2px solid;
+        background-color: white;
+        box-shadow: 3px 3px 0 0 #000;
+        border-radius: 8px;
     }
 
     .avatar:hover {
         transform: scale(1.05);
     }
 
-    .stats-card {
-        transition: all 0.3s ease;
-    }
-
     .stats-card:hover {
         transform: translateY(-3px);
-        box-shadow: 0 10px 20px -5px rgba(0, 0, 0, 0.2);
     }
 </style>
 {% endblock %}
@@ -42,110 +34,86 @@
 <main class="flex-grow py-12 px-4 sm:px-6 lg:px-8">
     <div class="max-w-3xl mx-auto">
         <!-- Card de Perfil -->
-        <div class="profile-card bg-white rounded-xl shadow-lg overflow-hidden">
+        <div class="card overflow-hidden">
             <!-- Cabeçalho do perfil -->
-            <div class="bg-gradient-to-r from-blue-600 to-indigo-700 h-32 relative">
+            <div class="bg-emerald-300 h-32 relative">
                 <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2">
                     <div class="avatar relative">
-                        <img class="w-32 h-32 rounded-full border-4 border-white object-cover shadow-lg"
-                            src="https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=500&q=80"
+                        <img class="w-32 h-32 rounded-full border-2 border-black shadow-[3px_3px_0_0_#000] object-cover"
+                            src="https://images.unsplash.com/photo-1595433707802-6b2626ef1c91?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=880"
                             alt="Foto de perfil">
-                        <div class="absolute bottom-2 right-2 bg-green-500 w-6 h-6 rounded-full border-2 border-white">
-                        </div>
+                        <!-- If user.is_online?! <div class="absolute bottom-2 right-2 bg-green-500 w-6 h-6 rounded-full border-2 border-white">
+                        </div> -->
                     </div>
                 </div>
             </div>
-
             <!-- Informações do usuário -->
-            <div class="pt-16 pb-8 px-6 text-center">
-                <!-- <h2 class="text-3xl font-bold text-gray-800">{{ user.first_name }} {{ user.last_name }}</h2> -->
-                <p class="text-gray-600 mt-1">@{{ user.username }}</p>
-
-                <div class="mt-4 flex justify-center space-x-4">
-                    <div class="flex items-center text-gray-600">
+            <div class="mt-4 pt-16 pb-8 px-6 text-center">
+                <h2 class="text-3xl font-bold text-black">@{{ user.username }}</h2>
+                <div class="mt-1 flex justify-center space-x-4">
+                    <div class="flex items-center text-gray-800">
                         <i class="far fa-calendar-alt mr-2"></i>
                         <span>Membro desde {{ user.date_joined|date:"SHORT_DATE_FORMAT"}}</span>
                     </div>
                 </div>
-
-                <!-- <p class="mt-4 text-gray-700 max-w-md mx-auto">
-                    ** Possível bio **
-                </p> -->
-
                 <!-- Botão de enviar mensagem -->
-                <div class="mt-6">
+                <div class="mt-8">
                     <a href="{% url 'start-chat' user.username %}" role="button"
-                        class="bg-blue-600 hover:bg-blue-700 text-white font-medium py-3 px-8 rounded-full shadow-md hover:shadow-lg transition-all duration-300 flex items-center mx-auto">
+                        class="cursor-pointer m-8 p-4 px-8 bg-white text-black border-2 border-black rounded-full shadow-[3px_3px_0_0_#000] hover:bg-emerald-300">
                         <i class="fas fa-paper-plane mr-2"></i> Enviar Mensagem
                     </a>
                 </div>
             </div>
-
             <!-- Estatísticas -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 px-6 pb-8">
-                <div class="stats-card bg-gray-50 rounded-lg p-4 text-center">
-                    <div class="text-2xl font-bold text-blue-600">248</div>
-                    <div class="text-gray-600">Amigos</div>
+                <div class="stats-card card p-4 text-center">
+                    <div class="text-2xl font-bold text-black">248</div>
+                    <div class="text-gray-800">Amigos</div>
                 </div>
-                <div class="stats-card bg-gray-50 rounded-lg p-4 text-center">
-                    <div class="text-2xl font-bold text-blue-600">3.8M</div>
-                    <div class="text-gray-600">Seguidores</div>
+                <div class="stats-card card p-4 text-center">
+                    <div class="text-2xl font-bold text-black">3.8M</div>
+                    <div class="text-gray-800">Seguidores</div>
                 </div>
-                <div class="stats-card bg-gray-50 rounded-lg p-4 text-center">
-                    <div class="text-2xl font-bold text-blue-600">327</div>
-                    <div class="text-gray-600">Publicações</div>
+                <div class="stats-card card p-4 text-center">
+                    <div class="text-2xl font-bold text-black">327</div>
+                    <div class="text-gray-800">Publicações</div>
                 </div>
             </div>
         </div>
 
         <!-- Conteúdo adicional -->
         <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="bg-white rounded-xl shadow-lg p-6">
-                <h3 class="text-xl font-bold text-gray-800 mb-4">Sobre</h3>
+            <div class="card stats-card p-6">
+                <h3 class="text-xl font-bold text-black mb-4">Sobre</h3>
                 <ul class="space-y-3">
                     <li class="flex items-center">
-                        <i class="fas fa-briefcase text-blue-600 w-6"></i>
-                        <span class="text-gray-700">Desenvolvedor Back-end no Quiosque do Edmundo</span>
+                        <i class="fas fa-briefcase text-emerald-300 w-6"></i>
+                        <span class="text-gray-800">Dev Backend Autônomo</span>
                     </li>
                     <li class="flex items-center">
-                        <i class="fas fa-graduation-cap text-blue-600 w-6"></i>
-                        <span class="text-gray-700">Bacharel em Cursos do freeCodeCamp</span>
+                        <i class="fas fa-graduation-cap text-emerald-300 w-6"></i>
+                        <span class="text-gray-800">Bacharel em Cursos do freeCodeCamp</span>
                     </li>
                     <li class="flex items-center">
-                        <i class="fas fa-heart text-blue-600 w-6"></i>
-                        <span class="text-gray-700">Amizade Saudável com a Ex</span>
+                        <i class="fas fa-heart text-emerald-300 w-6"></i>
+                        <span class="text-gray-800">Amo lasanha</span>
                     </li>
                 </ul>
             </div>
 
-            <div class="bg-white rounded-xl shadow-lg p-6">
-                <h3 class="text-xl font-bold text-gray-800 mb-4">Interesses</h3>
+            <div class="card stats-card p-6">
+                <h3 class="text-xl font-bold text-black mb-4">Interesses</h3>
                 <div class="flex flex-wrap gap-2">
-                    <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">Desenvolvimento Web</span>
-                    <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">APIs</span>
-                    <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">Filmes</span>
-                    <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">Fotografia</span>
-                    <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">Mitski</span>
-                    <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded-full text-sm">Tecnologia</span>
+                    <span class="bg-emerald-100 text-emerald-600 px-3 py-1 rounded-full text-sm">Desenvolvimento
+                        Web</span>
+                    <span class="bg-emerald-100 text-emerald-600 px-3 py-1 rounded-full text-sm">APIs</span>
+                    <span class="bg-emerald-100 text-emerald-600 px-3 py-1 rounded-full text-sm">Filmes</span>
+                    <span class="bg-emerald-100 text-emerald-600 px-3 py-1 rounded-full text-sm">Fotografia</span>
+                    <span class="bg-emerald-100 text-emerald-600 px-3 py-1 rounded-full text-sm">Mitski</span>
+                    <span class="bg-emerald-100 text-emerald-600 px-3 py-1 rounded-full text-sm">Tecnologia</span>
                 </div>
             </div>
         </div>
     </div>
 </main>
-<script>
-    // Interatividade para o botão de enviar mensagem
-    document.querySelector('button').addEventListener('click', function () {
-        alert('Mensagem enviada para Maria Silva!');
-
-        // Efeito visual no botão
-        this.classList.add('bg-green-600');
-        this.innerHTML = '<i class="fas fa-check mr-2"></i> Mensagem Enviada';
-
-        // Restaurar após 2 segundos
-        setTimeout(() => {
-            this.classList.remove('bg-green-600');
-            this.innerHTML = '<i class="fas fa-paper-plane mr-2"></i> Enviar Mensagem';
-        }, 2000);
-    });
-</script>
 {% endblock %}
