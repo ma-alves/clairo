@@ -1,4 +1,5 @@
 # tarefas
+- A AUTENTICAÇÃO NÃO ESTÁ FUNCIONANDO
 - o que fazer com links do footer
 - aba de conversas né pelo amor de deus
 - migrar para postgres

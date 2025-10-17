@@ -1,23 +1,19 @@
-import json
-
 from django.contrib.auth.decorators import login_required
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
-from django.http import Http404, JsonResponse
+from django.http import Http404
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.generic.detail import DetailView
-from django.views.decorators.csrf import csrf_exempt
-from django.views.decorators.http import require_http_methods
 
 from chat.models import Chat
-from chat.forms import MessageForm
 
 
 def home(request):
     context = {}
-    return render(request, "base.html", context)
+    return render(request, "chat/home.html", context)
 
 
-class UserDetailView(DetailView):
+class UserDetailView(LoginRequiredMixin, DetailView):
     model = User
     template_name = "chat/profile.html"
 
@@ -26,7 +22,6 @@ class UserDetailView(DetailView):
 def chat_view(request, chat_uuid):
     chat = get_object_or_404(Chat, chat_uuid=chat_uuid)
     chat_messages = chat.messages.all()[:30] #type: ignore
-    # form = MessageForm()
 
     other_user = None
     if chat.is_private:
@@ -54,7 +49,6 @@ def chat_view(request, chat_uuid):
         'chat_messages' : chat_messages, 
         'chat_uuid' : chat.chat_uuid,
         'other_user' : other_user,
-        # 'form' : form,
     }
     
     return render(request, 'chat/chat.html', context)
