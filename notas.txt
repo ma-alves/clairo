@@ -1,15 +1,14 @@
 # tarefas
-- A AUTENTICAÇÃO NÃO ESTÁ FUNCIONANDO
-- o que fazer com links do footer
-- aba de conversas né pelo amor de deus
+- botão de pesquisa em home.html
+- implementar online
 - migrar para postgres
 - implementar esqueci a senha e lembrar-me
 
 # comentários pessoais
 - uuid em Chat como primary key
-- dropdown no header é meio desnecessário
 - botão sair tá deficiente
 - arrumar profile > teria que reestruturar User mas prefiro m*****
+- fuser -k -n tcp 8000
 
 # referencias
 - https://stackoverflow.com/questions/28513528/passing-arguments-to-model-methods-in-django-templates

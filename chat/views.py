@@ -1,3 +1,4 @@
+from typing import Any
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
@@ -9,13 +10,18 @@ from chat.models import Chat
 
 
 def home(request):
-    context = {}
-    return render(request, "chat/home.html", context)
+    if not request.user.is_authenticated:
+        return redirect('login')
+    return render(request, 'chat/home.html')
 
 
 class UserDetailView(LoginRequiredMixin, DetailView):
     model = User
     template_name = "chat/profile.html"
+
+    def get_object(self):
+        username = self.kwargs.get("username")
+        return get_object_or_404(User, username=username)
 
 
 @login_required
@@ -31,18 +37,6 @@ def chat_view(request, chat_uuid):
             if user != request.user:
                 other_user = user
                 break
-    
-    # if request.method == "POST":
-    #     data = json.loads(request.body)
-    #     message = data.get('message')
-    #     message.author = request.user
-    #     message.group = chat
-    #     message.save()
-    #     context = {
-    #         'message' : message,
-    #         'user' : request.user
-    #     }
-    #     return render(request, 'chat/partials/chat_message_p.html', context)
 
     context = {
         'chat' : chat,
@@ -76,3 +70,17 @@ def get_or_create_chat(request, username):
         chatroom.users.add(other_user, request.user)
         
     return redirect('chat', chatroom.chat_uuid)
+
+
+@login_required
+def search_users(request, username):
+    query = request.GET.get(username, '')
+    users = User.objects.filter(username__icontains=query).exclude(id=request.user.id)
+
+    if users:
+        return render(
+            request, 'chat/search_results.html',
+            context = {'users': users}
+        )
+    
+    return redirect('home')

@@ -11,7 +11,6 @@
 </head>
 
 <body>
-  <!-- Header -->
   <header class="bg-white text-black border-b-2 border-black">
     <div class="container mx-auto px-4 py-4">
       <div class="flex items-center justify-between">
@@ -19,18 +18,14 @@
         <div class="flex-shrink-0">
           <h1 class="text-2xl font-medium"><a href="{% url 'home'%}">clairo</a></h1>
         </div>
-        <!-- Título Centralizado (visível apenas em desktop) -->
-        <!-- <div class="hidden md:flex flex-1 justify-center">
-                    <h2 class="text-xl font-semibold">Bem-vindo ao Nosso Site</h2>
-                </div> -->
-
         <!-- Menu de Navegação -->
         <nav class="flex items-center space-x-4">
           <!-- Links de Login e Cadastro -->
           <div class="hidden md:flex items-center space-x-2">
             {% if request.user.is_authenticated %}
             <p class="text-sm font-medium">Olá, {{ request.user.username }}!</p>
-            <a href="{% url 'profile' request.user.pk %}" class="block px-4 py-2 text-sm font-medium hover:bg-emerald-300 rounded-full">Perfil</a>
+            <a href="{% url 'profile' request.user.username %}" class="block px-4 py-2 text-sm font-medium hover:bg-emerald-300 rounded-full">Perfil</a>
+            <a href="{% url 'home' %}" class="block px-4 py-2 text-sm font-medium hover:bg-emerald-300 rounded-full">Conversas</a>
             <form action="{% url 'logout' %}" method="post">
               {% csrf_token %}
               <button type="submit" class="block px-4 py-2 text-sm font-medium hover:bg-red-600 hover:text-white hover:rounded-full text-red-600">Sair</button>
@@ -49,24 +44,8 @@
       </div>
     </div>
   </header>
-  <!-- Conteúdo Principal -->
-  <!-- <main class="container mx-auto px-4 py-8">
-    <div class="text-center">
-        <h3 class="text-3xl font-bold text-gray-800 mb-4">Conteúdo Principal</h3>
-        <p class="text-gray-600">Este é o conteúdo da sua página.</p>
-    </div>
-  </main> -->
   {% block content %}{% endblock %}
-  <footer class="bg-white border-t-2 border-black py-4">
-    <div class="container mx-auto px-4 text-center">
-      <div class="mt-1 flex justify-center space-x-4 mb-2">
-        <a href="#" class="text-black hover:text-emerald-600">Termos de Uso</a>
-        <a href="#" class="text-black hover:text-emerald-600">Privacidade</a>
-        <a href="#" class="text-black hover:text-emerald-600">Contato</a>
-      </div>
-      <p class="text-gray-600">&copy; 2025 clairo. Todos os direitos reservados.</p>
-    </div>
-  </footer>
+  <!-- footer.html -->
 </body>
 {% block scripts %}{% endblock %}
 </html>
