@@ -14,15 +14,6 @@ def home(request):
     return render(request, 'chat/home.html')
 
 
-class UserDetailView(LoginRequiredMixin, DetailView):
-    model = User
-    template_name = "chat/profile.html"
-
-    def get_object(self):
-        username = self.kwargs.get("username")
-        return get_object_or_404(User, username=username)
-
-
 @login_required
 def chat_view(request, chat_uuid):
     chat = get_object_or_404(Chat, chat_uuid=chat_uuid)
@@ -49,31 +40,25 @@ def chat_view(request, chat_uuid):
 
 @login_required
 def get_or_create_chat(request, username):
-    # Caso usuário tente iniciar chat com ele mesmo, redireciona para home
     if request.user.username == username:
         return redirect('home')
     
     other_user = User.objects.get(username = username)
-    my_chatrooms = request.user.chats.filter(is_private = True)
+    my_chatrooms = request.user.chats.all()
     
-    if my_chatrooms.exists():
-        for chat in my_chatrooms:
-            if other_user in chat.users.all():
-                chatroom = chat
-                print("Chatroom existente encontrado.")
-                return redirect('chat', chatroom.chat_uuid)
-            else:
-                continue
+    for chat in my_chatrooms:
+        print(chat.users.all())
+        if other_user in chat.users.all():
+            chatroom = chat
+            print("Chatroom existente encontrado.")
+            return redirect('chat', chatroom.chat_uuid)
+        else:
+            continue
 
-        chatroom = Chat.objects.create(is_private = True)
-        print("Novo chatroom criado.")
-        chatroom.users.add(other_user, request.user)
+    chatroom = Chat.objects.create(is_private = True)
+    print("Novo chatroom criado com my_chatrooms vazio.")
+    chatroom.users.add(other_user, request.user)
 
-    else:
-        chatroom = Chat.objects.create(is_private = True)
-        print("Novo chatroom criado sem ter mychatrooms.")
-        chatroom.users.add(other_user, request.user)
-        
     return redirect('chat', chatroom.chat_uuid)
 
 
@@ -83,10 +68,20 @@ def search_users(request):
     users = User.objects.all()
 
     if query:
-        user_list = users.filter(username__icontains=query).exclude(id=request.user.id)
+        user_list = users.filter(username__icontains=query)
         return render(
             request, 'chat/search.html',
             context = {'user_list': user_list }
         )
     
     return redirect('home')
+
+
+class UserDetailView(LoginRequiredMixin, DetailView):
+    model = User
+    template_name = "chat/profile.html"
+
+    def get_object(self):
+        username = self.kwargs.get("username")
+        return get_object_or_404(User, username=username)
+    

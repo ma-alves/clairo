@@ -1,3 +1,4 @@
+from datetime import datetime
 import json
 
 from channels.db import database_sync_to_async
@@ -50,13 +51,14 @@ class ChatConsumer(AsyncWebsocketConsumer):
             }
         )
 
-    # Receive message from room group
+    # Receive message from room group: esse vem primeiro
     async def chat_message(self, event):
         message = event["message"]
         user = event["user"]
 
         # Send message to WebSocket
         await self.send(text_data=json.dumps({
+            "time": datetime.now().strftime("%H:%M"),
             "message": message,
             "user": user
         })

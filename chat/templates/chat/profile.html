@@ -57,12 +57,14 @@
                     </div>
                 </div>
                 <!-- Botão de enviar mensagem -->
+                 {% if not request.user.username == user.username %}
                 <div class="mt-8">
                     <a href="{% url 'start-chat' user.username %}" role="button"
                         class="cursor-pointer m-8 p-4 px-8 bg-white text-black border-2 border-black rounded-full shadow-[3px_3px_0_0_#000] hover:bg-emerald-300">
                         <i class="fas fa-paper-plane mr-2"></i> Enviar Mensagem
                     </a>
                 </div>
+                {% endif %}
             </div>
             <!-- Estatísticas -->
             <div class="grid grid-cols-1 md:grid-cols-3 gap-4 px-6 pb-8">

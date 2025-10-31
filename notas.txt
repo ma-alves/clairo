@@ -3,6 +3,7 @@
 - tirar csrf da url na pesquisa
 - implementar online
 - migrar para postgres
+- implementar redis
 - implementar esqueci a senha e lembrar-me
 
 # comentários pessoais

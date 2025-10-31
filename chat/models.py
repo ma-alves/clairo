@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 
 
 class Chat(models.Model):
-    chat_uuid = models.CharField(max_length=128, unique=True, default=str(uuid.uuid4()))
+    chat_uuid = models.UUIDField(default=uuid.uuid4, unique=True, editable=False)
     users = models.ManyToManyField(User, related_name='chats', blank=True)
     online_users = models.ManyToManyField(User, related_name='online_chats', blank=True)
     is_private = models.BooleanField(default=True)
@@ -15,7 +15,7 @@ class Chat(models.Model):
     
     def save(self, *args, **kwargs):
         if not self.chat_uuid:
-            self.chat_uuid = str(uuid.uuid4())
+            self.chat_uuid = uuid.uuid4()
         super().save(*args, **kwargs)
 
 

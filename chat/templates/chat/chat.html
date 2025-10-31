@@ -36,7 +36,6 @@
                 </div>
             </a>
         </div>
-
         <!-- Área de mensagens -->
         <div id='chat_container' class="overflow-y-auto grow">
             <ul id='chat_messages' class="flex flex-col justify-end gap-2 p-4">
@@ -48,7 +47,7 @@
                                 <span>{{ message.body }}</span>
                             </div>
                         </div>
-                        <span class="flex justify-end text-xs text-gray-400 mt-1">{{ message.created_at|time:"H:i" }}</span>
+                        <span class="flex justify-end text-xs text-gray-500 mt-1">{{ message.created_at|time:"H:i" }}</span>
                     </li>
                     {% else %}
                     <li>
@@ -57,7 +56,7 @@
                                 <span>{{ message.body }}</span>
                             </div>
                         </div>
-                        <span class="text-xs text-gray-400 mt-1">{{ message.created_at|time:"H:i" }}</span>
+                        <span class="text-xs text-gray-500 mt-1">{{ message.created_at|time:"H:i" }}</span>
                     </li>
                     {% endif %}
                 {% endfor %}
@@ -105,18 +104,21 @@
                 const messageElement = document.createElement('li');
 
                 if (data.user === currentUser) {
-                    messageElement.className = 'flex justify-end';
-                    const messageDiv = document.createElement('div');
-                    messageDiv.className = 'bg-emerald-300 rounded-l-lg rounded-lg p-2 max-w-[75%]';
-                    messageDiv.textContent = data.message;
-                    messageElement.appendChild(messageDiv);
+                    messageElement.innerHTML = `
+                        <div class="flex justify-end">
+                            <div class="bg-emerald-300 rounded-l-lg rounded-lg p-2 max-w-[75%]">
+                                <span>${data.message}</span>
+                            </div>
+                        </div>
+                        <span class="text-xs text-gray-500 mt-1">${data.time}</span>`;
                 } else {
                     messageElement.innerHTML = `
                         <div class="flex justify-start">
-                            <div class="bg-white p-2 max-w-[75%] rounded-r-lg rounded-lg">
+                            <div class="bg-black text-white p-2 max-w-[75%] rounded-lg">
                                 <span>${data.message}</span>
                             </div>
-                        </div>`;
+                        </div>
+                        <span class="text-xs text-gray-500 mt-1">${data.time}</span>`;
                 }
                 chatMessages.appendChild(messageElement);
 
