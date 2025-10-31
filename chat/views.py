@@ -1,4 +1,3 @@
-from typing import Any
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.contrib.auth.models import User
@@ -61,26 +60,33 @@ def get_or_create_chat(request, username):
         for chat in my_chatrooms:
             if other_user in chat.users.all():
                 chatroom = chat
-                break
+                print("Chatroom existente encontrado.")
+                return redirect('chat', chatroom.chat_uuid)
             else:
-                chatroom = Chat.objects.create(is_private = True)
-                chatroom.users.add(other_user, request.user)
+                continue
+
+        chatroom = Chat.objects.create(is_private = True)
+        print("Novo chatroom criado.")
+        chatroom.users.add(other_user, request.user)
+
     else:
         chatroom = Chat.objects.create(is_private = True)
+        print("Novo chatroom criado sem ter mychatrooms.")
         chatroom.users.add(other_user, request.user)
         
     return redirect('chat', chatroom.chat_uuid)
 
 
 @login_required
-def search_users(request, username):
-    query = request.GET.get(username, '')
-    users = User.objects.filter(username__icontains=query).exclude(id=request.user.id)
+def search_users(request):
+    query = request.GET.get('username', '')
+    users = User.objects.all()
 
-    if users:
+    if query:
+        user_list = users.filter(username__icontains=query).exclude(id=request.user.id)
         return render(
-            request, 'chat/search_results.html',
-            context = {'users': users}
+            request, 'chat/search.html',
+            context = {'user_list': user_list }
         )
     
     return redirect('home')

@@ -1,14 +1,14 @@
 # tarefas
-- botão de pesquisa em home.html
+- crud de Chat
+- tirar csrf da url na pesquisa
 - implementar online
 - migrar para postgres
 - implementar esqueci a senha e lembrar-me
 
 # comentários pessoais
 - uuid em Chat como primary key
-- botão sair tá deficiente
-- arrumar profile > teria que reestruturar User mas prefiro m*****
-- fuser -k -n tcp 8000
+- profile com informações fictícias pq não é o foco
+- encerrar processo na porta 8000: $fuser -k -n tcp 8000
 
 # referencias
 - https://stackoverflow.com/questions/28513528/passing-arguments-to-model-methods-in-django-templates
