@@ -1,14 +1,16 @@
 # tarefas
+- checar: https://github.com/andrewgodwin/channels-examples
+  - criar erros
 - crud de Chat
 - tirar csrf da url na pesquisa
 - implementar online
 - migrar para postgres
 - implementar redis
 - implementar esqueci a senha e lembrar-me
+- fuso do redis ta utc+0
 
 # comentários pessoais
 - redis: message broker(pub/sub)
-- fuso do redis ta utc+0
 - subir redis: docker run --rm -p 6379:6379 redis:7
 - encerrar processo na porta 8000: $fuser -k -n tcp 8000
 - profile com informações fictícias pq não é o foco
