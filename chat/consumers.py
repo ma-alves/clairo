@@ -6,6 +6,13 @@ from channels.generic.websocket import AsyncWebsocketConsumer
 
 from chat.models import Chat, ChatMessage
 
+# Channels are mailboxes that represent users in a group, such as a chat room.
+# When a user posts a message, a JavaScript function will transmit the message
+# over WebSocket to a ChatConsumer. The ChatConsumer will receive that message
+# and forward it to the group corresponding to the room name. Every ChatConsumer
+# in the same group (and thus in the same room) will then receive the message
+# from the group and forward it over WebSocket back to JavaScript, where it will
+# be appended to the chat log.
 
 class ChatConsumer(AsyncWebsocketConsumer):
     @database_sync_to_async
@@ -18,6 +25,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         )
     
     async def connect(self):
+        # Scope contém informações sobre a conexão, incluindo o usuário autenticado e os parâmetros da URL
         self.user = self.scope["user"] # type: ignore
         self.room_name = self.scope["url_route"]["kwargs"]["chat_uuid"] # type: ignore
         self.room_group_name = f"chat_{self.room_name}"
@@ -35,14 +43,15 @@ class ChatConsumer(AsyncWebsocketConsumer):
             self.room_group_name, self.channel_name
         )
 
-    # Receive message from WebSocket
+    # Receive message from WebSocket/Client
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
         body_message = text_data_json["message"]
+        print(f"Received message: {body_message}") # Apagar depois de testar
 
         await self.create_message(self.room_name, self.user, body_message)
 
-        # Send message to room group
+        # Send message to room group/Broadcast para todos os consumidores no grupo
         await self.channel_layer.group_send(
             self.room_group_name, {
                 "type": "chat.message",
@@ -51,12 +60,12 @@ class ChatConsumer(AsyncWebsocketConsumer):
             }
         )
 
-    # Receive message from room group: esse vem primeiro
+    # Receive message from room group/Broadcast do grupo
     async def chat_message(self, event):
         message = event["message"]
         user = event["user"]
 
-        # Send message to WebSocket
+        # Send message to WebSocket/Client
         await self.send(text_data=json.dumps({
             "time": datetime.now().strftime("%H:%M"),
             "message": message,

@@ -43,7 +43,7 @@
                     {% if message.author == user %}
                     <li>
                         <div class="flex justify-end">
-                            <div class="bg-emerald-300 rounded-l-lg rounded-lg p-2 max-w-[75%]">
+                            <div class="bg-black text-white rounded-l-lg rounded-lg p-2 max-w-[75%]">
                                 <span>{{ message.body }}</span>
                             </div>
                         </div>
@@ -52,7 +52,7 @@
                     {% else %}
                     <li>
                         <div class="flex justify-start">
-                            <div class="bg-black text-white p-2 max-w-[75%] rounded-lg">
+                            <div class="bg-emerald-300 p-2 max-w-[75%] rounded-lg">
                                 <span>{{ message.body }}</span>
                             </div>
                         </div>
@@ -95,6 +95,7 @@
         + '/'
     );
 
+    // Receber mensagem do WebSocket
     chatSocket.onmessage = function (e) {
         try {
             const data = JSON.parse(e.data);
@@ -106,15 +107,15 @@
                 if (data.user === currentUser) {
                     messageElement.innerHTML = `
                         <div class="flex justify-end">
-                            <div class="bg-emerald-300 rounded-l-lg rounded-lg p-2 max-w-[75%]">
+                            <div class="bg-black text-white rounded-l-lg rounded-lg p-2 max-w-[75%]">
                                 <span>${data.message}</span>
                             </div>
                         </div>
-                        <span class="text-xs text-gray-500 mt-1">${data.time}</span>`;
+                        <span class="flex justify-end text-xs text-gray-500 mt-1">${data.time}</span>`;
                 } else {
                     messageElement.innerHTML = `
                         <div class="flex justify-start">
-                            <div class="bg-black text-white p-2 max-w-[75%] rounded-lg">
+                            <div class="bg-emerald-300 p-2 max-w-[75%] rounded-lg">
                                 <span>${data.message}</span>
                             </div>
                         </div>
@@ -144,6 +145,7 @@
         }
     };
 
+    // Enviar mensagem pelo WebSocket
     document.querySelector('#chat-message-submit').onclick = function (e) {
         const messageInput = document.querySelector('#chat-message-input');
         const chat_message = messageInput.value.trim();
