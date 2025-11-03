@@ -1,12 +1,9 @@
 # tarefas
+- crud de Chat
 - checar: https://github.com/andrewgodwin/channels-examples
   - criar erros
-- crud de Chat
-- tirar csrf da url na pesquisa
 - implementar online
-- migrar para postgres
-- implementar redis
-- implementar esqueci a senha e lembrar-me
+- implementar lembrar-me
 - fuso do redis ta utc+0
 
 # comentários pessoais
