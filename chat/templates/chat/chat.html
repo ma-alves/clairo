@@ -95,7 +95,7 @@
         + '/'
     );
 
-    // Receber mensagem do WebSocket
+    // Cliente recebendo mensagem do WebSocket
     chatSocket.onmessage = function (e) {
         try {
             const data = JSON.parse(e.data);
@@ -145,7 +145,7 @@
         }
     };
 
-    // Enviar mensagem pelo WebSocket
+    // Cliente envia mensagem pelo WebSocket
     document.querySelector('#chat-message-submit').onclick = function (e) {
         const messageInput = document.querySelector('#chat-message-input');
         const chat_message = messageInput.value.trim();

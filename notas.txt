@@ -1,8 +1,8 @@
 # tarefas
+- fazer cliente de online, fazer url e testar
 - crud de Chat
 - checar: https://github.com/andrewgodwin/channels-examples
   - criar erros
-- implementar online
 - implementar lembrar-me
 - fuso do redis ta utc+0
 
