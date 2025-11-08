@@ -134,7 +134,9 @@ class OnlineConsumer(AsyncWebsocketConsumer):
 
         if status == 'open':
             user.online_status = True
+            print("Tá online")
         else:
-            user.online_status = False
-            
+            user.online_status = False    
+            print("Tá offline")
+
         user.save()

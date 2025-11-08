@@ -48,11 +48,10 @@
   <!-- footer.html -->
 </body>
 {% block scripts %}{% endblock %}
-
 {% if request.user.is_authenticated %}
   <script id="current-id" type="application/json">{{ request.user.id|escapejs }}</script>
   <script>
-    const currentUser = JSON.parse(document.getElementById('current-id').textContent);
+    const onlineUser = JSON.parse(document.getElementById('current-id').textContent);
     const onlineSocket = new WebSocket(
       'ws://' + window.location.host + '/ws/online-status/'
     )
@@ -61,20 +60,24 @@
       console.log("Conexão de status online estabelecida.")
       onlineSocket.send(JSON.stringify({
         'type': 'open',
-        'user_id': currentUser,
+        'user_id': onlineUser,
       }))
     }
     
     window.addEventListener('beforeunload', function(e) {
       onlineSocket.send(JSON.stringify({
         'type': 'closed',
-        'user_id': currentUser,
+        'user_id': onlineUser,
       }))
     })
     
     onlineSocket.onclose = function(e) {
       console.log("Conexão de status online fechada.")
     }
+
+    chatSocket.onerror = function (e) {
+        console.error('WebSocket erro:', e);
+    };
 
     onlineSocket.onmessage = function(e) {
       const data = JSON.parse(e.data)

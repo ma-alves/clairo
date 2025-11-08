@@ -31,10 +31,13 @@ def chat_view(request, chat_uuid):
                 other_user = user
                 break
 
+    online_users = User.objects.filter(status__online_status=True)
+
     context = {
         'chat' : chat,
         'chat_messages' : chat_messages, 
         'chat_uuid' : chat.chat_uuid,
+        'online_users': online_users,
         'other_user' : other_user,
     }
     
