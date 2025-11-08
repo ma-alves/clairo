@@ -103,7 +103,6 @@ class OnlineConsumer(AsyncWebsocketConsumer):
                 "user_id": message_user_id
             }
         )
-        print("Até aqui tá funcionando")
 
     # AQUI
     # Note that the event you send must have a type key, even if only one
@@ -134,9 +133,7 @@ class OnlineConsumer(AsyncWebsocketConsumer):
 
         if status == 'open':
             user.online_status = True
-            print("Tá online")
         else:
             user.online_status = False    
-            print("Tá offline")
 
         user.save()

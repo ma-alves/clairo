@@ -42,8 +42,9 @@
                         <img class="w-32 h-32 rounded-full border-2 border-black shadow-[3px_3px_0_0_#000] object-cover"
                             src="https://images.unsplash.com/photo-1595433707802-6b2626ef1c91?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=880"
                             alt="Foto de perfil">
-                        <!-- If user.is_online?! <div class="absolute bottom-2 right-2 bg-green-500 w-6 h-6 rounded-full border-2 border-white">
-                        </div> -->
+                        {% if user.status.online_status %}
+                        <div class="absolute bottom-2 right-2 bg-emerald-400 w-6 h-6 rounded-full border-2 border-white"></div>
+                        {% endif %}
                     </div>
                 </div>
             </div>

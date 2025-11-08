@@ -1,31 +1,10 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block content %}
 <wrapper class="grid grid-cols-3 mx-auto">
     <!-- Lista de conversas -->
-    <div id="chat-list" class="flex flex-col bg-white border-black border-r-2 relative p-1 overscroll-contain">
-        <div class="flex p-3 bg-white sticky top-0 z-10">
-            <h2 class="text-2xl font-bold text-black">Conversas</h2>
-        </div>
-        {% for chat in request.user.chats.all %}
-            {% for user in chat.users.all %}
-                {% if user != request.user %}
-                <a href="{% url 'chat' chat.chat_uuid %}">
-                    <div class="flex items-center font-medium gap-2 p-2 hover:bg-gray-200 rounded-lg z-0">
-                        <img class="w-10 h-10 rounded-full object-cover bg-gray-600" src="https://images.unsplash.com/photo-1595433707802-6b2626ef1c91?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=880"
-                        alt="{{ user.username }}" />
-                        {{ user.username }}
-                        {% if user.status.online_status %}
-                            <span class="inline-block w-3 h-3 bg-green-500 rounded-full ml-auto" title="Online"></span>
-                        {% else %}
-                            <span class="inline-block w-3 h-3 bg-gray-400 rounded-full ml-auto" title="Offline"></span>
-                        {% endif %}
-                    </div>
-                </a>
-                {% endif %}
-            {% endfor %}
-        {% endfor %}
-    </div>
+    {% include 'chat-list.html' %}
     <!-- Container principal do chat -->
     <div id="chat-window" class="col-span-2 h-[45rem] flex flex-col bg-white relative overscroll-contain">
         <!-- Cabeçalho do chat -->
@@ -80,95 +59,12 @@
             </div>
         </div>
     </div>
-
     {{ chat_uuid|json_script:"chat_uuid" }}
-
 </wrapper>
 {% endblock %}
 
-{% block scripts %}
+{% block javascript %}
 <script id="current-id" type="application/json">{{ user.id|escapejs }}</script>
-<script>
-    const roomName = JSON.parse(document.getElementById('chat_uuid').textContent);
-    const currentUser = JSON.parse(document.getElementById('current-id').textContent);
-
-    const chatSocket = new WebSocket(
-        'ws://' + window.location.host + '/ws/chat/' + roomName + '/'
-    );
-
-    // Cliente recebendo mensagem do WebSocket
-    chatSocket.onmessage = function (e) {
-        try {
-            const data = JSON.parse(e.data);
-            if (data.message) {
-                // Adicionar mensagem à área de visualização
-                const chatMessages = document.querySelector('#chat_messages');
-                const messageElement = document.createElement('li');
-
-                if (data.user === currentUser) {
-                    messageElement.innerHTML = `
-                        <div class="flex justify-end">
-                            <div class="bg-black text-white rounded-l-lg rounded-lg p-2 max-w-[75%]">
-                                <span>${data.message}</span>
-                            </div>
-                        </div>
-                        <span class="flex justify-end text-xs text-gray-500 mt-1">${data.time}</span>`;
-                } else {
-                    messageElement.innerHTML = `
-                        <div class="flex justify-start">
-                            <div class="bg-emerald-300 p-2 max-w-[75%] rounded-lg">
-                                <span>${data.message}</span>
-                            </div>
-                        </div>
-                        <span class="text-xs text-gray-500 mt-1">${data.time}</span>`;
-                }
-                chatMessages.appendChild(messageElement);
-
-                // Scroll automático
-                const chatContainer = document.querySelector('#chat_container');
-                chatContainer.scrollTop = chatContainer.scrollHeight;
-            }
-        } catch (error) {
-            console.error('Erro ao processar mensagem:', error);
-        }
-    };
-
-    chatSocket.onclose = function (e) {
-        console.log('Chat socket fechou.');
-    };
-
-    chatSocket.onerror = function (e) {
-        console.error('WebSocket erro:', e);
-    };
-
-    document.querySelector('#chat-message-input').focus();
-
-    document.querySelector('#chat-message-input').onkeyup = function (e) {
-        if (e.key === 'Enter' && !e.shiftKey) {
-            e.preventDefault();
-            document.querySelector('#chat-message-submit').click();
-        }
-    };
-
-    // Cliente envia mensagem pelo WebSocket
-    document.querySelector('#chat-message-submit').onclick = function (e) {
-        const messageInput = document.querySelector('#chat-message-input');
-        const chat_message = messageInput.value.trim();
-
-        if (chat_message) {
-            chatSocket.send(JSON.stringify({
-                'message': chat_message,
-            }));
-            messageInput.value = '';
-        }
-    };
-
-    function scrollToBottom(time = 0) {
-        setTimeout(function () {
-            const container = document.getElementById('chat_container');
-            container.scrollTop = container.scrollHeight;
-        }, time);
-    }
-    scrollToBottom()
-</script>
+<script src="{% static 'js/chat.js' %}"></script>
+<script src="{% static 'js/online.js' %}"></script>
 {% endblock%}

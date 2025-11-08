@@ -2,17 +2,12 @@
 
 {% block styles %}
 <style>
-     body {
+    body {
         background: white;
         min-height: 100vh;
         display: flex;
         flex-direction: column;
     }
-
-    .input-field:focus {
-        box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.3);
-    }
-
     .error-message {
         color: #dc2626; /* Red-600 */
         font-size: 0.875rem; /* text-sm */
@@ -129,7 +124,6 @@
 </main>
 {% include 'footer.html' %}
 <script>
-    // Funcionalidade para mostrar/ocultar senha
     function setupPasswordToggle(inputId, buttonId) {
         const toggleButton = document.getElementById(buttonId);
         if (toggleButton) {
@@ -138,14 +132,12 @@
                 const type = passwordInput.getAttribute('type') === 'password' ? 'text' : 'password';
                 passwordInput.setAttribute('type', type);
 
-                // Alterar o ícone
                 this.querySelector('i').classList.toggle('fa-eye');
                 this.querySelector('i').classList.toggle('fa-eye-slash');
             });
         }
     }
 
-    // Configurar toggles para ambos os campos de senha
     setupPasswordToggle('id_password1', 'togglePassword1');
     setupPasswordToggle('id_password2', 'togglePassword2');
 </script>
