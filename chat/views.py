@@ -11,7 +11,10 @@ from chat.models import Chat
 def home(request):
     if not request.user.is_authenticated:
         return redirect('login')
-    return render(request, 'chat/home.html')
+    online_users = User.objects.filter(status__online_status=True)
+    context = {'online_users': online_users}
+
+    return render(request, 'chat/home.html', context)
 
 
 @login_required

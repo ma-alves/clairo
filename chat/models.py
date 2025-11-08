@@ -31,3 +31,11 @@ class ChatMessage(models.Model):
         
     class Meta:
         ordering = ['-created_at']
+
+
+class UserOnlineStatus(models.Model):
+    user = models.OneToOneField(User, related_name='status', on_delete=models.CASCADE)
+    online_status = models.BooleanField(default=False)
+
+    def __str__(self) -> str:
+        return f'{self.user.username}'

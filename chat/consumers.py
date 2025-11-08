@@ -4,7 +4,7 @@ import json
 from channels.db import database_sync_to_async
 from channels.generic.websocket import AsyncWebsocketConsumer
 
-from chat.models import Chat, ChatMessage
+from chat.models import Chat, ChatMessage, UserOnlineStatus
 
 # Channels are mailboxes that represent users in a group, such as a chat room.
 # When a user posts a message, a JavaScript function will transmit the message
@@ -25,12 +25,10 @@ class ChatConsumer(AsyncWebsocketConsumer):
         )
     
     async def connect(self):
-        # Scope contém informações sobre a conexão, incluindo o usuário autenticado e os parâmetros da URL
         self.user = self.scope["user"] # type: ignore
         self.room_name = self.scope["url_route"]["kwargs"]["chat_uuid"] # type: ignore
         self.room_group_name = f"chat_{self.room_name}"
 
-        # Join room group
         await self.channel_layer.group_add(
             self.room_group_name, self.channel_name
         )
@@ -38,17 +36,16 @@ class ChatConsumer(AsyncWebsocketConsumer):
         await self.accept()
 
     async def disconnect(self, close_code):
-        # Leave room group
         await self.channel_layer.group_discard(
             self.room_group_name, self.channel_name
         )
 
-    # Receive message from WebSocket/Client
+    # Receive message from Client
     # essa porra recebe a mensagem do cliente, processa o caralho que for e aí sim entrega pro grupo
+    # chatSocket.send()
     async def receive(self, text_data):
         text_data_json = json.loads(text_data)
         body_message = text_data_json["message"]
-        print(f"Received message: {body_message}") # Apagar depois de testar
 
         await self.create_message(self.room_name, self.user, body_message)
 
@@ -62,6 +59,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
         )
 
     # Client receives message from room group/Broadcast do grupo
+    # chatSocket.onmessage
     async def chat_message(self, event):
         message = event["message"]
         user = event["user"]
@@ -83,7 +81,6 @@ class OnlineConsumer(AsyncWebsocketConsumer):
         await self.channel_layer.group_add(
             self.room_group_name, self.channel_name
         )
-        await self.set_user_online(True)
         await self.accept()
 
 
@@ -91,51 +88,53 @@ class OnlineConsumer(AsyncWebsocketConsumer):
         await self.channel_layer.group_discard(
             self.room_group_name, self.channel_name
         )
-        await self.set_user_online(False)
 
 
     async def receive(self, text_data):
-        text_data_json = json.loads(text_data)
-        message_type = text_data_json.get("type")
+        data = json.loads(text_data)
+        connection_type = data.get("type")
+        message_user_id = data.get("user_id")
 
-        # talvez fazer a coisa de checar online aqui
-        if message_type == "check_user_status":
-            user_id = text_data_json.get("user_id")
-            if user_id:
-                is_online = await self.check_user_online_status(user_id)
-                await self.send(text_data=json.dumps({
-                    "type": "user_status_response",
-                    "user_id": user_id,
-                    "is_online": is_online
-                }))
+        await self.set_user_status(message_user_id, connection_type)
+        await self.channel_layer.group_send(
+            self.room_group_name, {
+                "type": "user.status",
+                "status": connection_type,
+                "user_id": message_user_id
+            }
+        )
+        print("Até aqui tá funcionando")
 
-
+    # AQUI
+    # Note that the event you send must have a type key, even if only one
+    # type of message is being sent over the channel, as it will turn into
+    # an event a consumer has to handle.
     async def user_status(self, event):
-        user = event["user"]
-        status = event["status"]
+        if event["status"] == "open":
+            status = True
+        else:
+            status = False
+        user_id = event["user_id"]
 
         await self.send(text_data=json.dumps({
-            "user": user,
-            "status": status
+            "status": status,
+            "user_id": user_id,
         }))
     
     
     @database_sync_to_async
-    def set_user_online(self, is_online):
-        if is_online:
-            user_chats = Chat.objects.filter(users=self.user)
-            for chat in user_chats:
-                chat.online_users.add(self.user)
+    def set_user_status(self, user_id, status):
+        try:
+            user = UserOnlineStatus.objects.get(user__id = user_id)
+        except UserOnlineStatus.DoesNotExist:
+            user = UserOnlineStatus.objects.create(
+                user_id = user_id, 
+                online_status = False
+            )
+
+        if status == 'open':
+            user.online_status = True
         else:
-            user_chats = Chat.objects.filter(users=self.user)
-            for chat in user_chats:
-                chat.online_users.remove(self.user)
-
-
-    @database_sync_to_async
-    def check_user_online_status(self, user_id):
-        user_chats = Chat.objects.filter(users__id=user_id)
-        for chat in user_chats:
-            if chat.online_users.filter(id=user_id).exists():
-                return True
-        return False
+            user.online_status = False
+            
+        user.save()

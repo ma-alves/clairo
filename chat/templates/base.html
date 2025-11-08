@@ -48,4 +48,48 @@
   <!-- footer.html -->
 </body>
 {% block scripts %}{% endblock %}
+
+{% if request.user.is_authenticated %}
+  <script id="current-id" type="application/json">{{ request.user.id|escapejs }}</script>
+  <script>
+    const currentUser = JSON.parse(document.getElementById('current-id').textContent);
+    const onlineSocket = new WebSocket(
+      'ws://' + window.location.host + '/ws/online-status/'
+    )
+
+    onlineSocket.onopen = function(e) {
+      console.log("Conexão de status online estabelecida.")
+      onlineSocket.send(JSON.stringify({
+        'type': 'open',
+        'user_id': currentUser,
+      }))
+    }
+    
+    window.addEventListener('beforeunload', function(e) {
+      onlineSocket.send(JSON.stringify({
+        'type': 'closed',
+        'user_id': currentUser,
+      }))
+    })
+    
+    onlineSocket.onclose = function(e) {
+      console.log("Conexão de status online fechada.")
+    }
+
+    onlineSocket.onmessage = function(e) {
+      const data = JSON.parse(e.data)
+      const statusType = data['status']
+      const userId = data['user_id']
+      console.log(statusType)
+
+      if (statusType == true) {
+        console.log(`Usuário ${userId} está online.`)
+        // deixa luizinha verde
+      } else {
+        console.log(`Usuário ${userId} está offline.`)
+        // deixa luizinha cinza
+      }
+    }
+  </script>
+{% endif %}
 </html>
