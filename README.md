@@ -1,5 +1,5 @@
 # clairo
-Batizado em homenagem a cantora indie, clairo é um chat app desenvolvido com o intuito de explorar as possibilidades de WebSockets, utilizando código assíncrono em seu consumidor através do Django Channels e Redis como Message Broker. O foco é o desenvolvimento do backend, enquanto o frontend possui uma interface simples e intuitiva construída utilizando Tailwind.
+Batizado em homenagem a cantora indie, clairo é um chat app desenvolvido com o intuito de explorar as possibilidades de WebSockets com entrega de mensagens em tempo real e monitoramento de status online, utilizando código assíncrono em seus consumidores através do Django Channels e Redis como Message Broker. O foco é o desenvolvimento do backend, enquanto o frontend possui uma interface simples e intuitiva construída utilizando Tailwind.
 
 ## Tech Stack
 - [Django](https://github.com/django) - Web Framework
@@ -8,7 +8,7 @@ Batizado em homenagem a cantora indie, clairo é um chat app desenvolvido com o 
 - [SQLite3](https://www.sqlite.org/index.html) - Banco de Dados SQL
 - [Redis](https://redis.io/) - Message Broker
 - [Tailwind](https://tailwindcss.com/) - CSS Framework
-- [Docker](https://www.docker.com/) - Container para o Redis
+- [Docker](https://www.docker.com/) - Containers
 
 ## Uso
 1. Clone este repositório:\

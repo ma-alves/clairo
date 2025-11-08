@@ -11,6 +11,7 @@ from chat.models import Chat
 def home(request):
     if not request.user.is_authenticated:
         return redirect('login')
+    
     online_users = User.objects.filter(status__online_status=True)
     context = {'online_users': online_users}
 
@@ -21,18 +22,16 @@ def home(request):
 def chat_view(request, chat_uuid):
     chat = get_object_or_404(Chat, chat_uuid=chat_uuid)
     chat_messages = chat.messages.all()[:30] #type: ignore
-
     other_user = None
-    if chat.is_private:
-        if request.user not in chat.users.all():
-            raise Http404("Você não tem permissão para acessar este chat.")
-        for user in chat.users.all():
-            if user != request.user:
-                other_user = user
-                break
+    
+    if request.user not in chat.users.all():
+        raise Http404("Você não tem permissão para acessar este chat.")
+    for user in chat.users.all():
+        if user != request.user:
+            other_user = user
+            break
 
     online_users = User.objects.filter(status__online_status=True)
-
     context = {
         'chat' : chat,
         'chat_messages' : chat_messages, 
@@ -53,16 +52,13 @@ def get_or_create_chat(request, username):
     my_chatrooms = request.user.chats.all()
     
     for chat in my_chatrooms:
-        print(chat.users.all())
         if other_user in chat.users.all():
             chatroom = chat
-            print("Chatroom existente encontrado.")
             return redirect('chat', chatroom.chat_uuid)
         else:
             continue
 
     chatroom = Chat.objects.create(is_private = True)
-    print("Novo chatroom criado com my_chatrooms vazio.")
     chatroom.users.add(other_user, request.user)
 
     return redirect('chat', chatroom.chat_uuid)
@@ -77,7 +73,7 @@ def search_users(request):
         user_list = users.filter(username__icontains=query)
         return render(
             request, 'chat/search.html',
-            context = {'user_list': user_list }
+            context = {'user_list': user_list}
         )
     
     return redirect('home')
