@@ -15,13 +15,14 @@ fuser -k -n tcp 8000
 docker run --rm -p 6379:6379 redis:7
 
 # referencias
-- https://github.com/anshuUnity/whatsapp-clone
-- https://stackoverflow.com/questions/28513528/passing-arguments-to-model-methods-in-django-templates
-- https://www.digitalocean.com/community/questions/django-websockets-with-daphne-a-complete-guide
-- https://www.youtube.com/watch?v=u7siCTdGhuw&list=PL5E1F5cTSTtRSP3Qb8-gZ-Hm5AXp3VKvu
-- https://django-tutorial.dev/course/django-specifics/custom-user-model/adding-fields/
-- https://docs.djangoproject.com/en/5.2/topics/auth/customizing/#using-a-custom-user-model-when-starting-a-project
-- https://cheatography.com/ogr/cheat-sheets/django/
+https://github.com/NilCoalescing/djangochannelsrestframework/blob/master/tests/test_consumer.py#L27
+https://github.com/anshuUnity/whatsapp-clone
+https://stackoverflow.com/questions/28513528/passing-arguments-to-model-methods-in-django-templates
+https://www.digitalocean.com/community/questions/django-websockets-with-daphne-a-complete-guide
+https://www.youtube.com/watch?v=u7siCTdGhuw&list=PL5E1F5cTSTtRSP3Qb8-gZ-Hm5AXp3VKvu
+https://django-tutorial.dev/course/django-specifics/custom-user-model/adding-fields/
+https://docs.djangoproject.com/en/5.2/topics/auth/customizing/#using-a-custom-user-model-when-starting-a-project
+https://cheatography.com/ogr/cheat-sheets/django/
 
 # Channels are mailboxes that represent users in a group, such as a chat room.
 # When a user posts a message, a JavaScript function will transmit the message

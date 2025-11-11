@@ -42,7 +42,7 @@ chatSocket.onmessage = function (e) {
 };
 
 chatSocket.onclose = function (e) {
-    console.log('Chat socket fechou.');
+    console.log('Chat socket desconectado.');
 };
 
 chatSocket.onerror = function (e) {

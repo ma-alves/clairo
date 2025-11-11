@@ -66,7 +66,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
 
 class OnlineConsumer(AsyncWebsocketConsumer):
     async def connect(self):
-        self.user = self.scope["user"] #type: ignore
+        self.user = self.scope["user"] # type: ignore
         self.room_group_name = "online_users"
 
         await self.channel_layer.group_add(
