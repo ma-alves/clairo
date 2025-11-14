@@ -1,8 +1,6 @@
 # tarefas
-- fazer testes
+- testar type error em user_id
 - retirar is_private
-- checar: https://github.com/andrewgodwin/channels-examples
-  - criar erros
 - implementar lembrar-me
 - fuso do redis ta utc+0
 
@@ -15,7 +13,9 @@ fuser -k -n tcp 8000
 docker run --rm -p 6379:6379 redis:7
 
 # referencias
+https://medium.com/@jonathan.hoffman91/django-tests-cheatsheet-2025-4fae3d32c3c5
 https://github.com/NilCoalescing/djangochannelsrestframework/blob/master/tests/test_consumer.py#L27
+https://github.com/andrewgodwin/channels-examples
 https://github.com/anshuUnity/whatsapp-clone
 https://stackoverflow.com/questions/28513528/passing-arguments-to-model-methods-in-django-templates
 https://www.digitalocean.com/community/questions/django-websockets-with-daphne-a-complete-guide
