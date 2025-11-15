@@ -1,5 +1,5 @@
 # tarefas
-- testar type error em user_id
+- unpacking de erros, enfiar erros em exceptions e PRONTO
 - retirar is_private
 - implementar lembrar-me
 - fuso do redis ta utc+0

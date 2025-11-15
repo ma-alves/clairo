@@ -24,15 +24,26 @@ class ChatConsumer(AsyncWebsocketConsumer):
             self.room_group_name, self.channel_name
         )
 
-    # Receive message from Client
-    # recebe a mensagem do cliente, processa o que for e aí sim entrega pro grupo
-    # chatSocket.send()
     async def receive(self, text_data):
         data = json.loads(text_data)
-        body_message = data["message"]
+        try:
+            if "message" not in data:
+                raise ClientError("Mensagem Invalida")
+            body_message = data["message"]
+        except json.JSONDecodeError:
+            await self.send(text_data=json.dumps({
+                "error": "Formato JSON Invalido"
+            }))
+            await self.close()
+            return
+        except ClientError as e:
+            await self.send(text_data=json.dumps({
+                "error": e.code
+            }))
+            await self.close()
+            return
 
         await self.create_message(self.room_name, self.user, body_message)
-        # Send the message that came from the client to room group/Broadcast para todos os consumidores no grupo
         await self.channel_layer.group_send(
             self.room_group_name, {
                 "type": "chat.message",
@@ -41,13 +52,10 @@ class ChatConsumer(AsyncWebsocketConsumer):
             }
         )
 
-    # Client receives message from room group/Broadcast do grupo
-    # chatSocket.onmessage
     async def chat_message(self, event):
         message = event["message"]
         user = event["user"]
 
-        # Send message to WebSocket/Client
         await self.send(text_data=json.dumps({
             "time": datetime.now().strftime("%H:%M"),
             "message": message,
@@ -113,10 +121,10 @@ class OnlineConsumer(AsyncWebsocketConsumer):
         message_user_id = data.get("user_id")
 
         if connection_type not in ["open", "closed"]:
-            raise ClientError("STATUS INVÁLIDO")
+            raise ClientError("Status Invalido")
         
         if not isinstance(message_user_id, int):
-            raise ClientError("ID INVÁLIDO")
+            raise ClientError("Id Invalido")
         
         return connection_type, message_user_id
 

@@ -9,7 +9,10 @@ const chatSocket = new WebSocket(
 chatSocket.onmessage = function (e) {
     try {
         const data = JSON.parse(e.data);
-        if (data.message) {
+        if (data.error) {
+            console.error('Erro no servidor:', data.error);
+            return;
+        } else if (data.message) {
             const chatMessages = document.querySelector('#chat_messages');
             const messageElement = document.createElement('li');
 
@@ -58,7 +61,6 @@ document.querySelector('#chat-message-input').onkeyup = function (e) {
     }
 };
 
-// Cliente envia mensagem pelo WebSocket
 document.querySelector('#chat-message-submit').onclick = function (e) {
     const messageInput = document.querySelector('#chat-message-input');
     const chat_message = messageInput.value.trim();
