@@ -5,12 +5,12 @@ const chatSocket = new WebSocket(
     'ws://' + window.location.host + '/ws/chat/' + roomName + '/'
 );
 
-// Cliente recebendo mensagem do WebSocket
 chatSocket.onmessage = function (e) {
     try {
         const data = JSON.parse(e.data);
         if (data.error) {
             console.error('Erro no servidor:', data.error);
+            alert(data.error);
             return;
         } else if (data.message) {
             const chatMessages = document.querySelector('#chat_messages');

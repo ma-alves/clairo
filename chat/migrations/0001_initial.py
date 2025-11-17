@@ -6,35 +6,82 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+	initial = True
 
-    initial = True
+	dependencies = [
+		migrations.swappable_dependency(settings.AUTH_USER_MODEL),
+	]
 
-    dependencies = [
-        migrations.swappable_dependency(settings.AUTH_USER_MODEL),
-    ]
-
-    operations = [
-        migrations.CreateModel(
-            name='Chat',
-            fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('chat_uuid', models.CharField(default='8d083dbe-3cf2-4ce9-b946-3a8b6d686607', max_length=128, unique=True)),
-                ('is_private', models.BooleanField(default=True)),
-                ('online_users', models.ManyToManyField(blank=True, related_name='online_chats', to=settings.AUTH_USER_MODEL)),
-                ('users', models.ManyToManyField(blank=True, related_name='chats', to=settings.AUTH_USER_MODEL)),
-            ],
-        ),
-        migrations.CreateModel(
-            name='ChatMessage',
-            fields=[
-                ('id', models.BigAutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
-                ('body', models.CharField(blank=True, max_length=1000, null=True)),
-                ('created_at', models.DateTimeField(auto_now_add=True)),
-                ('author', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to=settings.AUTH_USER_MODEL)),
-                ('chat', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, related_name='messages', to='chat.chat')),
-            ],
-            options={
-                'ordering': ['-created_at'],
-            },
-        ),
-    ]
+	operations = [
+		migrations.CreateModel(
+			name='Chat',
+			fields=[
+				(
+					'id',
+					models.BigAutoField(
+						auto_created=True,
+						primary_key=True,
+						serialize=False,
+						verbose_name='ID',
+					),
+				),
+				(
+					'chat_uuid',
+					models.CharField(
+						default='8d083dbe-3cf2-4ce9-b946-3a8b6d686607',
+						max_length=128,
+						unique=True,
+					),
+				),
+				('is_private', models.BooleanField(default=True)),
+				(
+					'online_users',
+					models.ManyToManyField(
+						blank=True,
+						related_name='online_chats',
+						to=settings.AUTH_USER_MODEL,
+					),
+				),
+				(
+					'users',
+					models.ManyToManyField(
+						blank=True, related_name='chats', to=settings.AUTH_USER_MODEL
+					),
+				),
+			],
+		),
+		migrations.CreateModel(
+			name='ChatMessage',
+			fields=[
+				(
+					'id',
+					models.BigAutoField(
+						auto_created=True,
+						primary_key=True,
+						serialize=False,
+						verbose_name='ID',
+					),
+				),
+				('body', models.CharField(blank=True, max_length=1000, null=True)),
+				('created_at', models.DateTimeField(auto_now_add=True)),
+				(
+					'author',
+					models.ForeignKey(
+						on_delete=django.db.models.deletion.CASCADE,
+						to=settings.AUTH_USER_MODEL,
+					),
+				),
+				(
+					'chat',
+					models.ForeignKey(
+						on_delete=django.db.models.deletion.CASCADE,
+						related_name='messages',
+						to='chat.chat',
+					),
+				),
+			],
+			options={
+				'ordering': ['-created_at'],
+			},
+		),
+	]

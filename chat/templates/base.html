@@ -2,49 +2,54 @@
 <html lang="pt-BR">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>clairo</title>
-  <script src="https://cdn.tailwindcss.com"></script>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-  {% block styles %}{% endblock %}
+	<meta charset="UTF-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<title>clairo</title>
+	<script src="https://cdn.tailwindcss.com"></script>
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+	{% block styles %}{% endblock %}
 </head>
 
 <body>
-  <header class="bg-white text-black border-b-2 border-black">
-    <div class="container mx-auto px-4 py-4">
-      <div class="flex items-center justify-between">
-        <!-- Logo/Título -->
-        <div class="flex-shrink-0">
-          <h1 class="text-2xl font-medium"><a href="{% url 'home'%}">clairo</a></h1>
-        </div>
-        <!-- Menu de Navegação -->
-        <nav class="flex items-center space-x-4">
-          <!-- Links de Login e Cadastro -->
-          <div class="hidden md:flex items-center space-x-2">
-            {% if request.user.is_authenticated %}
-            <p class="text-sm font-medium">Olá, {{ request.user.username }}!</p>
-            <a href="{% url 'profile' request.user.username %}" class="block px-4 py-2 text-sm font-medium hover:bg-emerald-300 rounded-full">Perfil</a>
-            <a href="{% url 'home' %}" class="block px-4 py-2 text-sm font-medium hover:bg-emerald-300 rounded-full">Conversas</a>
-            <form action="{% url 'logout' %}" method="post">
-              {% csrf_token %}
-              <button type="submit" class="block px-4 py-2 text-sm font-medium hover:bg-red-600 hover:text-white hover:rounded-full text-red-600">Sair</button>
-            </form>
-            {% else %}
-            <a href="{% url 'login' %}" class="px-3 py-2 text-sm font-medium hover:bg-emerald-500 rounded-full">
-              Login
-            </a>
-            <a href="{% url 'signup' %}"
-              class="px-3 py-2 text-sm font-medium bg-emerald-300 hover:bg-emerald-500 rounded-full">
-              Cadastrar
-            </a>
-            {% endif %}
-          </div>
-        </nav>
-      </div>
-    </div>
-  </header>
-  {% block content %}{% endblock %}
+	<header class="bg-white text-black border-b-2 border-black">
+		<div class="container mx-auto px-4 py-4">
+			<div class="flex items-center justify-between">
+				<!-- Logo/Título -->
+				<div class="flex-shrink-0">
+					<h1 class="text-2xl font-medium"><a href="{% url 'home'%}">clairo</a></h1>
+				</div>
+				<!-- Menu de Navegação -->
+				<nav class="flex items-center space-x-4">
+					<!-- Links de Login e Cadastro -->
+					<div class="hidden md:flex items-center space-x-2">
+						{% if request.user.is_authenticated %}
+						<p class="text-sm font-medium">Olá, {{ request.user.username }}!</p>
+						<a href="{% url 'profile' request.user.username %}"
+							class="block px-4 py-2 text-sm font-medium hover:bg-emerald-300 rounded-full">Perfil</a>
+						<a href="{% url 'home' %}"
+							class="block px-4 py-2 text-sm font-medium hover:bg-emerald-300 rounded-full">Conversas</a>
+						<form action="{% url 'logout' %}" method="post">
+							{% csrf_token %}
+							<button type="submit"
+								class="block px-4 py-2 text-sm font-medium hover:bg-red-600 hover:text-white hover:rounded-full text-red-600">Sair</button>
+						</form>
+						{% else %}
+						<a href="{% url 'login' %}"
+							class="px-3 py-2 text-sm font-medium hover:bg-emerald-500 rounded-full">
+							Login
+						</a>
+						<a href="{% url 'signup' %}"
+							class="px-3 py-2 text-sm font-medium bg-emerald-300 hover:bg-emerald-500 rounded-full">
+							Cadastrar
+						</a>
+						{% endif %}
+					</div>
+				</nav>
+			</div>
+		</div>
+	</header>
+	{% block content %}{% endblock %}
 </body>
 {% block javascript %}{% endblock %}
+
 </html>

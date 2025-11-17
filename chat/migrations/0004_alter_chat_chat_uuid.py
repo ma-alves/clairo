@@ -4,15 +4,18 @@ from django.db import migrations, models
 
 
 class Migration(migrations.Migration):
+	dependencies = [
+		('chat', '0003_alter_chat_chat_uuid'),
+	]
 
-    dependencies = [
-        ('chat', '0003_alter_chat_chat_uuid'),
-    ]
-
-    operations = [
-        migrations.AlterField(
-            model_name='chat',
-            name='chat_uuid',
-            field=models.CharField(default='094d1e5b-a75c-4a3b-8b53-74f961ad1013', max_length=128, unique=True),
-        ),
-    ]
+	operations = [
+		migrations.AlterField(
+			model_name='chat',
+			name='chat_uuid',
+			field=models.CharField(
+				default='094d1e5b-a75c-4a3b-8b53-74f961ad1013',
+				max_length=128,
+				unique=True,
+			),
+		),
+	]

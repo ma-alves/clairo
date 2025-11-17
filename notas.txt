@@ -1,16 +1,16 @@
 # tarefas
-- unpacking de erros, enfiar erros em exceptions e PRONTO
-- retirar is_private
-- implementar lembrar-me
+- trocar pfp
 - fuso do redis ta utc+0
 
-# comentários pessoais
+# comentários pessoais e comandos
 - url patterns sem parâmetros vão primeiro!
 - profile com informações fictícias pq não é o foco
 - encerrar processo na porta 8000:
 fuser -k -n tcp 8000
 - iniciar channel layer:
 docker run --rm -p 6379:6379 redis:7
+- sort imports
+ruff check --select I --fix
 
 # referencias
 https://medium.com/@jonathan.hoffman91/django-tests-cheatsheet-2025-4fae3d32c3c5

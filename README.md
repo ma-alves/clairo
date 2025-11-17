@@ -13,8 +13,11 @@ Batizado em homenagem a cantora indie, clairo é um chat app desenvolvido com o 
 ## Uso
 1. Clone este repositório:\
 `git clone https://github.com/ma-alves/clairo.git`
-2. Crie o banco de dados:\
+2. Crie o banco de dados e faça as migrações:\
 `touch database.db`
-3. Suba o container redis:\
+`uv run python3 manage.py makemigrations`
+`uv run python3 manage.py migrate`
+3. Inicie o container redis:\
 `docker run --rm -p 6379:6379 redis:7`
-5. Em progresso :)
+4. Inicie o servidor:\
+`uv run python3 manage.py runserver`

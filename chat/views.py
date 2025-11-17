@@ -9,81 +9,77 @@ from chat.models import Chat
 
 
 def home(request):
-    if not request.user.is_authenticated:
-        return redirect('login')
-    
-    online_users = User.objects.filter(status__online_status=True)
-    context = {'online_users': online_users}
+	if not request.user.is_authenticated:
+		return redirect('login')
 
-    return render(request, 'chat/home.html', context)
+	online_users = User.objects.filter(status__online_status=True)
+	context = {'online_users': online_users}
+
+	return render(request, 'chat/home.html', context)
 
 
 @login_required
 def chat_view(request, chat_uuid):
-    chat = get_object_or_404(Chat, chat_uuid=chat_uuid)
-    chat_messages = chat.messages.all()[:30] #type: ignore
-    other_user = None
-    
-    if request.user not in chat.users.all():
-        raise Http404("Você não tem permissão para acessar este chat.")
-    for user in chat.users.all():
-        if user != request.user:
-            other_user = user
-            break
+	chat = get_object_or_404(Chat, chat_uuid=chat_uuid)
+	chat_messages = chat.messages.all()[:30]  # type: ignore
+	other_user = None
 
-    online_users = User.objects.filter(status__online_status=True)
-    context = {
-        'chat' : chat,
-        'chat_messages' : chat_messages, 
-        'chat_uuid' : chat.chat_uuid,
-        'online_users': online_users,
-        'other_user' : other_user,
-    }
-    
-    return render(request, 'chat/chat.html', context)
+	if request.user not in chat.users.all():
+		raise Http404('Você não tem permissão para acessar este chat.')
+	for user in chat.users.all():
+		if user != request.user:
+			other_user = user
+			break
+
+	online_users = User.objects.filter(status__online_status=True)
+	context = {
+		'chat': chat,
+		'chat_messages': chat_messages,
+		'chat_uuid': chat.chat_uuid,
+		'online_users': online_users,
+		'other_user': other_user,
+	}
+
+	return render(request, 'chat/chat.html', context)
 
 
 @login_required
 def get_or_create_chat(request, username):
-    if request.user.username == username:
-        return redirect('home')
-    
-    other_user = User.objects.get(username = username)
-    my_chatrooms = request.user.chats.all()
-    
-    for chat in my_chatrooms:
-        if other_user in chat.users.all():
-            chatroom = chat
-            return redirect('chat', chatroom.chat_uuid)
-        else:
-            continue
+	if request.user.username == username:
+		return redirect('home')
 
-    chatroom = Chat.objects.create(is_private = True)
-    chatroom.users.add(other_user, request.user)
+	other_user = User.objects.get(username=username)
+	my_chatrooms = request.user.chats.all()
 
-    return redirect('chat', chatroom.chat_uuid)
+	for chat in my_chatrooms:
+		if other_user in chat.users.all():
+			chatroom = chat
+			return redirect('chat', chatroom.chat_uuid)
+		else:
+			continue
+
+	chatroom = Chat.objects.create()
+	chatroom.users.add(other_user, request.user)
+
+	return redirect('chat', chatroom.chat_uuid)
 
 
 @login_required
 def search_users(request):
-    query = request.GET.get('username', '')
-    users = User.objects.all()
+	query = request.GET.get('username', '')
+	users = User.objects.all()
 
-    if query:
-        user_list = users.filter(username__icontains=query)
-        return render(
-            request, 'chat/search.html',
-            context = {'user_list': user_list}
-        )
-    
-    return redirect('home')
+	if query:
+		user_list = users.filter(username__icontains=query)
+		return render(request, 'chat/search.html', context={'user_list': user_list})
+
+	return redirect('home')
 
 
 class UserDetailView(LoginRequiredMixin, DetailView):
-    model = User
-    template_name = "chat/profile.html"
+	model = User
+	template_name = 'chat/profile.html'
 
-    def get_object(self):
-        username = self.kwargs.get("username")
-        return get_object_or_404(User, username=username)
-    
+	def get_object(self):
+		username = self.kwargs.get('username')
+		return get_object_or_404(User, username=username)
