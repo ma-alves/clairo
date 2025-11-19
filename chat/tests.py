@@ -35,8 +35,6 @@ class ChatTestCase(TestCase):
 		connected, subprotocol = await communicator.connect()
 		assert connected
 
-		await communicator.disconnect()
-
 	async def test_chat_message(self):
 		communicator = WebsocketCommunicator(
 			self.application, f'/ws/chat/{self.chat.chat_uuid}/'
@@ -87,23 +85,20 @@ class OnlineTestCase(TestCase):
 		response = await communicator.receive_json_from()
 		assert response == {'status': True, 'user_id': 1}
 
-		await communicator.disconnect()
-
 	async def test_online_disconnect(self):
 		communicator = WebsocketCommunicator(self.application, '/ws/online-status/')
 		await communicator.connect()
 		await communicator.send_json_to({'type': 'closed', 'user_id': 1})
+
 		response = await communicator.receive_json_from()
 		assert response == {'status': False, 'user_id': 1}
-
-		await communicator.disconnect()
 
 	async def test_type_error(self):
 		communicator = WebsocketCommunicator(self.application, '/ws/online-status/')
 		await communicator.connect()
 		await communicator.send_json_to({'type': 'not_a_type', 'user_id': 1})
-		response = await communicator.receive_json_from()
 
+		response = await communicator.receive_json_from()
 		assert response == {'error': 'Status Invalido'}
 
 		await communicator.disconnect()
@@ -112,8 +107,8 @@ class OnlineTestCase(TestCase):
 		communicator = WebsocketCommunicator(self.application, '/ws/online-status/')
 		await communicator.connect()
 		await communicator.send_json_to({'type': 'open', 'user_id': 'not_an_int'})
-		response = await communicator.receive_json_from()
 
+		response = await communicator.receive_json_from()
 		assert response == {'error': 'Id Invalido'}
 
 		await communicator.disconnect()

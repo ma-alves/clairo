@@ -34,6 +34,7 @@ class ChatConsumer(AsyncWebsocketConsumer):
 					'user': self.user.id,  # type: ignore
 				},
 			)
+			await self.create_message(self.room_name, self.user, body_message)
 		except json.JSONDecodeError:
 			await self.send(text_data=json.dumps({'error': 'Formato JSON Invalido'}))
 			await self.close()
@@ -46,7 +47,15 @@ class ChatConsumer(AsyncWebsocketConsumer):
 		user = event['user']
 
 		try:
-			await self.create_message(self.room_name, self.user, message)
+			await self.send(
+				text_data=json.dumps(
+					{
+						'time': datetime.now().strftime('%H:%M'),
+						'message': message,
+						'user': user,
+					}
+				)
+			)
 		except Exception:
 			await self.send(
 				text_data=json.dumps(
@@ -56,15 +65,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
 			await self.close()
 			return
 
-		await self.send(
-			text_data=json.dumps(
-				{
-					'time': datetime.now().strftime('%H:%M'),
-					'message': message,
-					'user': user,
-				}
-			)
-		)
 
 	@database_sync_to_async
 	def create_message(self, chat_uuid, author, body_message):

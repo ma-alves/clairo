@@ -10,6 +10,8 @@ dependencies = [
     "django>=5.2.6",
     "django-allauth>=65.11.2",
     "django-htmx>=1.24.0",
+    "psycopg[binary]>=3.2.12",
+    "python-dotenv>=1.2.1",
     "ruff>=0.14.5",
 ]
 

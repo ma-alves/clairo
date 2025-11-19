@@ -1,16 +1,33 @@
 # tarefas
+- token como recuperação
+- delay ao realmente fechar a conexão
 - esqueci a senha
 - trocar pfp
 
 # comentários pessoais e comandos
 - url patterns sem parâmetros vão primeiro!
 - profile com informações fictícias pq não é o foco
-- encerrar processo na porta 8000:
+
+# comandos
+- encerrar processo na porta 8000
 fuser -k -n tcp 8000
 - iniciar channel layer:
 docker run --rm -p 6379:6379 -e TZ=America/Sao_Paulo redis:7
+docker run -d -p 5432:5432 --name dbclairo -e POSTGRES_PASSWORD=123456 -e POSTGRES_USER=postgres postgres
 - sort imports
 ruff check --select I --fix
+- build docker image
+docker build -t clairo-image .
+- run docker image
+docker run -it -p 8000:8000 --name clairo clairo-image
+
+# postgres
+- user: postgres
+- senha: 123456
+sudo -u postgres psql
+\c <dbname> postgres
+\dt (mostrar tabelas)
+\q
 
 # referencias
 https://medium.com/@jonathan.hoffman91/django-tests-cheatsheet-2025-4fae3d32c3c5

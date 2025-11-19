@@ -1,4 +1,5 @@
 {% extends "base.html" %}
+{% load static %}
 
 {% block styles %}
 <style>
@@ -122,4 +123,9 @@
     </div>
 </main>
 {% include 'footer.html' %}
+{% endblock %}
+
+{% block javascript %}
+<script id="current-id" type="application/json">{{ request.user.id|escapejs }}</script>
+<script src="{% static 'js/online.js' %}"></script>
 {% endblock %}
