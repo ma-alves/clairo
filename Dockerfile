@@ -1,22 +1,26 @@
+# Imagem com uv instalado
 FROM ghcr.io/astral-sh/uv:python3.12-bookworm-slim AS builder
 
+# Variáveis para otimizar o uv e evitar downloads desnecessários
 ENV UV_COMPILE_BYTECODE=1 UV_LINK_MODE=copy
 ENV UV_PYTHON_DOWNLOADS=0
 
 # Install the project into `/app`
 WORKDIR /app
 
+# Instalar dependencias sem instalar o projeto
 RUN --mount=type=cache,target=/root/.cache/uv \
     --mount=type=bind,source=uv.lock,target=uv.lock \
     --mount=type=bind,source=pyproject.toml,target=pyproject.toml \
     uv sync --locked --no-install-project --no-dev
 
+# Copiar o código do projeto
 COPY . /app
 
 RUN --mount=type=cache,target=/root/.cache/uv \
     uv sync --locked --no-dev
 
-# Then, use a final image without uv
+# multistage: imagem final
 FROM python:3.12-slim-bookworm
 # It is important to use the image that matches the builder, as the path to the
 # Python executable must be the same, e.g., using `python:3.11-slim-bookworm`

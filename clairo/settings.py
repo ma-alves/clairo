@@ -3,6 +3,7 @@ from pathlib import Path
 
 from dotenv import load_dotenv
 
+
 load_dotenv()
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -69,19 +70,19 @@ CHANNEL_LAYERS = {
 		'BACKEND': 'channels_redis.core.RedisChannelLayer',
 		'CONFIG': {
 			'hosts': [('redis', 6379)],
-            # 'hosts': [('127.0.0.1', 6379)],
 		},
 	}
 }
 
-# Fallback para desenvolvimento sem Redis
-
-if DEBUG:
-    CHANNEL_LAYERS = {
-        'default': {
-            'BACKEND': 'channels.layers.InMemoryChannelLayer'
-        }
-    }
+# Configuração local
+# CHANNEL_LAYERS = {
+# 	'default': {
+# 		'BACKEND': 'channels_redis.core.RedisChannelLayer',
+# 		'CONFIG': {
+#             'hosts': [('127.0.0.1', 6379)],
+# 		},
+# 	}
+# }
 
 # Database
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
@@ -133,7 +134,6 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 STATIC_ROOT = BASE_DIR / 'staticfiles'
-# STATICFILES_DIRS = [BASE_DIR / 'static']
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field

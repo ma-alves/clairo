@@ -1,4 +1,7 @@
+https://medium.com/@hmbarotov/dockerizing-django-with-uv-postgres-and-redis-e1dd9abe9640
+
 # tarefas
+- colocar migrate dentro do dockerfile ou entrypoint.sh
 - token como recuperação
 - delay ao realmente fechar a conexão
 - esqueci a senha
@@ -23,7 +26,7 @@ docker build -t clairo-image .
 docker run -it -p 8000:8000 --name clairo clairo-image
 - builda compose e roda o trem
 docker compose up --build
-- dirruba tudo da memória
+- dirruba tudo da memória inclusive os volumes
 docker compose down -v
 - faz migrations, tem que botar no dockerfile ou compose.yml
 docker compose run web python manage.py migrate
