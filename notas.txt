@@ -13,21 +13,31 @@
 fuser -k -n tcp 8000
 - iniciar channel layer:
 docker run --rm -p 6379:6379 -e TZ=America/Sao_Paulo redis:7
-docker run -d -p 5432:5432 --name dbclairo -e POSTGRES_PASSWORD=123456 -e POSTGRES_USER=postgres postgres
 - sort imports
 ruff check --select I --fix
+
+# docker
 - build docker image
 docker build -t clairo-image .
 - run docker image
 docker run -it -p 8000:8000 --name clairo clairo-image
+- builda compose e roda o trem
+docker compose up --build
+- dirruba tudo da memória
+docker compose down -v
+- faz migrations, tem que botar no dockerfile ou compose.yml
+docker compose run web python manage.py migrate
 
 # postgres
 - user: postgres
 - senha: 123456
 sudo -u postgres psql
+sudo -u postgres -i (psql não funciona)
 \c <dbname> postgres
 \dt (mostrar tabelas)
 \q
+find fucking pg process: sudo ss -lptn 'sport = :5432'
+kill <pid>
 
 # referencias
 https://medium.com/@jonathan.hoffman91/django-tests-cheatsheet-2025-4fae3d32c3c5
