@@ -161,4 +161,4 @@ cython_debug/
 
 # else
 .ruff_cache
-chat-steal.html
+entrypoint.sh
