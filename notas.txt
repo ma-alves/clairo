@@ -1,7 +1,7 @@
 https://medium.com/@hmbarotov/dockerizing-django-with-uv-postgres-and-redis-e1dd9abe9640
 
 # tarefas
-- colocar migrate dentro do dockerfile ou entrypoint.sh
+- solução para cdn do tailwind
 - token como recuperação
 - delay ao realmente fechar a conexão
 - esqueci a senha
