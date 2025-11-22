@@ -33,7 +33,6 @@ jobs:
           - 6379:6379
 
     steps:
-      - name: Copia arquivos do repositório
       - uses: actions/checkout@v5
 
       - name: Instalar Python
