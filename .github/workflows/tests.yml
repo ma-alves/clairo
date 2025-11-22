@@ -1,4 +1,4 @@
-name: test-websockets
+name: tests
 on:
   push:
     branches:
@@ -7,13 +7,14 @@ on:
 
 jobs:
   test:
-    name: Set up dos testes
     runs-on: ubuntu-latest
 
     services:
       postgres:
         image: postgres:17
         env:
+          POSTGRES_DB: postgres
+          POSTGRES_USER: postgres
           POSTGRES_PASSWORD: postgres
         options: >-
           --health-cmd pg_isready
@@ -24,7 +25,7 @@ jobs:
           - 5432:5432
 
       redis:
-        image: redis
+        image: redis:7
         options: >-
           --health-cmd "redis-cli ping"
           --health-interval 10s
@@ -49,18 +50,19 @@ jobs:
       - name: Instalar dependências e projeto
         run: uv sync --locked --all-extras --dev
 
-      - name: Rodar testes
+      - name: Executar migrações
+        run: uv run python manage.py migrate
+
+      - name: Executar testes
+        run: uv run python manage.py test
         env:
           DEBUG: True
           DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
           DJANGO_ALLOWED_HOSTS: localhost,127.0.0.1,0.0.0.0
           DJANGO_LOGLEVEL: info
           DATABASE_ENGINE: postgresql_psycopg2
-          DATABASE_NAME: clairo
+          DATABASE_NAME: postgres
           DATABASE_USERNAME: postgres
           DATABASE_PASSWORD: postgres
-          DATABASE_HOST: localhost
+          DATABASE_HOST: postgres
           DATABASE_PORT: 5432
-        run: |
-          uv run python3 manage.py migrate
-          uv run python3 manage.py test
