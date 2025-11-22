@@ -1,6 +1,6 @@
 name: test-websockets
 on:
-  push:
+  workflow_dispatch:
     branches:
       -dev
 
