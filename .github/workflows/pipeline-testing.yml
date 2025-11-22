@@ -1,8 +1,6 @@
 name: test-websockets
 on:
   workflow_dispatch:
-    branches:
-      -dev
 
 jobs:
   test:
