@@ -13,12 +13,12 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 # See https://docs.djangoproject.com/en/5.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.environ.get("DJANGO_SECRET_KEY")
+SECRET_KEY = os.environ.get('DJANGO_SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get("DEBUG","1")
+DEBUG = os.environ.get('DEBUG', '1')
 
-ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS","127.0.0.1").split(",")
+ALLOWED_HOSTS = os.environ.get('DJANGO_ALLOWED_HOSTS', '127.0.0.1').split(',')
 
 # Application definition
 INSTALLED_APPS = [
@@ -88,14 +88,14 @@ CHANNEL_LAYERS = {
 # https://docs.djangoproject.com/en/5.2/ref/settings/#databases
 
 DATABASES = {
-    'default': {
-        'ENGINE': f'django.db.backends.{os.getenv("DATABASE_ENGINE")}',
-        'NAME': os.getenv('DATABASE_NAME'),
-        'USER': os.getenv('DATABASE_USERNAME'),
-        'PASSWORD': os.getenv('DATABASE_PASSWORD'),
-        'HOST': os.getenv('DATABASE_HOST', '127.0.0.1'),
-        'PORT': os.getenv('DATABASE_PORT'),
-    }
+	'default': {
+		'ENGINE': f'django.db.backends.{os.getenv("DATABASE_ENGINE")}',
+		'NAME': os.getenv('DATABASE_NAME'),
+		'USER': os.getenv('DATABASE_USERNAME'),
+		'PASSWORD': os.getenv('DATABASE_PASSWORD'),
+		'HOST': os.getenv('DATABASE_HOST', '127.0.0.1'),
+		'PORT': os.getenv('DATABASE_PORT'),
+	}
 }
 
 # Password validation

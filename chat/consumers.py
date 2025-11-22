@@ -65,7 +65,6 @@ class ChatConsumer(AsyncWebsocketConsumer):
 			await self.close()
 			return
 
-
 	@database_sync_to_async
 	def create_message(self, chat_uuid, author, body_message):
 		chat = Chat.objects.get(chat_uuid=chat_uuid)

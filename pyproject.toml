@@ -16,7 +16,7 @@ dependencies = [
 ]
 
 [tool.ruff]
-exclude = ["urls.py"]
+exclude = ["urls.py", "migrations", ".venv"]
 line-length = 88
 
 [tool.ruff.format]
