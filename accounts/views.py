@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.contrib.auth import login
+from django.contrib.auth.decorators import login_required
 from django.shortcuts import redirect, render
 
 from .forms import SignUpForm
@@ -11,7 +12,7 @@ def signup_view(request):
 		if form.is_valid():
 			user = form.save()
 			login(request, user)
-			return redirect('home')
+			return redirect('token')
 		else:
 			for field, errors in form.errors.items():
 				for error in errors:
@@ -20,3 +21,10 @@ def signup_view(request):
 		form = SignUpForm()
 
 	return render(request, 'registration/signup.html', {'form': form})
+
+
+@login_required
+def token(request):
+	user = request.user
+	token = user.token.token
+	return render(request, 'registration/token.html', {'token': token})

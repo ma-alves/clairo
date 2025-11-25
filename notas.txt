@@ -1,14 +1,10 @@
-https://medium.com/@hmbarotov/dockerizing-django-with-uv-postgres-and-redis-e1dd9abe9640
-
 # tarefas
-- criar 404
-- solução para cdn do tailwind
+- rever cores do texto de novos templates, botar preto
 - token como recuperação
 - delay ao realmente fechar a conexão
-- esqueci a senha
 - trocar pfp
 
-# conectando com o container do postgres
+# conectando com o container do postgres localmente
 docker run --rm -p 5432:5432 -e POSTGRES_PASSWORD=postgres -v clairo-volume:/var/lib/postgresql/data postgres:17
 docker exec -it <id> bash
 root@<id>:/# psql -U postgres
@@ -17,6 +13,7 @@ postgres=# \q
 postgres=# exit
 
 # comentários pessoais e comandos
+- talvez adicionar type na resposta ao cliente em consumers.py
 - url patterns sem parâmetros vão primeiro!
 - profile com informações fictícias pq não é o foco
 
@@ -25,8 +22,6 @@ postgres=# exit
 fuser -k -n tcp 8000
 - iniciar channel layer:
 docker run --rm -p 6379:6379 -e TZ=America/Sao_Paulo redis:7
-- iniciar banco de dados:
-docker run --rm -p 5432:5432 -e POSTGRES_PASSWORD=postgres postgres:17
 - sort imports
 ruff check --select I --fix
 
@@ -56,6 +51,7 @@ kill <pid>
 # referencias
 https://stackoverflow.com/questions/63066240/setup-postgres-in-github-actions-for-django
 https://stackoverflow.com/questions/37694987/connecting-to-postgresql-in-a-docker-container-from-outside
+https://medium.com/@hmbarotov/dockerizing-django-with-uv-postgres-and-redis-e1dd9abe9640
 https://medium.com/@jonathan.hoffman91/django-tests-cheatsheet-2025-4fae3d32c3c5
 https://github.com/NilCoalescing/djangochannelsrestframework/blob/master/tests/test_consumer.py#L27
 https://github.com/andrewgodwin/channels-examples

@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block styles %}
+<style>
+    body {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<main class="flex-grow flex items-center justify-center bg-emerald-300 py-8 px-4 sm:px-6 lg:px-8">
+    <div class="w-full max-w-md">
+        <div class="bg-white py-8 px-6 border-2 border-black shadow-[3px_3px_0_0_#000] hover:-translate-y-1 rounded-lg">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-black mb-4">Bem vindo à clairo!</h2>
+                <p class="text-gray-800">Para garantir a proteção da sua conta, geramos um <b>token</b> para você habilitar a troca de sua senha caso você a esqueça ou deseje muda-la.</p>
+            </div>
+            <div class="text-center mb-8">
+                <div class="bg-gray-100 border-2 border-gray-300 rounded-lg py-3 ">
+                    <span class="text-lg text-gray-600 font-mono font-bold">{{ token }}</span>
+                </div>
+            </div>
+            <div class="text-center">
+                <p class="text-gray-800">Lembre-se de guardar este token em um local seguro. <b>Caso você o perca não será possível recuperar sua senha!</b></p>
+            </div>
+            <div>
+                <a href="{% url 'home' %}" class="mt-6 w-full inline-flex justify-center p-4 px-8 bg-white font-bold border-2 border-black rounded-full shadow-[3px_3px_0_0_#000] hover:bg-emerald-300">
+                    Ir para a página inicial
+                </a>
+            </div>
+        </div>
+    </div>
+</main>
+{% include 'footer.html' %}
+<script>
+
+</script>
+{% endblock %}
