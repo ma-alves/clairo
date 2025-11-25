@@ -1,5 +1,5 @@
 services:
- db:
+ postgres:
    image: postgres:17
    environment:
      POSTGRES_DB: ${DATABASE_NAME}
@@ -26,7 +26,7 @@ services:
    ports:
      - "8000:8000"
    depends_on:
-     db:
+     postgres:
       condition: service_healthy
    environment:
      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}

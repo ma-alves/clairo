@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>clairo</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+
+<body class="min-h-screen flex flex-col">
+    <header class="bg-white text-black border-b-2 border-black">
+        <div class="container mx-auto px-4 py-4">
+            <div class="flex items-center justify-between">
+                <!-- Logo/Título -->
+                <div class="flex-shrink-0">
+                    <h1 class="text-2xl font-medium"><a href="{% url 'home'%}">clairo</a></h1>
+                </div>
+                <!-- Menu de Navegação -->
+                <nav class="flex items-center space-x-4">
+                    <!-- Links de Login e Cadastro -->
+                    <div class="hidden md:flex items-center space-x-2">
+                        {% if request.user.is_authenticated %}
+                        <p class="text-sm font-medium">Olá, {{ request.user.username }}!</p>
+                        <a href="{% url 'profile' request.user.username %}"
+                            class="block px-4 py-2 text-sm font-medium hover:bg-emerald-300 rounded-full">Perfil</a>
+                        <a href="{% url 'home' %}"
+                            class="block px-4 py-2 text-sm font-medium hover:bg-emerald-300 rounded-full">Conversas</a>
+                        <form action="{% url 'logout' %}" method="post">
+                            {% csrf_token %}
+                            <button type="submit"
+                                class="block px-4 py-2 text-sm font-medium hover:bg-red-600 hover:text-white hover:rounded-full text-red-600">Sair</button>
+                        </form>
+                        {% else %}
+                        <a href="{% url 'login' %}"
+                            class="px-3 py-2 text-sm font-medium hover:bg-emerald-500 rounded-full">
+                            Login
+                        </a>
+                        <a href="{% url 'signup' %}"
+                            class="px-3 py-2 text-sm font-medium bg-emerald-300 hover:bg-emerald-500 rounded-full">
+                            Cadastrar
+                        </a>
+                        {% endif %}
+                    </div>
+                </nav>
+            </div>
+        </div>
+    </header>
+    <main class="flex-grow flex items-center justify-center bg-emerald-300 p-4">
+        <div class="w-full max-w-md">
+            <div
+                class="bg-white py-8 px-6 border-2 border-black shadow-[3px_3px_0_0_#000] hover:-translate-y-1 rounded-lg text-center">
+                <h2 class="text-3xl font-bold text-black mb-2">Poxa...</h2>
+                <p class="text-gray-800">Não encontramos o que você procura :(</p>
+                <p class="text-gray-500">404 Not Found Error</p>
+            </div>
+        </div>
+    </main>
+    <footer class="bg-white border-t-2 border-black py-4 mt-auto">
+        <div class="container mx-auto px-4 text-center">
+            <div class="mt-1 flex justify-center space-x-4 mb-2">
+                <a href="#" class="text-black hover:text-emerald-600">Termos de Uso</a>
+                <a href="#" class="text-black hover:text-emerald-600">Privacidade</a>
+                <a href="#" class="text-black hover:text-emerald-600">Contato</a>
+            </div>
+            <p class="text-gray-600">&copy; 2025 clairo. Todos os direitos reservados.</p>
+        </div>
+    </footer>
+</body>
+
+</html>
