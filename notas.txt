@@ -1,7 +1,5 @@
 https://medium.com/@hmbarotov/dockerizing-django-with-uv-postgres-and-redis-e1dd9abe9640
 
-,127.0.0.1,0.0.0.0
-
 # tarefas
 - criar 404
 - solução para cdn do tailwind
@@ -56,6 +54,7 @@ find fucking pg process: sudo ss -lptn 'sport = :5432'
 kill <pid>
 
 # referencias
+https://stackoverflow.com/questions/63066240/setup-postgres-in-github-actions-for-django
 https://stackoverflow.com/questions/37694987/connecting-to-postgresql-in-a-docker-container-from-outside
 https://medium.com/@jonathan.hoffman91/django-tests-cheatsheet-2025-4fae3d32c3c5
 https://github.com/NilCoalescing/djangochannelsrestframework/blob/master/tests/test_consumer.py#L27
