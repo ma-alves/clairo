@@ -1,5 +1,7 @@
 https://medium.com/@hmbarotov/dockerizing-django-with-uv-postgres-and-redis-e1dd9abe9640
 
+,127.0.0.1,0.0.0.0
+
 # tarefas
 - criar 404
 - solução para cdn do tailwind
