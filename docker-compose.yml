@@ -28,6 +28,10 @@ services:
    depends_on:
      postgres:
       condition: service_healthy
+   links:
+     - postgres:postgres
+   networks:
+     - clairo-network
    environment:
      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
      DEBUG: ${DEBUG}
@@ -48,3 +52,6 @@ services:
 
 volumes:
    postgres_data:
+networks:
+  clairo-network:
+    driver: bridge
