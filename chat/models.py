@@ -43,7 +43,7 @@ class UserOnlineStatus(models.Model):
 
 class UserToken(models.Model):
 	user = models.OneToOneField(User, related_name='token', on_delete=models.CASCADE)
-	token = models.CharField(max_length=64, default=secrets.token_hex(16), unique=True)
+	token = models.CharField(max_length=64, default=secrets.token_hex, unique=True)
 	updated_at = models.DateTimeField(auto_now=True)
 
 	def __str__(self) -> str:

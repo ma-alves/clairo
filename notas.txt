@@ -1,4 +1,5 @@
 # tarefas
+- atualizar footer para algo real
 - rever cores do texto de novos templates, botar preto
 - token como recuperação
 - delay ao realmente fechar a conexão
