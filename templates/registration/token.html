@@ -12,7 +12,7 @@
 
 {% block content %}
 <main class="flex-grow flex items-center justify-center bg-white py-8 px-4 sm:px-6 lg:px-8">
-    <div class="w-full max-w-md">
+    <div class="w-full max-w-4/5">
         <div class="bg-white py-8 px-6 border-2 border-black shadow-[3px_3px_0_0_#000] hover:-translate-y-1 rounded-lg">
             <div class="text-center mb-8">
                 <h2 class="text-3xl font-bold text-black mb-4">Bem vindo à clairo!</h2>
@@ -20,14 +20,14 @@
             </div>
             <div class="text-center mb-8">
                 <div class="bg-gray-100 border-2 border-gray-300 rounded-lg py-3 ">
-                    <span class="text-lg text-black font-mono font-bold">{{ token }}</span>
+                    <span class="text-lg text-black font-mono font-bold">{{ ebbc1b4d1658339db3fbb302cfc8dedb0f37af8e66a24aa3edd8398a0f7e4049 }}</span>
                 </div>
             </div>
             <div class="text-center">
                 <p class="text-black">Lembre-se de guardar este token em um local seguro. <b>Caso você o perca não será possível recuperar sua senha!</b></p>
             </div>
-            <div>
-                <a href="{% url 'home' %}" class="mt-6 w-full inline-flex justify-center p-4 px-8 border-2 border-black shadow-[3px_3px_0_0_#000] rounded-full text-sm font-bold text-black bg-emerald-300 hover:bg-emerald-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-400">
+            <div class="text-center">
+                <a href="{% url 'home' %}" class="mt-6 inline-flex justify-center p-4 px-8 border-2 border-black shadow-[3px_3px_0_0_#000] rounded-full text-sm font-bold text-black bg-emerald-300 hover:bg-emerald-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-400">
                     Ir para a página inicial
                 </a>
             </div>
