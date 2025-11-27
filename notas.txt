@@ -1,3 +1,8 @@
+esqueci a senha (clica)
+colocar token (view) - bool na página mesmo fodase
+token reset view (view) - bool na página mesmo fodase
+redirect login.html
+
 # tarefas
 - atualizar footer para algo real
 - rever cores do texto de novos templates, botar preto
