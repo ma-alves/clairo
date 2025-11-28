@@ -1,0 +1,76 @@
+{% extends "base.html" %}
+
+{% block styles %}
+<style>
+    body {
+        background: white;
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .error-message {
+        color: #dc2626;
+        /* Red-600 */
+        font-size: 0.875rem;
+        /* text-sm */
+        margin-top: 0.25rem;
+        /* mt-1 */
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<main class="flex-grow flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+    <div class="w-full max-w-md">
+        <div class="bg-white py-8 px-6 border-2 border-black shadow-[3px_3px_0_0_#000] hover:-translate-y-1 rounded-lg">
+            <div class="text-center mb-8">
+                <h2 class="text-3xl font-bold text-black">Validação de Token</h2>
+                <p class="text-black mt-2">Preencha os campos com seu usuário e respectivo token para resetar sua senha.</p>
+            </div>
+            <form method="post" class="space-y-6">
+                {% csrf_token %}
+                <div>
+                    <label for="username" class="block text-sm font-medium text-black mb-1">Usuário</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-user text-gray-800"></i>
+                        </div>
+                        <input id="username" name="username" type="text" autocomplete="username" required
+                            class="py-3 px-4 pl-10 block w-full border-2 border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-300"
+                            placeholder="Digite seu usuário">
+                    </div>
+                    {% for err in form.username.errors %}
+                    <div class="error-message">
+                        {{ err }}
+                    </div>
+                    {% endfor %}
+                </div>
+                <div>
+                    <label for="token" class="block text-sm font-medium text-gray-800 mb-1">Token</label>
+                    <div class="relative">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <i class="fas fa-lock text-gray-800"></i>
+                        </div>
+                        <input type="text" name="token" id="token" required
+                            class="input-field py-3 px-4 pl-10 block w-full border-2 border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-300"
+                            placeholder="Digite seu token">
+                    </div>
+                    {% for err in form.token.errors %}
+                    <div class="error-message">
+                        {{ err }}
+                    </div>
+                    {% endfor %}
+                </div>
+                <div>
+                    <button type="submit"
+                        class="w-full flex justify-center py-3 px-4 border-2 border-black shadow-[3px_3px_0_0_#000] rounded-full text-sm font-bold text-black bg-emerald-300 hover:bg-emerald-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-400">
+                        Validar
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</main>
+{% include 'footer.html' %}
+{% endblock %}

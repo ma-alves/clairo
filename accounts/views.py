@@ -1,11 +1,11 @@
 from django.contrib import messages
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
-from django.contrib.auth.views import PasswordResetView
+from django.contrib.auth.models import User
 from django.shortcuts import redirect, render
-from django.urls import reverse_lazy
 
-from accounts.forms import SignUpForm, TokenResetPasswordForm
+from accounts.forms import SignUpForm, TokenValidationForm, TokenResetPasswordForm
+from accounts.models import UserToken
 
 
 def signup_view(request):
@@ -25,19 +25,45 @@ def signup_view(request):
 	return render(request, 'registration/signup.html', {'form': form})
 
 
-def token_reset_view(request):
+def token_validation_view(request):
+	if request.method == 'POST':
+		form = TokenValidationForm(request.POST)
+		if form.is_valid():
+			username = form.cleaned_data.get('username')
+			token = form.cleaned_data.get('token')
+			try:
+				user = User.objects.get(username=username)
+				user_token = UserToken.objects.get(user=user)
+			except (User.DoesNotExist, UserToken.DoesNotExist):
+				messages.error(request, 'Usuário ou token não encontrado.')
+			else:
+				if str(user_token.token) == str(token):
+					login(request, user)
+					return redirect('reset-password')
+				else:
+					for field, errors in form.errors.items():
+						for error in errors:
+							messages.error(request, f'{error}')
+	else:
+		form = TokenValidationForm()
+
+	return render(request, 'registration/token_validation.html', {'form': form})
+
+
+@login_required
+def reset_password_view(request):
 	if request.method == 'POST':
 		form = TokenResetPasswordForm(user=request.user, data=request.POST)
 		if form.is_valid():
 			form.save()
 			messages.success(request, 'Senha alterada com sucesso.')
-			return redirect('login')
+			return redirect('home')
 		else:
 			for field, errors in form.errors.items():
 				for error in errors:
 					messages.error(request, f'{error}')
 	else:
-		form = TokenResetPasswordForm(user=request.user)
+		form = TokenResetPasswordForm(request.user)
 
 	return render(request, 'registration/reset_password.html', {'form': form})
 

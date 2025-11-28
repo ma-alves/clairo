@@ -1,10 +1,12 @@
+b5bc111a778dcc3c46818bc453ece495836a07e4440090a56bf7cf4c79898126
+
 esqueci a senha (clica)
 colocar token (view) - bool na página mesmo fodase
 token reset view (view) - bool na página mesmo fodase
 redirect login.html
 
 # tarefas
-- atualizar footer para algo real
+- fazer lógica do reset password view
 - rever cores do texto de novos templates, botar preto
 - token como recuperação
 - delay ao realmente fechar a conexão
