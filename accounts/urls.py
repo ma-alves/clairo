@@ -6,7 +6,7 @@ urlpatterns = [
 	path('signup/', views.signup_view, name='signup'),
 	path('token/', views.token, name='token'),
     path('token-validation/', views.token_validation_view, name='token-validation'),
-    path('reset-password/', views.reset_password_view, name='reset-password'),
+    path('update-password/', views.update_password_view, name='update-password'),
 ]
 
 # :3

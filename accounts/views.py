@@ -4,7 +4,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import redirect, render
 
-from accounts.forms import SignUpForm, TokenValidationForm, TokenResetPasswordForm
+from accounts.forms import SignUpForm, TokenValidationForm, UpdatePasswordForm
 from accounts.models import UserToken
 
 
@@ -39,7 +39,7 @@ def token_validation_view(request):
 			else:
 				if str(user_token.token) == str(token):
 					login(request, user)
-					return redirect('reset-password')
+					return redirect('update-password')
 				else:
 					for field, errors in form.errors.items():
 						for error in errors:
@@ -51,21 +51,30 @@ def token_validation_view(request):
 
 
 @login_required
-def reset_password_view(request):
+def update_password_view(request):
 	if request.method == 'POST':
-		form = TokenResetPasswordForm(user=request.user, data=request.POST)
+		form = UpdatePasswordForm(user=request.user, data=request.POST)
+		print('here 57')
 		if form.is_valid():
-			form.save()
-			messages.success(request, 'Senha alterada com sucesso.')
-			return redirect('home')
+			try:
+				print('here')
+				user = User.objects.get(username=request.user.username)
+				new_password = form.cleaned_data.get('new_password1')
+				user.set_password(new_password)
+				user.save()
+				messages.success(request, 'Senha alterada com sucesso.')
+				print('here 66')
+				return redirect('login')
+			except Exception as e:
+				messages.error(request, f'Erro ao alterar a senha: {str(e)}')
 		else:
 			for field, errors in form.errors.items():
 				for error in errors:
 					messages.error(request, f'{error}')
 	else:
-		form = TokenResetPasswordForm(request.user)
+		form = UpdatePasswordForm(user=request.user)
 
-	return render(request, 'registration/reset_password.html', {'form': form})
+	return render(request, 'registration/update_password.html', {'form': form})
 
 
 @login_required

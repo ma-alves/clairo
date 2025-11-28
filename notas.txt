@@ -1,29 +1,21 @@
-b5bc111a778dcc3c46818bc453ece495836a07e4440090a56bf7cf4c79898126
-
-esqueci a senha (clica)
-colocar token (view) - bool na página mesmo fodase
-token reset view (view) - bool na página mesmo fodase
-redirect login.html
-
 # tarefas
-- fazer lógica do reset password view
+- trocar resultados em search para grid
 - rever cores do texto de novos templates, botar preto
-- token como recuperação
 - delay ao realmente fechar a conexão
 - trocar pfp
 
-# conectando com o container do postgres localmente
+# comentários pessoais e comandos
+- talvez adicionar type na resposta ao cliente em consumers.py
+- url patterns sem parâmetros vão primeiro!
+- profile com informações fictícias pq não é o foco
+
+# conectando com o container do postgres e criando banco
 docker run --rm -p 5432:5432 -e POSTGRES_PASSWORD=postgres -v clairo-volume:/var/lib/postgresql/data postgres:17
 docker exec -it <id> bash
 root@<id>:/# psql -U postgres
 postgres=# create database clairo;
 postgres=# \q
 postgres=# exit
-
-# comentários pessoais e comandos
-- talvez adicionar type na resposta ao cliente em consumers.py
-- url patterns sem parâmetros vão primeiro!
-- profile com informações fictícias pq não é o foco
 
 # comandos
 - encerrar processo na porta 8000
@@ -40,21 +32,10 @@ docker build -t clairo-image .
 docker run -it -p 8000:8000 --name clairo clairo-image
 - builda compose e roda o trem
 docker compose up --build
-- dirruba tudo da memória inclusive os volumes
+- dirruba tudo da memória e os volumes também
 docker compose down -v
 - faz migrations, tem que botar no dockerfile ou compose.yml
 docker compose run web python manage.py migrate
-
-# postgres
-- user: postgres
-- senha: 123456
-sudo -u postgres psql
-sudo -u postgres -i (psql não funciona)
-\c <dbname> postgres
-\dt (mostrar tabelas)
-\q
-find fucking pg process: sudo ss -lptn 'sport = :5432'
-kill <pid>
 
 # referencias
 https://stackoverflow.com/questions/63066240/setup-postgres-in-github-actions-for-django
