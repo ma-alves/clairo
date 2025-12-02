@@ -1,5 +1,7 @@
 # tarefas
-- trocar resultados em search para grid
+- colocar erros no form de login
+- fazer testes de update_password
+- criar configurações em profile para mudar senha e se pá crud de user e conversas
 - rever cores do texto de novos templates, botar preto
 - delay ao realmente fechar a conexão
 - trocar pfp

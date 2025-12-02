@@ -26,7 +26,7 @@
             <p class="justify-center text-gray-800">Pesquise um contato</p>
             <form method="get" action="{% url 'search' %}" class="flex flex-col items-center space-y-2">
                 <input type="text" name="username" value="{{ request.GET.query }}" autocomplete="off" class="text-center py-3 px-4 block w-full border-2 border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-300">
-                <input class="button m-8 p-2 px-4 bg-white text-black border-2 border-black rounded-full shadow-[3px_3px_0_0_#000] hover:bg-emerald-300" type='submit' value="Pesquisar">
+                <input class="flex justify-center py-3 px-4 border-2 border-black shadow-[3px_3px_0_0_#000] rounded-full text-sm font-medium text-black bg-emerald-300 hover:bg-emerald-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-400" type='submit' value="Pesquisar">
             </form>
             {% endif %}
         </div>

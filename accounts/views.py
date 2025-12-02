@@ -41,9 +41,7 @@ def token_validation_view(request):
 					login(request, user)
 					return redirect('update-password')
 				else:
-					for field, errors in form.errors.items():
-						for error in errors:
-							messages.error(request, f'{error}')
+					messages.error(request, 'Erro ao validar o token.')
 	else:
 		form = TokenValidationForm()
 
@@ -54,16 +52,13 @@ def token_validation_view(request):
 def update_password_view(request):
 	if request.method == 'POST':
 		form = UpdatePasswordForm(user=request.user, data=request.POST)
-		print('here 57')
 		if form.is_valid():
 			try:
-				print('here')
 				user = User.objects.get(username=request.user.username)
 				new_password = form.cleaned_data.get('new_password1')
 				user.set_password(new_password)
 				user.save()
 				messages.success(request, 'Senha alterada com sucesso.')
-				print('here 66')
 				return redirect('login')
 			except Exception as e:
 				messages.error(request, f'Erro ao alterar a senha: {str(e)}')

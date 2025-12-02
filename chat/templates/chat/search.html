@@ -6,14 +6,16 @@
     <!-- Lista de conversas -->
     {% include 'chat-list.html' %}
     <!-- Pesquisa de usuários -->
-    <div id="chat-window" class="col-span-2 h-[45rem] flex flex-col bg-white relative">
-        <div class="flex flex-col justify-center items-center text-black h-full space-y-2">
+    <div id="chat-window" class="flex flex-col col-span-2 bg-white relative h-[45rem]">
+        <div class="flex flex-col items-center text-black h-full space-y-2">
             {% if user_list %}
-                <h2 class="text-3xl font-medium">Resultados:</h2>
+                <div class="flex p-3 bg-white sticky top-0 z-10">
+                    <h2 class="text-2xl font-bold text-black">Resultados</h2>
+                </div>
                 <div class="flex flex-col space-y-2">
                     {% for user in user_list %}
                         <a href="{% url 'profile' user.username %}">
-                            <div class="flex items-center font-medium gap-2 p-2 hover:bg-gray-200 rounded-lg z-0">
+                            <div class="flex items-center font-medium gap-2 p-2 hover:bg-emerald-300 rounded-lg z-0">
                                 <img class="w-10 h-10 rounded-full object-cover bg-gray-600" src="https://images.unsplash.com/photo-1595433707802-6b2626ef1c91?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=880"
                                 alt="{{ user.username }}" />
                                 {{ user.username }}
@@ -22,10 +24,10 @@
                     {% endfor %}
                 </div>
             {% else %}
-            <h2 class="text-3xl font-bold">Nenhum resultado encontrado :&#40;</h2>
+            <h2 class="text-2xl font-bold text-black">Nenhum resultado encontrado :&#40;</h2>
             <form method="get" class="flex flex-col items-center space-y-2">
                 <input type="text" name="username" value="{{ request.GET.query }}" autocomplete="off" class="text-center py-3 px-4 block w-full border-2 border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-300">
-                <input class="button m-8 p-2 px-4 bg-white text-black border-2 border-black rounded-full shadow-[3px_3px_0_0_#000] hover:bg-emerald-300" type='submit' value="Pesquisar">
+                <input class="flex justify-center py-3 px-4 border-2 border-black shadow-[3px_3px_0_0_#000] rounded-full text-sm font-medium text-black bg-emerald-300 hover:bg-emerald-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-400" type='submit' value="Pesquisar">
             </form>
             {% endif %}
         </div>

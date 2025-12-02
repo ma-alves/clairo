@@ -14,13 +14,11 @@
 	<header class="bg-white text-black border-b-2 border-black">
 		<div class="container mx-auto px-4 py-4">
 			<div class="flex items-center justify-between">
-				<!-- Logo/Título -->
 				<div class="flex-shrink-0">
 					<h1 class="text-2xl font-medium"><a href="{% url 'home'%}">clairo</a></h1>
 				</div>
 				<!-- Menu de Navegação -->
 				<nav class="flex items-center space-x-4">
-					<!-- Links de Login e Cadastro -->
 					<div class="hidden md:flex items-center space-x-2">
 						{% if request.user.is_authenticated %}
 						<p class="text-sm font-medium">Olá, {{ request.user.username }}!</p>

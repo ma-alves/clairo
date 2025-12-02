@@ -8,15 +8,6 @@
         display: flex;
         flex-direction: column;
     }
-
-    .error-message {
-        color: #dc2626;
-        /* Red-600 */
-        font-size: 0.875rem;
-        /* text-sm */
-        margin-top: 0.25rem;
-        /* mt-1 */
-    }
 </style>
 {% endblock %}
 
@@ -40,11 +31,6 @@
                             class="py-3 px-4 pl-10 block w-full border-2 border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-300"
                             placeholder="Digite seu usuário">
                     </div>
-                    {% for err in form.username.errors %}
-                    <div class="error-message">
-                        {{ err }}
-                    </div>
-                    {% endfor %}
                 </div>
                 <div>
                     <label for="token" class="block text-sm font-medium text-gray-800 mb-1">Token</label>
@@ -53,15 +39,19 @@
                             <i class="fas fa-lock text-gray-800"></i>
                         </div>
                         <input type="text" name="token" id="token" required
-                            class="input-field py-3 px-4 pl-10 block w-full border-2 border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-300"
-                            placeholder="Digite seu token">
+                        class="input-field py-3 px-4 pl-10 block w-full border-2 border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-300"
+                        placeholder="Digite seu token">
                     </div>
-                    {% for err in form.token.errors %}
-                    <div class="error-message">
-                        {{ err }}
-                    </div>
-                    {% endfor %}
                 </div>
+                {% if messages %}
+                    {% for message in messages %}
+                        {% if message.tags == 'error' %}
+                            <div class="mt-1 text-sm text-red-600 text-center">
+                                {{ message }}
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                {% endif %}
                 <div>
                     <button type="submit"
                         class="w-full flex justify-center py-3 px-4 border-2 border-black shadow-[3px_3px_0_0_#000] rounded-full text-sm font-bold text-black bg-emerald-300 hover:bg-emerald-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-400">
