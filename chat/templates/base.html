@@ -26,6 +26,30 @@
 							class="block px-4 py-2 text-sm font-medium hover:bg-emerald-300 rounded-full">Perfil</a>
 						<a href="{% url 'home' %}"
 							class="block px-4 py-2 text-sm font-medium hover:bg-emerald-300 rounded-full">Conversas</a>
+						<div class="relative group">
+							<button class="block px-4 py-2 text-sm font-medium hover:bg-emerald-300 rounded-full flex items-center gap-1">
+								Configurações
+								<svg class="w-4 h-4  group-hover:rotate-180" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+									<path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+								</svg>
+							</button>
+							<div class="absolute right-0 w-48 bg-white border-2 border-black rounded-lg shadow-[3px_3px_0_0_#000] opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200 z-50">
+								<div>
+									<a href="{% url 'update-password' %}" 
+									class="block px-4 py-3 text-sm text-black rounded-t-lg hover:bg-emerald-300 hover:font-medium border-b border-gray-200">
+										<div class="flex items-center gap-2">
+											<span>Mudar nome de usuário</span>
+										</div>
+									</a>
+									<a href="{% url 'update-password' %}" 
+									class="block px-4 py-3 text-sm text-black rounded-b-lg hover:bg-emerald-300 hover:font-medium">
+										<div class="flex items-center gap-2">
+											<span>Mudar senha</span>
+										</div>
+									</a>
+								</div>
+							</div>
+						</div>
 						<form action="{% url 'logout' %}" method="post">
 							{% csrf_token %}
 							<button type="submit"

@@ -1,7 +1,7 @@
 # tarefas
-- colocar erros no form de login
-- fazer testes de update_password
+- atualizar header e templates
 - criar configurações em profile para mudar senha e se pá crud de user e conversas
+- fazer testes de update_password
 - rever cores do texto de novos templates, botar preto
 - delay ao realmente fechar a conexão
 - trocar pfp
