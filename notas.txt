@@ -1,3 +1,5 @@
+2d9426a26c486f98e8457074ae5ee826 - testas
+
 # tarefas
 - terminar profile, links de configurações
 - mudar nome de usuário

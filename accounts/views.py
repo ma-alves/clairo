@@ -1,10 +1,10 @@
 from django.contrib import messages
-from django.contrib.auth import login
+from django.contrib.auth import login, update_session_auth_hash
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import redirect, render
 
-from accounts.forms import SignUpForm, TokenValidationForm, UpdatePasswordForm
+from accounts.forms import ResetPasswordForm, SignUpForm, TokenValidationForm, UpdatePasswordForm
 from accounts.models import UserToken
 
 
@@ -39,7 +39,7 @@ def token_validation_view(request):
 			else:
 				if str(user_token.token) == str(token):
 					login(request, user)
-					return redirect('update-password')
+					return redirect('reset-password')
 				else:
 					messages.error(request, 'Erro ao validar o token.')
 	else:
@@ -53,15 +53,10 @@ def update_password_view(request):
 	if request.method == 'POST':
 		form = UpdatePasswordForm(user=request.user, data=request.POST)
 		if form.is_valid():
-			try:
-				user = User.objects.get(username=request.user.username)
-				new_password = form.cleaned_data.get('new_password1')
-				user.set_password(new_password)
-				user.save()
-				messages.success(request, 'Senha alterada com sucesso.')
-				return redirect('login')
-			except Exception as e:
-				messages.error(request, f'Erro ao alterar a senha: {str(e)}')
+			user = form.save()
+			update_session_auth_hash(request, user)
+			messages.success(request, 'Senha alterada com sucesso.')
+			return redirect('home')
 		else:
 			for field, errors in form.errors.items():
 				for error in errors:
@@ -70,6 +65,25 @@ def update_password_view(request):
 		form = UpdatePasswordForm(user=request.user)
 
 	return render(request, 'registration/update_password.html', {'form': form})
+
+
+@login_required
+def reset_password_view(request):
+	if request.method == 'POST':
+		form = ResetPasswordForm(user=request.user, data=request.POST)
+		if form.is_valid():
+			user = form.save()
+			update_session_auth_hash(request, user)
+			messages.success(request, 'Senha alterada com sucesso.')
+			return redirect('home')
+		else:
+			for field, errors in form.errors.items():
+				for error in errors:
+					messages.error(request, f'{error}')
+	else:
+		form = UpdatePasswordForm(user=request.user)
+
+	return render(request, 'registration/reset_password.html', {'form': form})
 
 
 @login_required
