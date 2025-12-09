@@ -1,17 +1,14 @@
 2d9426a26c486f98e8457074ae5ee826 - testas
+09e23b79c1daaf98881ba543e01ad61e - credo
 
 # tarefas
-- terminar profile, links de configurações
-- mudar nome de usuário
-- recuperar senha e mudar senha
-- criptografar token
+- tirar ring effect dos botões
+- consertar search results limites
 - fazer testes de update_password
 - delay ao realmente fechar a conexão
 
 # comentários pessoais e comandos
 - talvez adicionar type na resposta ao cliente em consumers.py
-- url patterns sem parâmetros vão primeiro!
-- profile com informações fictícias pq não é o foco
 
 # conectando com o container do postgres e criando banco
 docker run --rm -p 5432:5432 -e POSTGRES_PASSWORD=postgres -v clairo-volume:/var/lib/postgresql/data postgres:17

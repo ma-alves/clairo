@@ -1,8 +1,10 @@
 from django import forms
-from django.contrib.auth.forms import UserCreationForm, PasswordChangeForm,SetPasswordForm
+from django.contrib.auth.forms import (
+	UserCreationForm,
+	PasswordChangeForm,
+	SetPasswordForm,
+)
 from django.contrib.auth.models import User
-
-from accounts.models import UserToken
 
 
 class SignUpForm(UserCreationForm):
@@ -33,10 +35,9 @@ class TokenValidationForm(forms.Form):
 
 
 class UpdatePasswordForm(PasswordChangeForm):
-
 	class Meta:
 		model = User
-		fields = ('password1', 'password2') # o que é isso?
+		fields = ('password1', 'password2')  # o que é isso?
 
 	def __init__(self, *args, **kwargs):
 		super().__init__(*args, **kwargs)
@@ -46,7 +47,6 @@ class UpdatePasswordForm(PasswordChangeForm):
 
 
 class ResetPasswordForm(SetPasswordForm):
-
 	class Meta:
 		model = User
 		fields = ('password1', 'password2')

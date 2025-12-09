@@ -4,8 +4,14 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth.models import User
 from django.shortcuts import redirect, render
 
-from accounts.forms import ResetPasswordForm, SignUpForm, TokenValidationForm, UpdatePasswordForm
+from accounts.forms import (
+	ResetPasswordForm,
+	SignUpForm,
+	TokenValidationForm,
+	UpdatePasswordForm,
+)
 from accounts.models import UserToken
+from accounts.utils import cipher_suite
 
 
 def signup_view(request):
@@ -30,18 +36,20 @@ def token_validation_view(request):
 		form = TokenValidationForm(request.POST)
 		if form.is_valid():
 			username = form.cleaned_data.get('username')
-			token = form.cleaned_data.get('token')
+			token_input = form.cleaned_data.get('token')
 			try:
 				user = User.objects.get(username=username)
 				user_token = UserToken.objects.get(user=user)
-			except (User.DoesNotExist, UserToken.DoesNotExist):
-				messages.error(request, 'Usuário ou token não encontrado.')
-			else:
-				if str(user_token.token) == str(token):
+				decrypted_token = cipher_suite.decrypt(
+					user_token.token.encode()
+				).decode()
+				if decrypted_token == token_input:
 					login(request, user)
 					return redirect('reset-password')
 				else:
-					messages.error(request, 'Erro ao validar o token.')
+					messages.error(request, 'Token inválido.')
+			except (User.DoesNotExist, UserToken.DoesNotExist):
+				messages.error(request, 'Usuário ou token não encontrado.')
 	else:
 		form = TokenValidationForm()
 
@@ -88,5 +96,6 @@ def reset_password_view(request):
 
 @login_required
 def token(request):
-	token = request.user.token
-	return render(request, 'registration/token.html', {'token': token})
+	encrypted_token = request.user.token.token
+	decrypted_token = cipher_suite.decrypt(encrypted_token.encode()).decode()
+	return render(request, 'registration/token.html', {'token': decrypted_token})
