@@ -20,6 +20,7 @@ jobs:
       DATABASE_HOST: localhost
       DATABASE_PORT: 5432
       REDIS_HOST: localhost
+      FERNET_KEY: ${{ secrets.FERNET_KEY }}
 
     services:
       db:
