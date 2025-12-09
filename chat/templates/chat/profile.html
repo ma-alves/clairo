@@ -10,10 +10,6 @@
         flex-direction: column;
     }
 
-    .profile-card {
-        transition: all 0.3s ease;
-    }
-
     .card {
         border: black 2px solid;
         background-color: white;
@@ -33,16 +29,17 @@
 
 {% block content %}
 <main class="flex-grow py-12 px-4 sm:px-6 lg:px-8">
-    <div class="max-w-3xl mx-auto">
+    <div class="max-w-xl mx-auto">
         <!-- Card de Perfil -->
         <div class="card overflow-hidden">
             <!-- Cabeçalho do perfil -->
             <div class="bg-emerald-300 h-32 relative">
                 <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2">
                     <div class="avatar relative">
-                        <img class="w-32 h-32 rounded-full border-2 border-black shadow-[3px_3px_0_0_#000] object-cover"
+                        <!-- <img class="w-32 h-32 rounded-full border-2 border-black shadow-[3px_3px_0_0_#000] object-cover"
                             src="https://images.unsplash.com/photo-1595433707802-6b2626ef1c91?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=880"
-                            alt="Foto de perfil">
+                            alt="Foto de perfil"> -->
+                        <img class="w-32 h-32 rounded-full border-2 border-black shadow-[3px_3px_0_0_#000] object-cover" src="{% static 'img/profile-pic.png' %}">
                         {% if user.status.online_status %}
                         <div
                             class="absolute bottom-2 right-2 bg-emerald-400 w-6 h-6 rounded-full border-2 border-white">
@@ -62,7 +59,7 @@
                 </div>
                 <!-- Botão de enviar mensagem -->
                 {% if not request.user.username == user.username %}
-                <div class="mt-8">
+                <div class="mt-8 mb-6">
                     <a href="{% url 'start-chat' user.username %}" role="button"
                         class="cursor-pointer m-8 p-4 px-8 bg-white text-black border-2 border-black rounded-full shadow-[3px_3px_0_0_#000] hover:bg-emerald-300">
                         <i class="fas fa-paper-plane mr-2"></i> Enviar Mensagem
@@ -70,55 +67,33 @@
                 </div>
                 {% endif %}
             </div>
-            <!-- Estatísticas -->
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 px-6 pb-8">
-                <div class="stats-card card p-4 text-center">
-                    <div class="text-2xl font-bold text-black">1.542</div>
-                    <div class="text-gray-800">Amigos</div>
-                </div>
-                <div class="stats-card card p-4 text-center">
-                    <div class="text-2xl font-bold text-black">13K</div>
-                    <div class="text-gray-800">Seguidores</div>
-                </div>
-                <div class="stats-card card p-4 text-center">
-                    <div class="text-2xl font-bold text-black">48</div>
-                    <div class="text-gray-800">Publicações</div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Conteúdo adicional -->
-        <div class="mt-8 grid grid-cols-1 md:grid-cols-2 gap-6">
-            <div class="card stats-card p-6">
-                <h3 class="text-xl font-bold text-black mb-4">Sobre</h3>
-                <ul class="space-y-3">
-                    <li class="flex items-center">
-                        <i class="fas fa-briefcase text-emerald-300 w-6"></i>
-                        <span class="text-gray-800">Desenvolvedor Backend</span>
-                    </li>
-                    <li class="flex items-center">
-                        <i class="fas fa-graduation-cap text-emerald-300 w-6"></i>
-                        <span class="text-gray-800">Bacharel em Cursos do freeCodeCamp</span>
-                    </li>
-                    <li class="flex items-center">
-                        <i class="fas fa-heart text-emerald-300 w-6"></i>
-                        <span class="text-gray-800">Amo Lasanha</span>
-                    </li>
-                </ul>
-            </div>
-
-            <div class="card stats-card p-6">
-                <h3 class="text-xl font-bold text-black mb-4">Interesses</h3>
-                <div class="flex flex-wrap gap-2">
-                    <span class="bg-emerald-100 text-emerald-600 px-3 py-1 rounded-full text-sm">Desenvolvimento
-                        Web</span>
-                    <span class="bg-emerald-100 text-emerald-600 px-3 py-1 rounded-full text-sm">APIs</span>
-                    <span class="bg-emerald-100 text-emerald-600 px-3 py-1 rounded-full text-sm">Filmes</span>
-                    <span class="bg-emerald-100 text-emerald-600 px-3 py-1 rounded-full text-sm">Fotografia</span>
-                    <span class="bg-emerald-100 text-emerald-600 px-3 py-1 rounded-full text-sm">Mitski</span>
-                    <span class="bg-emerald-100 text-emerald-600 px-3 py-1 rounded-full text-sm">Tecnologia</span>
+            <!-- Configurações -->
+            {% if request.user.username == user.username %}
+            <div class="grid justify-center px-6 pb-8">
+                <!-- <i class="fa-solid fa-gear text-center"></i> -->
+                <p class="text-center text-base font-bold mt-4">Configurações</p>
+                <div>
+                    <a href="{% url 'update-password' %}" 
+                    class="block px-4 py-3 text-base border-b-2 border-gray-300 hover:underline hover:decoration-emerald-300 hover:decoration-2">
+                        <div class="flex justify-center gap-2">
+                            <span>Mudar nome de usuário</span>
+                        </div>
+                    </a>
+                    <a href="{% url 'update-password' %}" 
+                    class="block px-4 py-3 text-base border-b-2 border-gray-300 hover:underline hover:decoration-emerald-300 hover:decoration-2">
+                        <div class="flex justify-center gap-2">
+                            <span>Mudar senha</span>
+                        </div>
+                    </a>
+                    <a href="{% url 'update-password' %}" 
+                    class="block px-4 py-3 text-base hover:underline hover:decoration-emerald-300 hover:decoration-2">
+                        <div class="flex justify-center gap-2">
+                            <span>Ver token de segurança</span>
+                        </div>
+                    </a>
                 </div>
             </div>
+            {% endif %}
         </div>
     </div>
 </main>
