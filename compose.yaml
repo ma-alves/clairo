@@ -28,6 +28,14 @@ services:
    depends_on:
      db:
       condition: service_healthy
+   develop:
+     watch: 
+       - action: sync
+         path: .
+         target: /app
+         initial_sync: true
+       - action: rebuild
+         path: uv.lock
    environment:
      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY}
      DEBUG: ${DEBUG}

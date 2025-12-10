@@ -26,7 +26,7 @@
             <h2 class="text-2xl font-bold text-black">Nenhum resultado encontrado :&#40;</h2>
             <form method="get" class="flex flex-col items-center space-y-2">
                 <input type="text" name="username" value="{{ request.GET.query }}" autocomplete="off" class="text-center py-3 px-4 block w-full border-2 border-black rounded-lg focus:outline-none focus:ring-2 focus:ring-emerald-300">
-                <input class="flex justify-center py-3 px-4 border-2 border-black shadow-[3px_3px_0_0_#000] rounded-full text-sm font-medium text-black bg-emerald-300 hover:bg-emerald-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-emerald-400" type='submit' value="Pesquisar">
+                <input class="flex justify-center py-3 px-4 border-2 border-black shadow-[3px_3px_0_0_#000] rounded-full text-sm font-medium text-black bg-emerald-300 hover:bg-emerald-500 focus:shadow-[0px_0px_0_0_#000] focus:translate-y-1 focus:translate-x-1" type='submit' value="Pesquisar">
             </form>
             {% endif %}
         </div>

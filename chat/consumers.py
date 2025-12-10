@@ -132,3 +132,4 @@ class OnlineConsumer(AsyncWebsocketConsumer):
 			)
 		)
 		await self.set_user_status(user_id, status)
+		print('bateu')

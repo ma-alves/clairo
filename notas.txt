@@ -2,6 +2,8 @@
 09e23b79c1daaf98881ba543e01ad61e - credo
 
 # tarefas
+- não seta como off, set_user_status quebrado, só funciona com dois users online
+- ver networks a mais em compose
 - tirar ring effect dos botões
 - consertar search results limites
 - fazer testes de update_password
