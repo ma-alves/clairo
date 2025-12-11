@@ -1,11 +1,6 @@
-2d9426a26c486f98e8457074ae5ee826 - testas
-09e23b79c1daaf98881ba543e01ad61e - credo
-
 # tarefas
 - consertar search results limites
 - fazer testes de update_password
-- delay ao realmente fechar a conexão
-- send_user_status não funciona em profile.html
 
 # comentários pessoais e comandos
 - talvez adicionar type na resposta ao cliente em consumers.py

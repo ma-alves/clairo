@@ -36,16 +36,13 @@
             <div class="bg-emerald-300 h-32 relative">
                 <div class="absolute bottom-0 left-1/2 transform -translate-x-1/2 translate-y-1/2">
                     <div class="avatar relative">
-                        <!-- <img class="w-32 h-32 rounded-full border-2 border-black shadow-[3px_3px_0_0_#000] object-cover"
-                            src="https://images.unsplash.com/photo-1595433707802-6b2626ef1c91?ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&q=80&w=880"
-                            alt="Foto de perfil"> -->
                         <img class="w-32 h-32 rounded-full border-2 border-black shadow-[3px_3px_0_0_#000] object-cover" src="{% static 'img/profile-pic.png' %}">
                         {% if user.status.online_status %}
                         <div
-                            id="ws-profile" class="absolute bottom-2 right-2 bg-emerald-400 w-6 h-6 rounded-full border-2 border-white">
+                            id="ws-profile" data-profile-id="{{ user.id }}" class="absolute bottom-2 right-2 bg-emerald-400 w-6 h-6 rounded-full border-2 border-white">
                         </div>
                         {% else %}
-                        <div id="ws-profile" class="hidden" title="Offline"></div>
+                        <div id="ws-profile" data-profile-id="{{ user.id }}" class="hidden" title="Offline"></div>
                         {% endif %}
                     </div>
                 </div>
@@ -104,5 +101,5 @@
 
 {% block javascript %}
 <script id="current-id" type="application/json">{{ request.user.id|escapejs }}</script>
-<script src="{% static 'js/online.js' %}"></script>
+<script src="{% static 'js/online-profile.js' %}"></script>
 {% endblock %}

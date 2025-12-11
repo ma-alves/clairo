@@ -30,11 +30,16 @@ onlineSocket.onmessage = function (e) {
     const data = JSON.parse(e.data)
     const statusType = data['status']
     const userId = data['user_id']
-    const userStatusId = document.getElementById(`ws-${userId}`);
+    const profileStatusId = document.getElementById("ws-profile");
     
-    if (statusType == true) {
-        userStatusId.className = "inline-block w-3 h-3 bg-emerald-400 rounded-full ml-auto"
-    } else {
-        userStatusId.className = "hidden"
+    if (profileStatusId) {
+        const profileOwnerId = Number(profileStatusId.dataset.profileId);
+        if (profileOwnerId === Number(userId)) {
+            if (statusType === true || statusType === 'true') {
+                profileStatusId.className = "absolute bottom-2 right-2 bg-emerald-400 w-6 h-6 rounded-full border-2 border-white";
+            } else {
+                profileStatusId.className = "hidden";
+            }
+        }
     }
 }

@@ -96,7 +96,6 @@ class OnlineConsumer(AsyncWebsocketConsumer):
 					'user_id': message_user_id,
 				},
 			)
-			# print('bateu no receive')
 		except ClientError as e:
 			await self.send(text_data=json.dumps({'error': e.code}))
 
@@ -123,7 +122,6 @@ class OnlineConsumer(AsyncWebsocketConsumer):
 				}
 			)
 		)
-		# print('bateu no send_user_status')
 
 	@database_sync_to_async
 	def set_user_status(self, user_id, connection_type):
