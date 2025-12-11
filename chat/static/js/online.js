@@ -32,10 +32,17 @@ onlineSocket.onmessage = function (e) {
     const userId = data['user_id']
 
     const userStatusId = document.getElementById(`ws-${userId}`);
-
     if (statusType == true) {
         userStatusId.className = "inline-block w-3 h-3 bg-emerald-400 rounded-full ml-auto"
     } else {
         userStatusId.className = "hidden"
+    }
+
+    // Não funciona ainda
+    const profileStatusId = document.getElementById("ws-profile");
+    if (statusType == true) {
+        profileStatusId.className = "absolute bottom-2 right-2 bg-emerald-400 w-6 h-6 rounded-full border-2 border-white"
+    } else {
+        profileStatusId.className = "hidden"
     }
 }

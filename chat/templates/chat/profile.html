@@ -42,8 +42,10 @@
                         <img class="w-32 h-32 rounded-full border-2 border-black shadow-[3px_3px_0_0_#000] object-cover" src="{% static 'img/profile-pic.png' %}">
                         {% if user.status.online_status %}
                         <div
-                            class="absolute bottom-2 right-2 bg-emerald-400 w-6 h-6 rounded-full border-2 border-white">
+                            id="ws-profile" class="absolute bottom-2 right-2 bg-emerald-400 w-6 h-6 rounded-full border-2 border-white">
                         </div>
+                        {% else %}
+                        <div id="ws-profile" class="hidden" title="Offline"></div>
                         {% endif %}
                     </div>
                 </div>

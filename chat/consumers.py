@@ -86,6 +86,8 @@ class OnlineConsumer(AsyncWebsocketConsumer):
 		try:
 			data = json.loads(text_data)
 			connection_type, message_user_id = self.check_text_data(data)
+
+			await self.set_user_status(message_user_id, connection_type)
 			await self.channel_layer.group_send(
 				self.room_group_name,
 				{
@@ -94,6 +96,7 @@ class OnlineConsumer(AsyncWebsocketConsumer):
 					'user_id': message_user_id,
 				},
 			)
+			# print('bateu no receive')
 		except ClientError as e:
 			await self.send(text_data=json.dumps({'error': e.code}))
 
@@ -109,20 +112,9 @@ class OnlineConsumer(AsyncWebsocketConsumer):
 
 		return connection_type, message_user_id
 
-	@database_sync_to_async
-	def set_user_status(self, user_id, status):
-		try:
-			user = UserOnlineStatus.objects.get(user__id=user_id)
-		except UserOnlineStatus.DoesNotExist:
-			user = UserOnlineStatus.objects.create(user_id=user_id, online_status=False)
-
-		user.online_status = status
-		user.save()
-
 	async def send_user_status(self, event):
 		status = True if event['status'] == 'open' else False
 		user_id = event['user_id']
-
 		await self.send(
 			text_data=json.dumps(
 				{
@@ -131,5 +123,15 @@ class OnlineConsumer(AsyncWebsocketConsumer):
 				}
 			)
 		)
-		await self.set_user_status(user_id, status)
-		print('bateu')
+		# print('bateu no send_user_status')
+
+	@database_sync_to_async
+	def set_user_status(self, user_id, connection_type):
+		try:
+			status = True if connection_type == 'open' else False
+			user = UserOnlineStatus.objects.get(user__id=user_id)
+		except UserOnlineStatus.DoesNotExist:
+			user = UserOnlineStatus.objects.create(user_id=user_id, online_status=False)
+
+		user.online_status = status
+		user.save()
