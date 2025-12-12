@@ -34,6 +34,8 @@ docker compose down -v
 docker compose run web python manage.py migrate
 
 # referencias
+https://developer.mozilla.org/en-US/docs/Learn_web_development/Extensions/Server-side/Django/Testing#locallibrary_tests
+https://www.geeksforgeeks.org/python/how-to-authenticate-a-user-in-tests-in-django/
 https://stackoverflow.com/questions/63066240/setup-postgres-in-github-actions-for-django
 https://stackoverflow.com/questions/37694987/connecting-to-postgresql-in-a-docker-container-from-outside
 https://medium.com/@hmbarotov/dockerizing-django-with-uv-postgres-and-redis-e1dd9abe9640

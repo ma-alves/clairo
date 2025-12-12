@@ -1,7 +1,7 @@
 from channels.auth import AuthMiddlewareStack
 from channels.routing import URLRouter
 from channels.testing import WebsocketCommunicator
-from django.contrib.auth.models import AnonymousUser, User
+from django.contrib.auth.models import User
 from django.test import TestCase
 from django.urls import path
 
@@ -72,8 +72,7 @@ class ChatTestCase(TestCase):
 class OnlineTestCase(TestCase):
 	@classmethod
 	def setUpTestData(cls):
-		User.objects.create_user(username='usuario_de_teste', password='Senha1234!')
-		cls.anom_user = AnonymousUser()
+		cls.user1 = User.objects.create_user(username='usuario_de_teste', password='Senha1234!')
 		cls.application = AuthMiddlewareStack(OnlineConsumer.as_asgi())
 
 	async def test_online_connect(self):
@@ -81,17 +80,17 @@ class OnlineTestCase(TestCase):
 		connected, subprotocol = await communicator.connect()
 		assert connected
 
-		await communicator.send_json_to({'type': 'open', 'user_id': 1})
+		await communicator.send_json_to({'type': 'open', 'user_id': self.user1.id}) # type: ignore
 		response = await communicator.receive_json_from()
-		assert response == {'status': True, 'user_id': 1}
+		assert response == {'status': True, 'user_id': self.user1.id} # type: ignore
 
 	async def test_online_disconnect(self):
 		communicator = WebsocketCommunicator(self.application, '/ws/online-status/')
 		await communicator.connect()
-		await communicator.send_json_to({'type': 'closed', 'user_id': 1})
+		await communicator.send_json_to({'type': 'closed', 'user_id': self.user1.id}) # type: ignore
 
 		response = await communicator.receive_json_from()
-		assert response == {'status': False, 'user_id': 1}
+		assert response == {'status': False, 'user_id': self.user1.id} # type: ignore
 
 	async def test_type_error(self):
 		communicator = WebsocketCommunicator(self.application, '/ws/online-status/')
