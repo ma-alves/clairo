@@ -90,6 +90,39 @@ papo/
 └── docker-compose.yaml # Orquestração de serviços
 ```
 
+## 🔄 CI/CD com GitHub Actions
+
+O projeto utiliza **GitHub Actions** para automação de testes e integração contínua. A pipeline é executada automaticamente em pushes para a branch `dev` e pode ser acionada manualmente.
+
+### Pipeline de Testes
+
+A pipeline configurada em `.github/workflows/tests.yaml` realiza as seguintes etapas:
+
+1. **Setup de Ambiente**
+   - Python instalado via `.python-version`
+   - Gerenciador de pacotes `uv` para instalação de dependências
+
+2. **Serviços Complementares**
+   - **PostgreSQL 17**: Banco de dados com health checks
+   - **Redis 7**: Canal de pub/sub com validação de conectividade
+
+3. **Execução**
+   - Instalação de dependências com `uv sync --locked --all-extras --dev`
+   - Aplicação de migrations: `python manage.py migrate`
+   - Execução de testes: `python manage.py test`
+
+4. **Variáveis de Ambiente**
+   - Configuração automática de DEBUG, DJANGO_SECRET_KEY e FERNET_KEY via secrets
+   - Host de banco de dados e Redis locais
+   - Variáveis de log e debug controladas
+
+### Benefícios
+
+- **Validação Automática**: Cada commit é testado automaticamente
+- **Detecção de Regressões**: Falhas são identificadas imediatamente
+- **Consistência**: Ambiente de teste é reproduzível e isolado
+- **Segurança**: Secrets sensíveis gerenciados via GitHub Secrets
+
 ## Testes
 
 O projeto inclui testes unitários nos módulos de `tests.py` para validar:
