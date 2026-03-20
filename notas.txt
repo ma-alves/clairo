@@ -1,7 +1,7 @@
 # ALTERAR WSS ANTES DE DAR MERGE EM MAIN PELO AMOR DE DEUS
 
 # tarefas
-- escrever testes gerais
+- terminar testes (se tiver faltando né)
 
 # observações e dúvidas
 - channel layers não funciona no Render pq REDIS_URL é substituído por localhost
