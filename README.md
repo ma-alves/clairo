@@ -90,7 +90,7 @@ papo/
 └── docker-compose.yaml # Orquestração de serviços
 ```
 
-## 🔄 CI/CD com GitHub Actions
+## CI/CD com GitHub Actions
 
 O projeto utiliza **GitHub Actions** para automação de testes e integração contínua. A pipeline é executada automaticamente em pushes para a branch `dev` e pode ser acionada manualmente.
 
@@ -128,5 +128,5 @@ A pipeline configurada em `.github/workflows/tests.yaml` realiza as seguintes et
 O projeto inclui testes unitários nos módulos de `tests.py` para validar:
 - Funcionalidade de autenticação
 - Comportamento dos consumers WebSocket
-- Persistência e recuperação de mensagens
+- Persistência e recuperação de mensagens \
 *Observação*: a cobertura de testes ainda não está 100%
