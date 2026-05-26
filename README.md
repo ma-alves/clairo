@@ -128,5 +128,8 @@ A pipeline configurada em `.github/workflows/tests.yaml` realiza as seguintes et
 O projeto inclui testes unitários nos módulos de `tests.py` para validar:
 - Funcionalidade de autenticação
 - Comportamento dos consumers WebSocket
-- Persistência e recuperação de mensagens \
+- Persistência e recuperação de mensagens
+
 *Observação*: a cobertura de testes ainda não está 100%
+
+*Documento parcialmente gerado por IA, revisado e mantido por ma-alves.*
