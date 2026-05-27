@@ -1,0 +1,149 @@
+name: deploy
+on:
+  push:
+    branches:
+      - main
+      - dev
+  pull_request:
+    branches:
+      - main
+      - dev
+  workflow_dispatch:
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    env:
+      DEBUG: False
+      DJANGO_ALLOWED_HOSTS: localhost,127.0.0.1,0.0.0.0
+      DJANGO_LOGLEVEL: info
+      DATABASE_NAME: papo
+      DATABASE_USERNAME: postgres
+      DATABASE_PASSWORD: postgres
+      DATABASE_HOST: localhost
+      DATABASE_PORT: 5432
+      REDIS_HOST: localhost
+
+    services:
+      db:
+        image: postgres:17
+        env:
+          POSTGRES_DB: papo
+          POSTGRES_USER: postgres
+          POSTGRES_PASSWORD: postgres
+        options: >-
+          --health-cmd pg_isready
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 5432:5432
+
+      redis:
+        image: redis:7
+        options: >-
+          --health-cmd "redis-cli ping"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+        ports:
+          - 6379:6379
+
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Instalar Python
+        uses: actions/setup-python@v6
+        with:
+          python-version-file: ".python-version"
+
+      - name: Instalar uv
+        uses: astral-sh/setup-uv@v6
+        with:
+          enable-cache: true
+
+      - name: Instalar dependências e projeto
+        run: uv sync --locked --all-extras --dev
+
+      - name: Executar migrações
+        env:
+          DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+          FERNET_KEY: ${{ secrets.FERNET_KEY }}
+        run: uv run python manage.py migrate
+
+      - name: Executar testes
+        run: uv run python manage.py test
+
+  deploy_staging:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    concurrency:
+      group: deploy-staging
+      cancel-in-progress: true
+    needs: test
+    if: github.ref == 'refs/heads/dev'
+
+    steps:
+      - name: Deploy Staging to Render
+        run: |
+          curl --fail --show-error --silent -X POST "${{ secrets.RENDER_DEPLOY_HOOK_URL_STAGING }}"
+
+      - name: Verificar saúde da aplicação (staging)
+        run: |
+          HEALTHCHECK_URL="${{ secrets.RENDER_HEALTHCHECK_URL_STAGING }}"
+
+          if [ -z "$HEALTHCHECK_URL" ]; then
+            echo "RENDER_HEALTHCHECK_URL_STAGING secret is not set"
+            exit 1
+          fi
+
+          for attempt in 1 2 3 4 5 6; do
+            if curl --fail --show-error --silent "$HEALTHCHECK_URL" >/dev/null; then
+              echo "Staging health check passed"
+              exit 0
+            fi
+
+            echo "Staging health check failed (attempt $attempt/6), retrying in 10s..."
+            sleep 10
+          done
+
+          echo "Staging health check failed after 6 attempts"
+          exit 1
+
+  deploy_production:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    concurrency:
+      group: deploy-production
+      cancel-in-progress: true
+    needs: test
+    if: github.ref == 'refs/heads/main'
+
+    steps:
+      - name: Deploy Production to Render
+        run: |
+          curl --fail --show-error --silent -X POST "${{ secrets.RENDER_DEPLOY_HOOK_URL_PRODUCTION }}"
+
+      - name: Verificar saúde da aplicação (production)
+        run: |
+          HEALTHCHECK_URL="${{ secrets.RENDER_HEALTHCHECK_URL_PRODUCTION }}"
+
+          if [ -z "$HEALTHCHECK_URL" ]; then
+            echo "RENDER_HEALTHCHECK_URL_PRODUCTION secret is not set"
+            exit 1
+          fi
+
+          for attempt in 1 2 3 4 5 6; do
+            if curl --fail --show-error --silent "$HEALTHCHECK_URL" >/dev/null; then
+              echo "Production health check passed"
+              exit 0
+            fi
+
+            echo "Production health check failed (attempt $attempt/6), retrying in 10s..."
+            sleep 10
+          done
+
+          echo "Production health check failed after 6 attempts"
+          exit 1

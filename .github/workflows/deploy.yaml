@@ -16,6 +16,8 @@ jobs:
     timeout-minutes: 20
 
     env:
+      DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
+      FERNET_KEY: ${{ secrets.FERNET_KEY }}
       DEBUG: False
       DJANGO_ALLOWED_HOSTS: localhost,127.0.0.1,0.0.0.0
       DJANGO_LOGLEVEL: info
@@ -68,9 +70,6 @@ jobs:
         run: uv sync --locked --all-extras --dev
 
       - name: Executar migrações
-        env:
-          DJANGO_SECRET_KEY: ${{ secrets.DJANGO_SECRET_KEY }}
-          FERNET_KEY: ${{ secrets.FERNET_KEY }}
         run: uv run python manage.py migrate
 
       - name: Executar testes
