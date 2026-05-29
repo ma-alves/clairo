@@ -1,15 +1,16 @@
 # papo
 
-Papo é um chat app desenvolvido com o intuito de explorar as possibilidades de WebSockets com entrega de mensagens em tempo real e monitoramento de status online, utilizando código assíncrono em seus consumidores através do Django Channels e Redis como Pub/Sub. O foco é o desenvolvimento do back-end, enquanto o front-end possui uma interface simples construída utilizando Tailwind.
+Papo é um chat app em tempo real desenvolvido com Django Channels que utiliza WebSockets como protocolo de comunicação, Redis como Pub/Sub nas channel layers nativas e PostgreSQL para persistência. A aplicação não coleta informações pessoais priorizando a privacidade dos usuários em um ambiente designado para interações rápidas e casuais, e nesse cenário a recuperação de senhas é feita através de um PAT (Personal Access Token) disponibilizado ao usuário após o seu cadastro.
 
 ## Tech Stack
 - [Django](https://github.com/django) - Web Framework
 - [Channels](https://github.com/django/channels) - Extensão do Django para código assíncrono e WebSockets
-- [Daphne](https://github.com/django/daphne) - Servidor HTTPS/Websocket
+- [Daphne](https://github.com/django/daphne) - Servidor ASGI/WebSocket
 - [PostgreSQL](https://www.postgresql.org) - Banco de Dados SQL
-- [Redis](https://redis.io/) - Channel Layer
+- [Redis](https://redis.io/) - Channel Layer (Pub/Sub)
 - [Tailwind](https://tailwindcss.com/) - CSS Framework
-- [Docker Compose](https://docs.docker.com/compose/) - Multi-container
+- [Docker Compose](https://docs.docker.com/compose/) - Orquestração multi-container
+- [GitHub Actions](https://github.com/features/actions) - CI/CD
 
 ## Configuração
 1. Clone o repositório:
@@ -35,29 +36,33 @@ A aplicação também está disponível em [papo](https://papo-uexb.onrender.com
 O projeto utiliza Django Channels para gerenciar conexões WebSocket através de consumidores assíncronos. Cada cliente estabelece uma conexão persistente que é mantida ativa durante toda a sessão do usuário. O Redis funciona como canal de pub/sub, permitindo que múltiplos usuários se comuniquem entre canais dedicados.
 
 ### Autenticação e Autorização
-- Sistema de autenticação baseado em JWT
-- Validação de sessão para conexões WebSocket
-- Validação de sessão nos endpoints diferenciando usuários logados
-
-### Gerenciamento de Status Online
-- Rastreamento de status de usuários em tempo real
-- Atualização automática de presença ao conectar/desconectar
-- Broadcasting de mudanças de status para todos os clientes conectados
+- Cadastro com username e senha via formulário Django
+- Geração automática de token criptografado (Fernet) via signal `post_save`
+- Validação de token no primeiro acesso
+- Recuperação de senha utilizando Personal Access Token criado no cadastro do usuário
+- Autenticação de sessão para conexões WebSocket via `AuthMiddlewareStack`
+- Proteção de views com `@login_required` e `LoginRequiredMixin`
 
 ## Detalhes Técnicos
 
 ### Consumidores WebSocket
-O módulo `consumers.py` implementa consumidores assíncronos que lidam com:
-- Estabelecimento e encerramento de conexões
-- Recebimento e armazenamento de mensagens
-- Broadcast de mensagens para o chat privado
-- Mostra mudanças de status de usuários
+O módulo `consumers.py` implementa dois consumidores assíncronos:
+
+**ChatConsumer** (`ws/chat/<chat_uuid>/`)
+- Estabelecimento e encerramento de conexões em chats UUID
+- Recebimento, validação e persistência de mensagens
+
+**OnlineConsumer** (`ws/online-status/`)
+- Rastreamento de presença (conexão/desconexão)
+- Atualização do status no banco via `UserOnlineStatus`
+- Broadcasting de mudanças de status para todos os clientes
 
 ### Modelo de Dados
-- **User**: Usuários do sistema com informações de perfil
-- **Message**: Mensagens armazenadas com timestamps e referências a remetente/destinatário
-- **Conversation**: Agrupamento de mensagens entre pares de usuários
-- Relacionamentos com índices otimizados para queries de chat history
+- **User**: Usuários do sistema (modelo padrão do Django)
+- **Chat**: Sala de conversa identificada por UUID, com controle de usuários online
+- **ChatMessage**: Mensagens com autor, corpo do texto, timestamp e FK para Chat
+- **UserOnlineStatus**: One-to-one com User, rastreia presença online/offline
+- **UserToken**: Token criptografado (Fernet) para validação de primeiro acesso
 
 ### Camada de Persistência
 - PostgreSQL para dados estruturados (usuários, mensagens, conversas)
@@ -65,9 +70,11 @@ O módulo `consumers.py` implementa consumidores assíncronos que lidam com:
 - Transações ACID para garantir consistência de dados
 
 ### Camada de Frontend
-- JavaScript vanilla para gerenciar conexão WebSocket
-- Listeners para recebimento de mensagens
-- DOM updates utilizando Tailwind para estilização
+- JavaScript vanilla com três módulos WebSocket:
+  - `chat.js` — gerencia a sala de chat, envio/recebimento de mensagens e renderização no DOM
+  - `online.js` — broadcast de status online na página inicial (lista de chats)
+  - `online-profile.js` — indicador de status online na página de perfil do usuário
+- DOM updates com Tailwind CSS para estilização
 
 ## Fluxo de Mensagens
 
@@ -82,46 +89,57 @@ O módulo `consumers.py` implementa consumidores assíncronos que lidam com:
 
 ```
 papo/
-├── accounts/           # Autenticação e gerenciamento de usuários
-├── chat/               # Lógica principal do chat (consumers, models, views)
-├── papo/               # Configurações do projeto
-├── templates/          # Templates HTML (login, cadastro)
-├── manage.py           # CLI do Django
-└── docker-compose.yaml # Orquestração de serviços
+├── accounts/              # Autenticação e gerenciamento de usuários
+│   ├── forms.py           # Formulários de cadastro, token e senha
+│   ├── models.py          # UserToken (token criptografado)
+│   ├── signals.py         # Geração automática de token no post_save
+│   ├── utils.py           # Criptografia Fernet
+│   └── views.py           # Signup, token validation, reset de senha
+├── chat/                  # Lógica principal do chat
+│   ├── consumers.py       # ChatConsumer e OnlineConsumer (WebSocket)
+│   ├── exceptions.py      # ClientError customizada
+│   ├── models.py          # Chat, ChatMessage, UserOnlineStatus
+│   ├── routing.py         # Rotas WebSocket (/ws/chat/, /ws/online-status/)
+│   ├── static/js/         # chat.js, online.js, online-profile.js
+│   ├── templates/chat/    # Templates HTML do chat
+│   └── views.py           # Home, chat, search, profile, delete
+├── papo/                  # Configurações do projeto
+│   ├── asgi.py            # ASGI com ProtocolTypeRouter
+│   ├── settings.py        # Configurações Django + Channels + Redis
+│   └── urls.py            # Rotas HTTP
+├── templates/             # Templates base (login, signup, 404, 500)
+├── .github/workflows/     # CI/CD (test, deploy)
+├── compose.yaml           # Orquestração Docker (PostgreSQL + Redis + web)
+├── Dockerfile             # Multi-stage build com uv
+├── pyproject.toml         # Dependências e configuração Ruff
+└── manage.py              # CLI do Django
 ```
 
 ## CI/CD com GitHub Actions
 
-O projeto utiliza **GitHub Actions** para automação de testes e integração contínua. A pipeline é executada automaticamente em pushes para a branch `dev` e pode ser acionada manualmente.
+O projeto utiliza **GitHub Actions** para automação de testes e deploy. A pipeline é executada em pushes para `main`/`dev` e pull requests, além de poder ser acionada manualmente.
 
-### Pipeline de Testes
+### Pipeline (`deploy.yaml`)
 
-A pipeline configurada em `.github/workflows/tests.yaml` realiza as seguintes etapas:
+**Job: test** (executado em todos os pushes/PRs)
+1. **Setup**: Python via `.python-version`, pacotes com `uv sync --locked --all-extras --dev`
+2. **Serviços**: PostgreSQL 17 e Redis 7 com health checks
+3. **Migrações**: `python manage.py migrate`
+4. **Testes**: `python manage.py test`
 
-1. **Setup de Ambiente**
-   - Python instalado via `.python-version`
-   - Gerenciador de pacotes `uv` para instalação de dependências
+**Job: deploy** (executado apenas no merge em `main`, após testes)
+1. **Deploy no Render**: via webhook (`RENDER_DEPLOY_HOOK_URL`)
 
-2. **Serviços Complementares**
-   - **PostgreSQL 17**: Banco de dados com health checks
-   - **Redis 7**: Canal de pub/sub com validação de conectividade
-
-3. **Execução**
-   - Instalação de dependências com `uv sync --locked --all-extras --dev`
-   - Aplicação de migrations: `python manage.py migrate`
-   - Execução de testes: `python manage.py test`
-
-4. **Variáveis de Ambiente**
-   - Configuração automática de DEBUG, DJANGO_SECRET_KEY e FERNET_KEY via secrets
-   - Host de banco de dados e Redis locais
-   - Variáveis de log e debug controladas
+### Variáveis de Ambiente
+- Configuradas via GitHub Secrets: `DJANGO_SECRET_KEY`, `FERNET_KEY`, `RENDER_DEPLOY_HOOK_URL`
+- Hosts de banco e Redis configurados para o runner
 
 ### Benefícios
 
 - **Validação Automática**: Cada commit é testado automaticamente
-- **Detecção de Regressões**: Falhas são identificadas imediatamente
-- **Consistência**: Ambiente de teste é reproduzível e isolado
-- **Segurança**: Secrets sensíveis gerenciados via GitHub Secrets
+- **Detecção de Regressões**: Falhas impedem o deploy
+- **Consistência**: Ambiente de teste reproduzível e isolado
+- **Segurança**: Secrets gerenciados via GitHub Secrets
 
 ## Testes
 
