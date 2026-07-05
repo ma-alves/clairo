@@ -1,5 +1,7 @@
 # papo
 
+*Documento parcialmente gerado por IA, revisado e mantido por ma-alves.*
+
 Papo é um chat app em tempo real desenvolvido com Django Channels que utiliza WebSockets como protocolo de comunicação, Redis como Pub/Sub nas channel layers nativas e PostgreSQL para persistência. A aplicação não coleta informações pessoais priorizando a privacidade dos usuários em um ambiente designado para interações rápidas e casuais, e nesse cenário a recuperação de senhas é feita através de um PAT (Personal Access Token) disponibilizado ao usuário após o seu cadastro.
 
 ## Tech Stack
@@ -150,4 +152,8 @@ O projeto inclui testes unitários nos módulos de `tests.py` para validar:
 
 *Observação*: a cobertura de testes ainda não está 100%
 
-*Documento parcialmente gerado por IA, revisado e mantido por ma-alves.*
+## Contato
+
+- GitHub: [ma-alves](https://github.com/ma-alves)
+- Email: matheusvialves@proton.me
+- LinkedIn: [Matheus Alves](https://linkedin.com/in/matheusvialves/)
