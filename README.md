@@ -152,8 +152,3 @@ O projeto inclui testes unitários nos módulos de `tests.py` para validar:
 
 *Observação*: a cobertura de testes ainda não está 100%
 
-## Contato
-
-- GitHub: [ma-alves](https://github.com/ma-alves)
-- Email: matheusvialves@proton.me
-- LinkedIn: [Matheus Alves](https://linkedin.com/in/matheusvialves/)
